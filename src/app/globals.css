@@ -2,9 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-body, html {
+body,
+html {
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+ 
+  /* position: absolute;
+  background-color: #ba9c84;
+  width: 1000px;
+  height: 1000px;
+  display: flex;
+  justify-items: end;
+  transform-origin: top left;
+  transform: rotate(25deg);
+  right: -740px;
+  top: -150px;
+  overflow: hidden; */
 }
 
 @layer base {
@@ -15,7 +28,7 @@ body, html {
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
+    --primary: 25 44% 40%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
