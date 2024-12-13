@@ -7,7 +7,7 @@ export default function Background(){
     <div className="absolute bg-[#BA9C84] w-[1000px] h-[1000px] flex  justify-items-end origin-top-left rotate-[25deg] right-[-740px] top-[-150px] overflow-hidden "></div>
  <div className=" flex justify-between mx-[10%] mt-[50px]">
     <div className="w-[40%] mt-10 text-primary ">
-    <h1 className="text-5xl   leading-snug my-10">
+    <h1 className="text-5xl z-40 leading-snug my-10">
     Discover And Find 
 Your New Favorite
 Books 
