@@ -19,7 +19,7 @@ const navDarkItems = [
 ]
 export default function Navbar() {
   return (
-    <div className="w-[100%] flex justify-between items-center ml-[5%] ">
+    <div className="fixed w-[100%]  flex justify-between items-center ml-[5%] bg-transparent z-50 " data-aos="fade-down">
         
       <div className="">
         <img src="/photos/logo.png" alt="Logo"></img>
