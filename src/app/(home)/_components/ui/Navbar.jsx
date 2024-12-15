@@ -19,7 +19,7 @@ const navDarkItems = [
 ]
 export default function Navbar() {
   return (
-    <div className="w-[100%] flex justify-between items-center ml-[5%]">
+    <div className="w-[100%] flex justify-between items-center ml-[5%] ">
         
       <div className="">
         <img src="/photos/logo.png" alt="Logo"></img>
