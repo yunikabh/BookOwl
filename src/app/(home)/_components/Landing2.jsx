@@ -25,7 +25,7 @@ export default function Landing2() {
         </div>
       </div>
       <div className="flex w-full justify-center items-center">
-      <img src="/photos/arrow.png" className="w-[200px] h-[200px]" ></img>
+      <img src="/photos/arrow.png" className="w-[200px] h-[200px]" data-aos="zoom-in" ></img>
       </div>
       <div className="grid grid-cols-2 gap-14 overflow-hidden mx-[10%] ">
        

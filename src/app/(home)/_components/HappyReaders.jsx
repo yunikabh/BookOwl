@@ -30,8 +30,8 @@ const Review =[
 export default function HappyReaders(){
     return(
         <div className="my-[100px] ">
-            <h1 className="text-5xl font-semibold text-center text-[#265073] mb-[50px]" data-aos="fade-down">Join Happy Readers</h1>
-            <div className="grid grid-cols-3 gap-8 text-center mx-[20%]">
+            <h1 className="text-5xl font-semibold text-center text-[#265073] mb-[50px] " data-aos="fade-down">Join Happy Readers</h1>
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 text-center mx-[20%] ">
                 
                     {Review.map((items)=>(
                         <Card key={items.id} className="space-y-5 p-5 text-amber-900 shadow-lg bg-inherit hover:shadow-2xl hover:ease-in-out duration-700 " data-aos="fade-up" >
