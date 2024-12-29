@@ -78,7 +78,7 @@ export default function LoginPage() {
       <img src="/photos/logo.png" alt="Logo" className="absolute top-5 right-20 w-30 h-10"></img>
       {/* </div>
            */}
-<div className="relative  ">
+<div className="relative">
 <div className="sm:absolute  sm:w-[750px] sm:h-[1625px] sm:flex  sm:justify-items-end sm:origin-top-left sm:rotate-[24deg] sm:right-[-40px] sm:top-[-450px]  ">
   <img src="/photos/book.png" alt="Book" className="w-100 h-100"></img>
  </div>

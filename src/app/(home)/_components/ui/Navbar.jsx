@@ -110,9 +110,10 @@ function MobileNav() {
             ))}
 
             </NavigationMenuList>
+            {/* <Link href="/login"></Link> */}
             <Button
             variant="outline"
-            className=" text-white mt-5 bg-transparent"
+            className=" text-white mt-5 bg-transparent "
           >
             Login
           </Button>
