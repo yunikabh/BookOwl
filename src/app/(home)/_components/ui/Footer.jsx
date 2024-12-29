@@ -3,7 +3,7 @@ import { Mail, Phone } from "lucide-react";
 export default function Footer() {
   return (
     <div>
-    <div className="w-full px-[5%] grid sm:grid-cols-4 grid-col-1 m-auto gap-11 z-40  border-2 border-[#265073] py-5">
+    <div className="w-full px-[5%] grid sm:grid-cols-4 grid-col-1 m-auto gap-11 z-40  border-2 border-[#265073] py-5 bg-[#f5dac7]">
       <div className="">
         <img src="/photos/logo.png"></img>
         <p>

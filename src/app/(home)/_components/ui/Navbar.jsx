@@ -24,7 +24,7 @@ const navDarkItems = [
 ];
 export default function Navbar() {
   return (
-    <div>
+    <div className="">
       <MobileNav />
       <div
         className="hidden fixed w-[100%]  lg:flex justify-between items-center ml-[5%] bg-transparent z-50 "
@@ -66,7 +66,7 @@ function MobileNav() {
     setIsOpen(!isOpen);
   };
   return (
-    <div className="lg:hidden">
+    <div className="lg:hidden bg-[#f5dac7]">
       {/* Navbar container */}
       <div className="fixed w-[100%] flex justify-between px-[10px] bg-transparent z-40">
         {/* Logo */}

@@ -1,6 +1,6 @@
 export default function Landing2() {
   return (
-    <div className="">
+    <div className="bg-[#f5dac7]">
       <div className="z-50 mt-[100px] flex justify-center">
         <div className=" w-fit " data-aos="fade-up">
           <p className="text-5xl font-bold font-serif text-[#8f6545] mb-5" >

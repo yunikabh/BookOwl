@@ -40,11 +40,11 @@ const SideItems =[
 
 export default function SideBar(){
     return(
-        <div className="fixed w-[15%] h-[1000px] bg-primary  text-white px-1 ">
-           <div className="w-full bg-[#f5dac7]"> <img src="/photos/logo.png" className="mb-5 "></img></div>
+        <div className="fixed w-[15%] h-[1000px] bg-[#f5dac7]  text-amber-900 ">
+           <div className="w-full bg-[#f5dac7] border-b-2 border-black"> <img src="/photos/logo.png" className="mb-3 "></img></div>
             {SideItems.map((items)=>(
                 <div key={items.id}>
-              <a href={items.link}>   <div >  <h1 className="flex flex-row text-xl hover:bg-[#f5dac7] hover:text-primary py-2 "><span className="px-2">{items.icon}</span> {items.name}</h1></div></a> 
+              <a href={items.link}>   <div>  <h1 className="flex flex-row text-xl hover:bg-[#f5dac7] hover:text-primary py-2 "><span className="px-2">{items.icon}</span> {items.name}</h1></div></a> 
                     </div>
             ))}
         </div>
