@@ -7,7 +7,7 @@ import HappyReaders from "./_components/HappyReaders.jsx"
 
 export default function Home() {
   return (
-   <div className="overflow-hidden ">
+   <div className="overflow-hidden bg-[#f5dac7]">
    <Background />
    <Landing2 />
    <HappyReaders />

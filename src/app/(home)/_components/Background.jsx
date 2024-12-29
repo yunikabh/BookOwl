@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Background() {
   return (
-    <div className="w-full  relative overflow-x-hidden overflow-hidden h-[900px] shadow-2xl py-12">
+    <div className="w-full bg-[#f5dac7] relative overflow-x-hidden overflow-hidden h-[900px] shadow-2xl py-12">
       {/* Background design */}
       <div className="rounded-[20%] sm:absolute z-0 sm:bg-[#BA9C84] sm:w-[1000px] sm:h-[1000px] sm:flex  sm:justify-items-end sm:origin-top-left sm:rotate-[25deg] sm:right-[-740px] sm:top-[-150px] sm:overflow-hidden "></div>
       <div className=" flex sm:justify-between sm:flex-row flex-col sm:mx-[10%] mx-[10px] sm:mt-[50px] mt-0">
