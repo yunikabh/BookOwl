@@ -19,7 +19,7 @@ const SideItems =[
     },
     {
         id:2,
-        name :"Add Book", 
+        name :"Book", 
         link :"/admin/books",
         icon: <Book />
 
@@ -33,13 +33,20 @@ const SideItems =[
     },
     {
         id:4,
-        name :"Add Category", 
-        link :"/admin",
+        name :"Category", 
+        link :"/admin/category",
         icon: <LayoutDashboardIcon/>
 
     },
     {
         id:5,
+        name :"Reviews", 
+        link :"/admin",
+        icon: <LayoutDashboardIcon/>
+
+    },
+    {
+        id:6,
         name :"Logout", 
         link :"/admin",
         icon: <ExternalLinkIcon />
@@ -60,17 +67,17 @@ export default function SideBarAdmin(){
         // </div>
     //    <div className="fixed w-[15%] h-[1000px] bg-[#f5dac7]  text-amber-900 " >
     //      <div className="w-full bg-[#f5dac7] border-b-2 border-black"> <img src="/photos/logo.png" className="mb-3 "></img></div>
-        <Sidebar className="fixed  ">
+        <Sidebar className="fixed h-screen " data-aos = "fade-right">
         <SidebarContent>
           <SidebarGroup>
-          <div className="w-full border-b-2"> <img src="/photos/logo.png" className="mb-3 "></img></div>
+          <div className=" border-b-2 "> <img src="/photos/logo.png" className="mb-3 "></img></div>
             <SidebarGroupLabel className="text-md">Application</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {SideItems.map((item) => (
                   <SidebarMenuItem className="" key={item.title}>
-                    <SidebarMenuButton className=" hover:text-[#f5dac7] hover:bg-amber-900 text-lg " asChild>
-                      <a href={item.url}>
+                    <SidebarMenuButton className=" hover:text-amber-900 hover:bg-[#fcf3ec] text-lg " asChild>
+                      <a href={item.link}>
                        {item.icon}
                         <span>{item.name}</span>
                       </a>
