@@ -1,10 +1,15 @@
-import SideBar from "./_components/SideBar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import SideBarAdmin from "./_components/SideBarAdmin";
 
 export default function layout({children}){
     return(
         <div>
-            <SideBar />
-{children}
+            <SidebarProvider >
+            <SideBarAdmin />
+            {children}
+            </SidebarProvider>
+        
+
         </div>
     )
 }
