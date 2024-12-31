@@ -8,7 +8,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
   } from "@/components/ui/sidebar"
-  import { Book, ExternalLinkIcon, Home, Layout, LayoutDashboardIcon, } from "lucide-react"
+  import { Book, ExternalLinkIcon, HandCoins, Home, Layout, LayoutDashboardIcon, LayoutGrid, } from "lucide-react"
 
 const SideItems =[
     {
@@ -28,7 +28,7 @@ const SideItems =[
         id:3,
         name :"Stats", 
         link :"/admin",
-        icon: <Layout/>
+        icon: <Layout />
 
     },
     {
@@ -42,11 +42,17 @@ const SideItems =[
         id:5,
         name :"Reviews", 
         link :"/admin",
-        icon: <LayoutDashboardIcon/>
+        icon: <LayoutGrid/>
 
     },
     {
-        id:6,
+      id:6,
+      name :"Payments", 
+      link :"/admin/payments",
+      icon: <HandCoins/>
+    },
+    {
+        id:7,
         name :"Logout", 
         link :"/admin",
         icon: <ExternalLinkIcon />
@@ -67,10 +73,10 @@ export default function SideBarAdmin(){
         // </div>
     //    <div className="fixed w-[15%] h-[1000px] bg-[#f5dac7]  text-amber-900 " >
     //      <div className="w-full bg-[#f5dac7] border-b-2 border-black"> <img src="/photos/logo.png" className="mb-3 "></img></div>
-        <Sidebar className="fixed h-screen " data-aos = "fade-right">
-        <SidebarContent>
+        <Sidebar className="fixed h-screen" >
+        <SidebarContent className="bg-[#e2b18b]">
           <SidebarGroup>
-          <div className=" border-b-2 "> <img src="/photos/logo.png" className="mb-3 "></img></div>
+          <div className=" border-b-2 border-black "> <img src="/photos/logo.png" className="mb-3 "></img></div>
             <SidebarGroupLabel className="text-md">Application</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
@@ -78,7 +84,7 @@ export default function SideBarAdmin(){
                   <SidebarMenuItem className="" key={item.title}>
                     <SidebarMenuButton className=" hover:text-amber-900 hover:bg-[#fcf3ec] text-lg " asChild>
                       <a href={item.link}>
-                       {item.icon}
+                      <span className="">{item.icon}</span>
                         <span>{item.name}</span>
                       </a>
                     </SidebarMenuButton>
