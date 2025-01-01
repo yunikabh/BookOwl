@@ -1,17 +1,10 @@
 "use client";
-
-import React from 'react';
-
-  import Link from 'next/link';
-  // import Layout from "../Homepage /Layout";
-  
-
-
-export default function Welcome() {
-  return (
-   
-      <main className="p-6">
-        <h1 className="text-3xl font-bold  text-[#6d433d] mb-6">Welcome to BookOwl</h1>
+import React from "react";
+import Link from "next/link";
+export default function Book(){
+    return(
+        <main className="p-6">
+        <h1 className="text-3xl font-bold  text-[#6d433d] mb-6">Welcome to Bookowl</h1>
         <p className="text-[#942372] text-2xl font-semibold">Here are some recommendations for you!</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
@@ -93,20 +86,7 @@ export default function Welcome() {
 
           {/* Add more book cards dynamically here */}
         </div>
+        </main>
 
-         {/* Notifications */}
-         <section className="mb-20">
-          <h2 className="text-xl text-[#6d433d] ] font-bold mb-4">Notifications</h2>
-          <div className="bg-yellow-100 p-4 rounded-lg">
-            <p className="text-gray-800">New arrivals and special discounts are available!</p>
-            <button className="mt-2 bg-[#265073] text-white px-4 py-2 rounded-lg hover:bg-blue-400">
-              Shop Now
-            </button>
-          </div>
-        </section>
-
-                
-      </main>
-    
-  );
+    )
 }
