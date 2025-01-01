@@ -25,7 +25,7 @@ const books = [
 
 export default function BookGrid() {
   return (
-    <main className="p-6 mb-10 ml-72">
+    <main className="ml-72">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {books.map((book) => (
           <div
