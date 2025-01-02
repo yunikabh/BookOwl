@@ -8,7 +8,7 @@ const router = Router();
 router.route("/addBook").post(addBook)
 router.route("/getBooks").get(getBooks)
 router.route("/getBookById/:id").get(verifyUser,getBookById)
-router.route("/updateBook/:id",verifyUser).put(updateBooks)
-router.route("/deleteBook/:id",verifyUser).delete(deleteBooks)
+router.route("/updateBook/:id").put(updateBooks)
+router.route("/deleteBook/:id").delete(deleteBooks)
 
 export default router;

@@ -14,7 +14,7 @@ app.use(cors({
   
 app.use(express.json());
 app.use(cookieParser());
-app.use("/",(req, res)=>{
+app.get("/",(req, res)=>{
   res.json({message:"Welcome to the Backend Server - Yunika"})
 })
 app.use('/auth', authRoutes)

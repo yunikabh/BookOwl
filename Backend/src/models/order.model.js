@@ -14,6 +14,11 @@ const purchaseSchema = new mongoose.Schema(
       ref: "Book",
       required: true, // Reference to the purchased book
     },
+    // bookName: {
+    //   type: mongoose.Schema.Types.bookName,
+    //  ref:"Book",
+    //   required: true,
+    // },
     quantity: {
       type: Number,
       required: true,
