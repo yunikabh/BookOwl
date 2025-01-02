@@ -46,6 +46,38 @@ const Books = [
     author: "John Doe",
     units: 10,
   },
+  {
+    id: 6,
+    img: "/photos/book.jpg",
+    name: "Giver",
+    price: "Rs 400",
+    author: "John Doe",
+    units: 10,
+  },
+  {
+    id: 7,
+    img: "/photos/book.jpg",
+    name: "Giver",
+    price: "Rs 400",
+    author: "John Doe",
+    units: 10,
+  },
+  {
+    id: 8,
+    img: "/photos/book.jpg",
+    name: "Giver",
+    price: "Rs 400",
+    author: "John Doe",
+    units: 10,
+  },
+  {
+    id: 9,
+    img: "/photos/book.jpg",
+    name: "Giver",
+    price: "Rs 400",
+    author: "John Doe",
+    units: 10,
+  },
 ];
 
 export default function BookList() {
