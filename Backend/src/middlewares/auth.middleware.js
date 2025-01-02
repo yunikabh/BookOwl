@@ -27,7 +27,8 @@ export const verifyUser=async(req, _, next)=>{
         next()
 
     } catch (error) {
-        throw new ApiError(401, error?.message || "Unauthorized request")
+        console.error("Error in verifyUser middleware:", error.message);
+        next(error); 
     }
 }
 
