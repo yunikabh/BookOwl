@@ -202,7 +202,7 @@ export default function LoginPage() {
       <p className="text-[#a75257] text-sm" >
         Already have an account?</p>
         <a 
-        href="/loginpage" 
+        href="/login" 
         className="text-sm text-[#8d767c] hover:underline"  >
         Sign-In
       </a>
