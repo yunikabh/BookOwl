@@ -12,12 +12,12 @@ export const verifyUser=async(req, _, next)=>{
         }
 
     const decodedToken= jwt.verify(accessToken,process.env.ACCESS_TOKEN_SECRET)//yo secret kabata aayo
-
+    console.log("dt: ",decodedToken);
     if(!decodedToken){
         throw new ApiError(204,"there was error in jwt verify")
     }
 
-    const user= await userModel.findById(decodedToken._id).select("-password -refreshToken") //whats refresh token here
+    const user= await userModel.findById(decodedToken.data.id).select("-password -refreshToken") //whats refresh token here
 
     if(!user){
         throw new ApiError(204,"Invalid access token")

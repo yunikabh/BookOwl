@@ -73,6 +73,7 @@ const login = asyncHandler(async (req, res) => {
       // return res.status(409).send({ message: "Invalid credentials" });
       throw new ApiError(409, "Invalid credentials");
     }
+
     const accessToken = jwt.sign(
       {
         data: {
@@ -82,7 +83,7 @@ const login = asyncHandler(async (req, res) => {
           //need to have role also 
         },
       },
-      "secret",
+      process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1h" }
     );
 

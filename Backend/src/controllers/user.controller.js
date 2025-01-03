@@ -6,6 +6,21 @@ import ApiResponse from "../utils/apiResponse.js";
 import { verifyUser } from "../middlewares/auth.middleware.js";
 const router =express.Router();
 
+//getallUser
+  const getUser = asyncHandler(async(req,res) =>{
+      try {
+        const users = await User.find();
+        if(!users){
+          throw new ApiError(404,"Users not found");
+        }
+        res.status(200).json(new ApiResponse(200,users,"User fetched successfully"));
+        
+      } catch (error) {
+        throw new ApiError(404,users,"User not found",error.message);
+      }
+
+  })
+
 //get user
 const getUserById = asyncHandler(async (req, res) => {
  
@@ -15,11 +30,11 @@ const getUserById = asyncHandler(async (req, res) => {
      if (!user) {
        throw new ApiError(404, "User not found");
      }
-     {
+     
        res
          .status(200)
          .json(new ApiResponse(200, user, "User fetched successfully"));
-     }
+     
    } catch (error) {
      console.log("Error during fetching user: ", error.message);
      throw new ApiError(500, error.message || "Error fetching user");
@@ -66,4 +81,4 @@ const deleteUser = asyncHandler(async(req, res) => {
    }
  });
  
- export { getUserById, updateUser, deleteUser };
+ export { getUser,getUserById, updateUser, deleteUser };

@@ -57,7 +57,7 @@ const getBookById = asyncHandler(async(req,res) =>{
     const id = req.params.id;
     const book = await Book.findById(id);
 
-
+    console.log("ma hu book")
     if(!book){
         throw new ApiError(404,"Book not found of this id")
     }
