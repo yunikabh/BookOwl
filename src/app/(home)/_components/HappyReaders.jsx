@@ -13,7 +13,7 @@ const Review =[
     {
         id:2,
         name: "Alisha",
-        stars:5,
+        stars:4,
         description:"\"I would tell anyone to just sign up without reservation. I now have more books than I can read in a lifetime.\""
 
     },
