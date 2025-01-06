@@ -5,7 +5,7 @@ import errorHandler from './middlewares/errorHandler.middleware.js';
 import authRoutes from "./routes/auth.route.js"
 import bookRoutes from "./routes/book.route.js"
 import userRoutes from "./routes/user.route.js"
-
+import cartRoutes from "./routes/cart.route.js"
 const app = express();
 app.use(cors({
     origin: "http://localhost:3000", // Replace with your frontend URL
@@ -20,7 +20,7 @@ app.get("/",(req, res)=>{
 app.use('/auth', authRoutes)
 app.use('/book',bookRoutes)
 app.use('/userProfile',userRoutes)
-
+app.use('/cart',cartRoutes)
 
 app.use(errorHandler)
 export default app;

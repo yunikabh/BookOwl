@@ -6,7 +6,7 @@ const router = Router();
 
 
 router.route("/addBook").post( verifyUser, addBook)
-router.route("/getBooks").get(verifyUser,getBooks)
+router.route("/getBooks").get(getBooks)
 router.route("/getBookById/:id").get(verifyUser,getBookById)
 router.route("/updateBook/:id").put(verifyUser,updateBooks)
 router.route("/deleteBook/:id").delete(verifyUser,deleteBooks)
