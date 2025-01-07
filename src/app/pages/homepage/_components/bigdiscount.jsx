@@ -1,39 +1,33 @@
-// pages/index.jsx
 import Link from "next/link";
+import { Card } from "@/components/ui/card";
 
 export default function Bigdiscount() {
   return (
     <div>
       {/* Aesthetic Big Discount Section (just below the navbar) */}
-      <section className="relative bg-gradient-to-r from-blue-50 via-white to-blue-50 py-16 px-6 text-center overflow-hidden mt-4 ">
-        {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-10"
-          
-        ></div>
+      <section className="relative bg-gradient-to-r from-blue-50 via-white to-blue-50 py-16 px-6 text-center overflow-hidden mt-16">
+      
 
         {/* Discount Content */}
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-5xl font-extrabold text-gray-800 mb-4 animate-slide-in">
-            📚 Up to <span className="text-blue-600">50% OFF</span> on All Books! 🎉
+        <Card className="relative z-10 max-w-4xl mx-auto rounded-2xl  ">
+          <h1 className="text-5xl font-serif font-bold text-gray-800 mt-4 ">
+            Up to <span className="text-[#5d768a]">50% OFF</span> For new Users! 
           </h1>
-          <p className="text-lg text-gray-700 mb-6">
+          <p className="text-lg text-gray-700 mb-6 font-serif mt-4">
             Dive into a world of stories, knowledge, and adventure. Limited-time
             deals you don’t want to miss!
           </p>
           <Link href="/">
-            <button className="bg-blue-500 text-white py-3 px-8 rounded-md shadow-md hover:bg-blue-400 transition duration-300">
+            <button className="bg-[#5d768a] text-white py-3 px-8 rounded-md shadow-md hover:bg-blue-400 mb-4">
               Grab Now
             </button>
           </Link>
-        </div>
+        </Card>
 
         {/* Decorative Animations */}
-        <div className="absolute top-16 left-8 w-32 h-32 bg-blue-200 rounded-full opacity-70 animate-glow"></div>
-        <div className="absolute bottom-10 right-10 w-40 h-40 bg-yellow-300 rounded-full opacity-70 animate-glow"></div>
-        <div className="absolute -top-10 right-20 text-[12rem] font-extrabold text-blue-100 opacity-5 animate-float">
-          SALE
-        </div>
+        <div className="absolute top-16 left-8 w-32 h-32 bg-[#d1d5db] rounded-full opacity-70 animate-bounce"></div>
+        <div className="absolute bottom-10 right-10 w-40 h-40 bg-[#8b5f3f] rounded-full opacity-70 animate-bounce"></div>
+       
       </section>
     </div>
   );
