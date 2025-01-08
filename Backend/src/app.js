@@ -6,6 +6,8 @@ import authRoutes from "./routes/auth.route.js"
 import bookRoutes from "./routes/book.route.js"
 import userRoutes from "./routes/user.route.js"
 import cartRoutes from "./routes/cart.route.js"
+import categoryRoutes from "./routes/category.route.js"
+import authorRoutes from "./routes/author.routes.js"
 const app = express();
 app.use(cors({
     origin: "http://localhost:3000", // Replace with your frontend URL
@@ -21,6 +23,8 @@ app.use('/auth', authRoutes)
 app.use('/book',bookRoutes)
 app.use('/userProfile',userRoutes)
 app.use('/cart',cartRoutes)
+app.use('/category',categoryRoutes)
+app.use('/author',authorRoutes)
 
 app.use(errorHandler)
 export default app;

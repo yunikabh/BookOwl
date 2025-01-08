@@ -6,7 +6,6 @@ const bookSchema = new mongoose.Schema({
      type: String,
      required: true
      },
-     
      bookSummary: {
          type: String,
          required: true
@@ -23,10 +22,11 @@ const bookSchema = new mongoose.Schema({
          type: Date,
          required: true
        },
-       genre: {
-         type:  [String],
+       category:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Category",
          required: true
-       },
+       }],
        rating: {
           type: Number, default: 0 
          }, // Average user rating (1-5 scale)
@@ -60,19 +60,11 @@ const bookSchema = new mongoose.Schema({
  
        //author information 
        author: {
-         name: {
-           type: String,
-           required: true
-         },
-         bio: {
-           type: String,
-           required: true
-         },
-         moreBooks: {
-           type: [String], // List of book titles or identifiers by the author
-           default: []
-         }
-       },
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Author",
+         required: true
+         
+    },
     //  //review section 
     //  reviews: {
     //      userId: { 
