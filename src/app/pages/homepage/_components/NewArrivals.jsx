@@ -1,4 +1,9 @@
 export default function NewArrivals() {
+  const bookStyle = {
+    transform:
+      "translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
+    transformStyle: "preserve-3d",
+  };
     const bookGroups = [
       [
         {
@@ -63,12 +68,13 @@ export default function NewArrivals() {
     ];
   
     return (
-      <div className="space-y-8 p-4">
+      <div className="space-y-8 p-4 ">
         {bookGroups.map((group, index) => (
           <div
             key={index}
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"
           >
+           
             {group.map((book) => (
               <div
                 key={book.id}
@@ -77,8 +83,9 @@ export default function NewArrivals() {
                 <img
                   src= "/photos/cursed.jpeg"
                   alt={book}
+                  style={bookStyle}
                   className="w-full  object-cover rounded-t-lg"
-                />
+     />
                 <div className="p-4 text-center">
                   <p className="text-sm text-gray-500">By {book.author}</p>
                   <h3 className="font-medium text-lg">{book.title}</h3>
