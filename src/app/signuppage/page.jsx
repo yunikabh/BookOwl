@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "";
 import {
   Form,
   FormControl,

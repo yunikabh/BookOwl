@@ -2,39 +2,29 @@
 
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
-import { Facebook, Twitter, Instagram } from "lucide-react";
 
 export default function Starting() {
   // Example rating value (you can pass this dynamically later)
   const rating = 4.5;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto bg-white shadow rounded-md flex gap-8">
+    <div className="p-6 max-w-5xl mx-auto bg-white shadow rounded-md flex flex-col lg:flex-row gap-8 lg:mt-20">
       {/* Left Column: Book Cover */}
-      <div className="flex flex-col items-center w-1/2">
+      <div className="flex flex-col items-center w-full lg:w-1/2">
         <img
           src="/photos/cursed.jpeg"
           alt="Book"
-          className="w-60 h-80 object-cover mb-4"
+          className="w-60 h-96 object-cover mb-4"
         />
       </div>
 
       {/* Right Column: Book Details */}
-      <div className="flex flex-col w-1/2">
-        <p className="text-gray-500 text-sm italic">By Eryn Brooks</p>
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">
+      <div className="flex flex-col mt-24 lg:mt-3 w-full lg:w-1/2">
+        <p className="text-gray-500 text-lg italic">By Eryn Brooks</p>
+        <h1 className="text-2xl font-bold text-[#b68a6a] mb-2">
           Cursed By the Black Heart
         </h1>
-
-        <p className="text-lg font-semibold text-green-600 mb-4">$12.00</p>
-
-        <p className="text-gray-600 mb-6">
-          The story explores themes of lies, the blurring of lines between
-          heroes and villains, and the search for peace with the past.
-        </p>
-
-        {/* Rating Section */}
-        <div className="flex items-center mb-4">
+        <div className="flex items-center mb-2">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
               key={i}
@@ -49,25 +39,27 @@ export default function Starting() {
           <span className="ml-2 text-gray-600">({rating})</span>
         </div>
 
-        {/* Add to Cart Section */}
-        <div className="flex items-center gap-4 mb-6">
-          <input
-            type="number"
-            min="1"
-            defaultValue="1"
-            className="w-16 p-2 border border-gray-300"
-          />
-          <Button className="rounded-full bg-[#265073]">Add to Cart</Button>
-        </div>
+        <p className="text-lg font-semibold text-green-600 mb-3">Price: 400</p>
+        <p className="text-gray-600 mb-3">
+          The story explores themes of lies, the blurring of lines between
+          heroes and villains, and the search for peace with the past.
+        </p>
+        <p className="text-gray-500">Genre: Fantasy</p>
+        <p className="text-gray-500">Pages: 157</p>
+        <p className="text-gray-500">Published Date: October 3, 2024</p>
+        <p className="text-gray-500">Language:English</p>
+        <p className="text-gray-500">ISBN:9781501110368</p>
+        <p className="text-gray-500">Published By: Darkstone Publishing House</p>
+        <p className="text-gray-500">Mood:[Intense,Suspenseful,Emotional,Mysterious]</p>
+        
 
-        {/* Share Options */}
-        <div className="flex items-center gap-4">
-          <p className="text-gray-600 font-medium">Share:</p>
-          <Facebook className="h-6 w-6 text-blue-600 cursor-pointer" />
-          <Twitter className="h-6 w-6 text-blue-400 cursor-pointer" />
-          <Instagram className="h-6 w-6 text-pink-500 cursor-pointer" />
+        <div className="flex gap-4 mt-6">
+          <Button className="rounded-full bg-[#265073]">Buy Now</Button>
+          <Button className="rounded-full bg-[#265073]">Add To Cart</Button>
         </div>
       </div>
     </div>
+
+    
   );
 }

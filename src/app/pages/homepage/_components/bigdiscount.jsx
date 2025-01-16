@@ -11,11 +11,10 @@ export default function Bigdiscount() {
         {/* Discount Content */}
         <Card className="relative z-10 max-w-4xl mx-auto rounded-2xl  ">
           <h1 className="text-5xl font-serif font-bold text-gray-800 mt-4 ">
-            Up to <span className="text-[#5d768a]">50% OFF</span> For new Users! 
+          Dive into  <span className="text-[#5d768a]">our collection</span> and let the magic begin! 
           </h1>
           <p className="text-lg text-gray-700 mb-6 font-serif mt-4">
-            Dive into a world of stories, knowledge, and adventure. Limited-time
-            deals you don’t want to miss!
+          "Timeless classics and trending bestsellers – all in one place."
           </p>
           <Link href="/">
             <button className="bg-[#5d768a] text-white py-3 px-8 rounded-md shadow-md hover:bg-blue-400 mb-4">

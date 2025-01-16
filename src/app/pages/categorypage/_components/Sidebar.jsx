@@ -15,7 +15,7 @@ const genres = [
 
 function GenreItem({ genre, isChecked, onChange }) {
   return (
-    <li className="flex items-center space-x-2">
+    <li className=" mt-16 flex items-center space-x-2 ">
       <input
         type="checkbox"
         id={genre.slug}

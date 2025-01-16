@@ -1,10 +1,12 @@
 import Starting from "./_components/Starting";
-// import Review from "./_components/Review"
+import Author from "./_components/Author"
+import Review from "./_components/Review"
 export default function BookPage(){
     return(
         <div>
             <Starting/>
-           {/* <Review/> */}
+            <Author/>
+           <Review/>
         </div>
     )
 }

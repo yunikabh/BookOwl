@@ -7,7 +7,7 @@ import Firstdesign from "./_components/firstdesign"
 import CollectionCarousel from "./_components/CollectionCarousel"
 import DealsCarousel from "./_components/DealsCarousel"
 import Secondmain from "./_components/SecondMain"
-import NewArrivals from "./_components/NewArrivals"
+// import NewArrivals from "./_components/NewArrivals"
 import End from "./_components/End"
 
 export default function Homepage(){
@@ -21,7 +21,7 @@ export default function Homepage(){
             <DealsCarousel/>
             <Bigdiscount/>
             <Secondmain/>
-            <NewArrivals/>
+            {/* <NewArrivals/> */}
             <End/>
 
             
