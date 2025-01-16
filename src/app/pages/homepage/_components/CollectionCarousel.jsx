@@ -12,6 +12,8 @@ import {
   User,
   Mail,
   History,
+  BookHeart,
+  Link,
 } from "lucide-react";
 
 const categories = [
@@ -20,7 +22,7 @@ const categories = [
   { name: "Non-fiction", icon: <ClipboardList size={24} /> },
   { name: "Fantasy", icon: <Heart size={24} /> },
   { name: "Biography", icon: <User size={24} /> },
-  { name: "Romance", icon: <Mail size={24} /> },
+  { name: "Romance", icon: <BookHeart  size={24}/>},
   { name: "Mystery", icon: <Mail size={24} /> },
   { name: "Historical", icon: <History size={24} /> },
 ];

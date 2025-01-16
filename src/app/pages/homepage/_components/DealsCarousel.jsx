@@ -71,7 +71,7 @@ export default function DealsCarousel() {
   }, []);
 
   return (
-    <div className="bg-white py-8 px-4  rounded-lg shadow-md border -mt-3">
+    <div className="bg-white py-8 px-4  rounded-lg shadow-md border mx-[5%] -mt-3">
       <Swiper
         slidesPerView={4}
         spaceBetween={20}
@@ -90,13 +90,13 @@ export default function DealsCarousel() {
             <div
               data-aos="fade-up"
               data-aos-duration="1000"
-              className="flex flex-col items-center p-4 space-y-4 bg-gray-50 rounded-lg shadow-md transition-transform transform hover:scale-105"
+              className="flex flex-col items-center -mt-5 p-4 space-y-4 bg-gray-50 rounded-lg shadow-md transition-transform transform hover:scale-105"
             >
               {/* Book Image */}
               <img
                 src="/photos/cursed.jpeg"
                 alt={book}
-                className="w-full  object-cover rounded-md"
+                className="w-40 h-60 object-cover rounded-md"
               />
               {/* Book Info */}
               <div className="text-center">
