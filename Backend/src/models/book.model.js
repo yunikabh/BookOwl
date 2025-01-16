@@ -25,7 +25,7 @@ const bookSchema = new mongoose.Schema({
        category:[{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Category",
-         required: true
+        required:true
        }],
        ratingsCount: {
           type: Number,
@@ -41,7 +41,8 @@ const bookSchema = new mongoose.Schema({
           default: 0 
          },
        coverImage: {
-            type: String 
+            type: String,
+            required:true,
            }, // URL or path of the book cover image
  
        ISBN: {
@@ -74,8 +75,7 @@ const bookSchema = new mongoose.Schema({
     },
     reviews:{
       type: mongoose.Schema.Types.ObjectId, 
-      ref:"Review",
-      required: true
+      ref:"Review"
     },
     //  reviews: {
     //      userId: { 

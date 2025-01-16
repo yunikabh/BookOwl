@@ -19,7 +19,7 @@ const router = express.Router();
 //add book
 const addBook = asyncHandler(async (req, res) => {
   const bookDetails = req.body;
-  const authorName = bookDetails.author.name;
+  const authorName = bookDetails.author;
   let categoryIds = bookDetails.category;
 
   console.log(authorName);
@@ -31,7 +31,7 @@ const addBook = asyncHandler(async (req, res) => {
       .populate("category")
       .populate("author");
 
-      console.log("this is ",existingBook);
+    console.log("this is ", existingBook);
     let author = await authorModel.findOne({ authorName });
     console.log("this is ", author);
 
@@ -59,21 +59,36 @@ const addBook = asyncHandler(async (req, res) => {
     }
     // Find categories by ID (assuming categoryIds are sent)
 
-    if (categoryIds && Array.isArray(categoryIds)) {
-      console.log("Category IDs:", categoryIds); // Debugging line
-      bookDetails.category= categoryIds.map((categoryId) =>
-         new mongoose.Types.ObjectId(categoryId)
-      );
+    // if (categoryIds && Array.isArray(categoryIds)) {
+    //     // If bookDetails.category contains category objects, extract their IDs
+
+    //   console.log("Category IDs:", categoryIds); // Debugging line
+    //   categoryIds = categoryIds.map((categoryId) => {
+    //     if (mongoose.Types.ObjectId.isValid(categoryId)) {
+    //       return new mongoose.Types.ObjectId(categoryId);
+    //     } else {
+    //   categoryIds = []; // If no categories selected, set it as an empty array
+    // }
+    if (categoryIds && typeof categoryIds === 'string') {
+      // Split category IDs string into an array
+      categoryIds = categoryIds.split(',').map((categoryId) => {
+        if (mongoose.Types.ObjectId.isValid(categoryId)) {
+          return new mongoose.Types.ObjectId(categoryId);  // Convert to ObjectId
+        } else {
+          throw new ApiError(400, `Invalid category ID: ${categoryId}`);
+        }
+      });
     } else {
-        categoryIds = []; // If no categories selected, set it as an empty array
+      categoryIds = [];  // If no categories, set it as an empty array
     }
+
     bookDetails.category = categoryIds;
-    console.log("Creating book with details:", bookDetails);
-
     bookDetails.author = author._id;
+    
     console.log(req.file);
-    const coverImage = req.file.path;
-
+    bookDetails.coverImage = req.file ? req.file.path : null;
+    
+    console.log("Creating book with details:", bookDetails);
     const savedBook = await Book.create(bookDetails);
     res
       .status(201)

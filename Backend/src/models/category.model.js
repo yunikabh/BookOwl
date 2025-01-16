@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const categorySchema = new mongoose.Schema({
     categoryName:{
-        type:  String,
-         required: true,
+        type:String,
+         required: [true, 'Category name is required'],
          unique: true,  // Optional: Ensures no duplicate category names
 
     },
