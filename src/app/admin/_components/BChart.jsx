@@ -30,23 +30,23 @@ const chartConfig = {
     label: "Visitors",
   },
   chrome: {
-    label: "Chrome",
+    label: "Friction",
     color: "hsl(var(--chart-1))",
   },
   safari: {
-    label: "Safari",
+    label: "Romance",
     color: "hsl(var(--chart-2))",
   },
   firefox: {
-    label: "Firefox",
+    label: "Adventure",
     color: "hsl(var(--chart-3))",
   },
   edge: {
-    label: "Edge",
+    label: "Art",
     color: "hsl(var(--chart-4))",
   },
   other: {
-    label: "Other",
+    label: "Fantasy",
     color: "hsl(var(--chart-5))",
   },
 }

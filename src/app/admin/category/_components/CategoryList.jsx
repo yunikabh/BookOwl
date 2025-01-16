@@ -3,41 +3,41 @@ import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, Trash } from "lucide-react";
 
-const Categories = [
-  {
-    id: 1,
-    img: "/photos/romance.jpg",
-    name: "Romance",
-    description:"Loveee Loveee"
+// const Categories = [
+//   {
+//     id: 1,
+//     img: "/photos/romance.jpg",
+//     name: "Romance",
+//     description:"Loveee Loveee"
   
-  },
-  {
-    id: 2,
-    img: "/photos/romance.jpg",
-    name: "Romance",
-    description:"Loveee Loveee"
-  },
-  {
-    id: 3,
-    img: "/photos/romance.jpg",
-    name: "Romance",
-    description:"Loveee Loveee"
-  },
-  {
-    id: 4,
-    img: "/photos/romance.jpg",
-    name: "Romance",
-    description:"Loveee Loveee"
-  },
-  {
-    id: 5,
-    img: "/photos/romance.jpg",
-    name: "Romance",
-    description:"Loveee Loveee"
-  },
-];
+//   },
+//   {
+//     id: 2,
+//     img: "/photos/romance.jpg",
+//     name: "Romance",
+//     description:"Loveee Loveee"
+//   },
+//   {
+//     id: 3,
+//     img: "/photos/romance.jpg",
+//     name: "Romance",
+//     description:"Loveee Loveee"
+//   },
+//   {
+//     id: 4,
+//     img: "/photos/romance.jpg",
+//     name: "Romance",
+//     description:"Loveee Loveee"
+//   },
+//   {
+//     id: 5,
+//     img: "/photos/romance.jpg",
+//     name: "Romance",
+//     description:"Loveee Loveee"
+//   },
+// ];
 
-export default function CategoryList() {
+export default function CategoryList({data}) {
 //   const [searchBook,setSearchBook] = useState("");
 //   const filterBooks = Books.filter((book)=>
 //   book.name.toLowerCase().includes(searchBook.toLowerCase())||
@@ -58,17 +58,17 @@ export default function CategoryList() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Category image</TableHead>
+              {/* <TableHead>Category image</TableHead> */}
               <TableHead>Name</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Categories.map((items)=>(
+            {data.map((items)=>(
               <TableRow key={items.id}>
-                <TableCell><div className="rounded-lg w-20 h-20 overflow-hidden"><img src={items.img} className="w-full h-full object-cover" /></div></TableCell>
-                <TableCell><h1 className="font-semibold text-base text-primary">{items.name}</h1></TableCell>
+                {/* <TableCell><div className="rounded-lg w-20 h-20 overflow-hidden"><img src={items.img} className="w-full h-full object-cover" /></div></TableCell> */}
+                <TableCell><h1 className="font-semibold text-base text-primary">{items.categoryName}</h1></TableCell>
 
                 <TableCell>{items.description}</TableCell>
 

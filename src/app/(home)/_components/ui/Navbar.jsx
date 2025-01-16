@@ -88,7 +88,7 @@ function MobileNav() {
 
       {/* Menu Items */}
       {isOpen && (
-        <div className="absolute  right-0 w-[70%] h-full bg-[#945F39] z-50 p-4 shadow-lg flex flex-col fixed">
+        <div className="absolute  right-0 w-[70%] h-full bg-[#945F39] z-50 p-4 shadow-lg flex flex-col ">
           
           <div className="flex justify-end"> <SquareX className="size-8 cursor-pointer  text-white" onClick={toggleMenu}>
           {isOpen ? "Close Menu" : "Open Menu"}
