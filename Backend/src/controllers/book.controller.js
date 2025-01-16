@@ -30,6 +30,8 @@ const addBook = asyncHandler(async (req, res) => {
     const existingBook = await Book.findOne({ ISBN: bookDetails.ISBN })
       .populate("category")
       .populate("author");
+
+      console.log("this is ",existingBook);
     let author = await authorModel.findOne({ authorName });
     console.log("this is ", author);
 
@@ -69,6 +71,8 @@ const addBook = asyncHandler(async (req, res) => {
     console.log("Creating book with details:", bookDetails);
 
     bookDetails.author = author._id;
+    console.log(req.file);
+    const coverImage = req.file.path;
 
     const savedBook = await Book.create(bookDetails);
     res

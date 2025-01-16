@@ -27,10 +27,19 @@ const bookSchema = new mongoose.Schema({
         ref:"Category",
          required: true
        }],
-       rating: {
-          type: Number, default: 0 
+       ratingsCount: {
+          type: Number,
+           default: 0 
          }, // Average user rating (1-5 scale)
- 
+        
+         totalRatings:{
+          type: Number,
+           default: 0 
+         },
+         averageRating:{
+          type: Number,
+          default: 0 
+         },
        coverImage: {
             type: String 
            }, // URL or path of the book cover image
@@ -56,16 +65,18 @@ const bookSchema = new mongoose.Schema({
          type: [String], // Array of strings for custom tags
          default: []
        },
- 
- 
+
        //author information 
        author: {
         type: mongoose.Schema.Types.ObjectId,
         ref:"Author",
          required: true
-         
     },
-    //  //review section 
+    reviews:{
+      type: mongoose.Schema.Types.ObjectId, 
+      ref:"Review",
+      required: true
+    },
     //  reviews: {
     //      userId: { 
     //        type: mongoose.Schema.Types.ObjectId, 
@@ -94,6 +105,8 @@ const bookSchema = new mongoose.Schema({
  //Creating a model/table
  
  const Book = new mongoose.model("Book",bookSchema);
+
+
  
  export default Book;
  
