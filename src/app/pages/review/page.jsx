@@ -4,6 +4,7 @@ import  React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Star, ThumbsUp } from 'lucide-react';
 
+
 const reviewsData = [
   {
     id: 1,
@@ -23,6 +24,21 @@ const reviewsData = [
     helpfulCount: 8,
     date: "2024-12-10",
   },
+
+  
+    {
+      "id": 3,
+      "bookTitle": "To Kill a Mockingbird",
+      "rating": 5,
+      "reviewTitle": "Timeless Classic",
+      "reviewText": "A profound narrative on justice and morality. The characters are beautifully crafted, and the story resonates deeply even today.",
+      "helpfulCount": 12,
+      "date": "2024-12-15"
+  }
+  
+  
+  
+
 ];
 
 const ReviewsSection = () => {
@@ -55,11 +71,11 @@ const ReviewsSection = () => {
   };
 
   return (
-    <div className=" p-6 rounded-lg shadow-md">
+    <div className=" p-6 rounded-lg shadow-md flex flex-col justify-center">
       {/* <h2 className="text-2xl font-bold text-[#6d433d] mb-4">Your Reviews</h2> */}
 
       {/* Review Submission Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="p-6 rounded-xl shadow-sm mb-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="p-6 rounded-xl shadow-sm mb-6 ">
         <h3 className="text-2xl font-semibold mb-4 text-[#c2918b]">Write a Review</h3>
         <div className="mb-4">
           <label className="block text-sm font-medium" htmlFor="bookTitle">Book Title</label>
@@ -69,7 +85,7 @@ const ReviewsSection = () => {
             {...register('bookTitle', { required: 'Book title is required' })}
             className="mt-2 p-2 w-full border border-gray-300 rounded-lg"
           />
-        </div>
+        </div> 
 
         <div className="mb-4">
           <label className="block text-sm font-medium " htmlFor="reviewTitle">Review Title</label>

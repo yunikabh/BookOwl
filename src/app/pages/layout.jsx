@@ -1,5 +1,5 @@
-import Navbar from "./components/Navbar1.jsx";
-import Footer from "./components/Footer1.jsx";
+import Navbar from "./_components/Navbar1.jsx";
+import Footer from "./_components/Footer1.jsx";
 
 
 

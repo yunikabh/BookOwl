@@ -1,14 +1,15 @@
-"use client";
-import React from "react";
 
 export default function Main(){
     return(
-        <main className="p-6 ml-72 ">
-        <h1 className="text-3xl font-bold  text-[#6d433d] mb-6">Welcome to BookOwl</h1>
-        <p className="text-[#942372] text-2xl font-semibold">Here are some recommendations for you!</p>
+        <div className="p-6  flex flex-col items-center mt-14 "
+        data-aos="zoom-in-up">
+        <h1 className="text-5xl font-serif font-bold  text-[#6d433d] mb-6 mr-14">DEALS OF THE WEEK</h1>
+        <p className="font-serif text-2xl text-gray-500">Explore our handpicked selections ranging from timeless literature to</p>
+           <p className="font-serif text-2xl text-gray-500" >  contemporary bestsellers across.</p>
+           
 
        
-        </main>
+        </div>
 
     )
 }

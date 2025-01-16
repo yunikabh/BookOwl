@@ -85,14 +85,8 @@ export default function LoginPage() {
         <img src="/photos/logo.png" alt="Logo"></img> */}
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 w-full flex flex-col items-center mt-5 mb-5 "
-          >
-            <h1 className="text-2xl font-bold italic text-[#6d433d] ">
-              {" "}
-              Welcome Back{" "}
-            </h1>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full flex flex-col items-center mt-5 mb-5 ">
+            <h1 className="text-2xl font-bold italic text-[#6d433d] mt-7 "> Welcome Back </h1>
             <h2 className="font-bold text-[#8d767c] "> Login to continue</h2>
 
             {/* Username Field */}
