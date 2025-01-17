@@ -8,15 +8,19 @@ import authorModel from "../models/author.model.js";
 const router = express.Router();
 
 //add author
-const addAuthor = asyncHandler(async(req,res) =>{
+const addAuthor = asyncHandler(async(req,res,next) =>{
     const {name,bio,moreBooks} = req.body;
+    const profileImage = req.file ? req.file.path : null;
+
 
         const existingAuthor = await authorModel.findOne({authorName:name});
         if(existingAuthor){
-            throw  new ApiError(400,"This author already exists");
+            // return next(new ApiError(400, "This author already exists"));
+
+            throw new ApiError(500,"This author already exists");
         }
 
-        const author= new authorModel({authorName:name,authorBio:bio,moreBooks});
+        const author= new authorModel({authorName:name,authorImage:profileImage,authorBio:bio,moreBooks});
         const savedAuthor = await author.save();
 
         res.status(201).json(new ApiResponse(201,savedAuthor,"Author is added successfully"));

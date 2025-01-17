@@ -11,7 +11,7 @@ const router = express.Router();
 
 //Register User
 
-const register = asyncHandler(async (req, res) => {
+const register = asyncHandler(async (req, res,next) => {
   //   console.log("eta", req.body);
   //extract new user data from req.body
   const { name, email, password, phoneNumber } = req.body;
@@ -38,10 +38,12 @@ const register = asyncHandler(async (req, res) => {
     return res.json(new ApiResponse(200, savedUser, "Registered successfully "))
   } catch (error) {
     console.log(error.message);
-    throw new ApiError(409, "Unsuccessful Registration");
+    return next(new ApiError(409, "unsuccesss"));
+
+    // throw new ApiError(409, "Unsuccessful Registration");
 };
 });
-
+  
 //Login User
 
 const login = asyncHandler(async (req, res) => {

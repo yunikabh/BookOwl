@@ -87,6 +87,7 @@ const addBook = asyncHandler(async (req, res) => {
     
     console.log(req.file);
     bookDetails.coverImage = req.file ? req.file.path : null;
+    bookDetails.author.authorImage =req.file ? req.file.path : null;
     
     console.log("Creating book with details:", bookDetails);
     const savedBook = await Book.create(bookDetails);
@@ -120,11 +121,10 @@ const getBookById = asyncHandler(async (req, res) => {
   try {
     const id = req.params.id;
     const book = await Book.findById(id);
-
-    console.log("ma hu book");
     if (!book) {
       throw new ApiError(404, "Book not found of this id");
     }
+    console.log("THis is the book",book)
     res
       .status(200)
       .json(new ApiResponse(200, book, "Book is fetched through id"));

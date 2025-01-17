@@ -28,7 +28,8 @@ export const verifyUser=async(req, _, next)=>{
 
     } catch (error) {
         console.error("Error in verifyUser middleware:", error.message);
-        next(error); 
+        throw new ApiError(404,"Error",error.message);
+        // next(error); 
     }
 }
 

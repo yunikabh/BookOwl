@@ -5,6 +5,10 @@ const authorSchema = new mongoose.Schema({
           type: String,
           required: true
         },
+        authorImage:{
+          type: String,
+            required:true,
+        },
         authorBio: {
           type: String,
           required: true
