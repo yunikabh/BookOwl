@@ -9,7 +9,7 @@ const router = Router();
 router.route("/addBook").post( verifyUser,upload.single('coverImage'),addBook)
 router.route("/getBooks").get(getBooks)
 router.route("/getBookById/:id").get(verifyUser,getBookById)
-router.route("/updateBook/:id").put(verifyUser,updateBooks)
+router.route("/updateBook/:id").put(verifyUser,upload.single('coverImage'),updateBooks)
 router.route("/deleteBook/:id").delete(verifyUser,deleteBooks)
 
 //Review and rating section 
