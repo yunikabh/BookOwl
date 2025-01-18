@@ -17,52 +17,71 @@ import {
 // import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card";
 import { Eye, EyeOff, User, Lock } from "lucide-react";
+import $axios from "@/lib/axios.instance";
+import { useRouter } from "next/navigation";
+// import { useRouter } from "next/router";
 
 // Define form schema with Zod
 const formSchema = z.object({
-  username: z
-    .string()
-    .min(5, { message: "Username must be at least 5 characters." }),
+  email: z.string().email("Email must be a valid address"),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
-    .regex(/[A-Z]/, "Password must include at least one uppercase letter")
     .regex(/[a-z]/, "Password must include at least one lowercase letter")
     .regex(/[0-9]/, "Password must include at least one number"),
 });
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-
+  const router = useRouter();
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      password: "",
-      password1: "",
+      // username: "",
       email: "",
+      password: "",
     },
   });
 
-  function onSubmit(values) {
-    console.log("Submitted values:", values);
+  async function onSubmit(values) {
+    const response = await $axios.post("/auth/login", values);
+    console.log(response);
+    if (!response) {
+      throw new Error(`HTTP erroe!:Status: ${response.status}`);
+    }
+    if (response.status === 200) {
+      // Store the token in localStorage or cookie
+      const user = await response.data;
+      // console.log(user)
+      // console.log(response);
+      localStorage.setItem("token", response.data.data);
+      const role = user.data?.role;
+      console.log(role);
+      if (role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/pages/homepage");
+      }
+
+      // console.log("Submitted values:", values);
+    }
+    // const form = useForm<z.infer<typeof formSchema>>({
+    //   resolver: zodResolver(formSchema),
+    //   defaultValues: {
+    //     username: "",
+    //     password: "",
+
+    //   },
+    // });
+
+    // function onSubmit(values: z.infer<typeof formSchema>) {
+    //   console.log("Submitted values:", values);
+    // }
   }
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     username: "",
-  //     password: "",
-
-  //   },
-  // });
-
-  // function onSubmit(values: z.infer<typeof formSchema>) {
-  //   console.log("Submitted values:", values);
-  // }
-
   return (
     <div className="flex justify-end w-full px-20 py-20 min-h-screen bg-[rgb(246,220,201)] overflow-hidden">
       {/* <div className="z-50  h-64 "> */}
@@ -85,14 +104,20 @@ export default function LoginPage() {
         <img src="/photos/logo.png" alt="Logo"></img> */}
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full flex flex-col items-center mt-5 mb-5 ">
-            <h1 className="text-2xl font-bold italic text-[#6d433d] mt-7 "> Welcome Back </h1>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6 w-full flex flex-col items-center mt-5 mb-5 "
+          >
+            <h1 className="text-2xl font-bold italic text-[#6d433d] ">
+              {" "}
+              Welcome Back{" "}
+            </h1>
             <h2 className="font-bold text-[#8d767c] "> Login to continue</h2>
 
             {/* Username Field */}
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   {/* <FormLabel>Username</FormLabel> */}
@@ -101,7 +126,7 @@ export default function LoginPage() {
                       <User className="absolute left-2.5 top-2.5  " size={18} />
                       <input
                         type="text"
-                        placeholder="Enter your username"
+                        placeholder="Enter your email"
                         {...field}
                         className="w-full px-12 py-2  text-[#c2918b] rounded-full "
                       />
