@@ -44,12 +44,20 @@ try {
 //Update category
 const updateCategory = asyncHandler(async(req,res)=>{
     const {id} = req.params;
+    const{name,description} = req.body;
     
-        const updatedCategory = await categoryModel.findByIdAndUpdate(id,{name,description});
-        if(!updatedCategory){
-            throw new ApiError(404, 'Category not found');
-        }
-        res.status(200).json(new ApiResponse(200, updatedCategory, 'Category updated successfully'));
+    try{
+            const updatedCategory = await categoryModel.findByIdAndUpdate(id,{name,description},{ new: true, runValidators: true });
+            if(!updatedCategory){
+                throw new ApiError(404, 'Category not found');
+            }
+            res.status(200).json(new ApiResponse(200, updatedCategory, 'Category updated successfully'));
+
+    }
+    catch(error){
+        throw new ApiError(500, "Failed to update the book", error.message);
+
+    }
 })
 //Delete Category
 const deleteCategory = asyncHandler(async (req, res) => {

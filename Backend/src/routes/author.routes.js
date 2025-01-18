@@ -7,7 +7,7 @@ import multer from "multer";
 const router = Router();
 
 
-router.route('/addAuthor').post(verifyUser,upload.single('profileImage'),addAuthor)
+router.route('/addAuthor').post(verifyUser,upload.single('ProfileImage'),addAuthor)
 router.route('/getAuthor').get(verifyUser,getAuthor)
 
 export default router;

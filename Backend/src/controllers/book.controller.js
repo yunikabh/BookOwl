@@ -22,7 +22,6 @@ const addBook = asyncHandler(async (req, res) => {
   const authorName = bookDetails.author;
   let categoryIds = bookDetails.category;
   const coverImageUrl = `${req.protocol}://${req.get('host')}/public/temp/${req.file.filename}`;
-  const authorImageUrl = `${req.protocol}://${req.get('host')}/public/temp/${req.file.filename}`;
 
 
   console.log(authorName);
