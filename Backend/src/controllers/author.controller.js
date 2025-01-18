@@ -10,9 +10,10 @@ const router = express.Router();
 //add author
 const addAuthor = asyncHandler(async(req,res,next) =>{
     const {name,bio,moreBooks} = req.body;
-    const authorImageUrl = `${req.protocol}://${req.get('host')}/public/temp/${req.file.filename}`;
+    // const authorImageUrl = `${req.protocol}://${req.get('host')}/public/temp/${req.file.filename}`;
 
-    // const profileImage = req.file ? req.file.path : null;
+
+    const authorImageUrl = req.file ? req.file.path : null;
 
 
         const existingAuthor = await authorModel.findOne({authorName:name});

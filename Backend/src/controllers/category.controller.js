@@ -47,7 +47,7 @@ const updateCategory = asyncHandler(async(req,res)=>{
     const{name,description} = req.body;
     
     try{
-            const updatedCategory = await categoryModel.findByIdAndUpdate(id,{name,description},{ new: true, runValidators: true });
+            const updatedCategory = await categoryModel.findByIdAndUpdate(id,{categoryName:name,description},{ new: true, runValidators: true });
             if(!updatedCategory){
                 throw new ApiError(404, 'Category not found');
             }
