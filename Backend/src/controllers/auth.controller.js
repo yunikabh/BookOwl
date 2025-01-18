@@ -38,9 +38,9 @@ const register = asyncHandler(async (req, res,next) => {
     return res.json(new ApiResponse(200, savedUser, "Registered successfully "))
   } catch (error) {
     console.log(error.message);
-    return next(new ApiError(409, "unsuccesss"));
+    // return next(new ApiError(409, "Unsuccessful Registration"));
 
-    // throw new ApiError(409, "Unsuccessful Registration");
+    throw new ApiError(409, "Unsuccessful Registration");
 };
 });
   

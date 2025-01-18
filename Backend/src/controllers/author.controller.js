@@ -10,7 +10,9 @@ const router = express.Router();
 //add author
 const addAuthor = asyncHandler(async(req,res,next) =>{
     const {name,bio,moreBooks} = req.body;
-    const profileImage = req.file ? req.file.path : null;
+    const authorImageUrl = `${req.protocol}://${req.get('host')}/public/temp/${req.file.filename}`;
+
+    // const profileImage = req.file ? req.file.path : null;
 
 
         const existingAuthor = await authorModel.findOne({authorName:name});
@@ -20,7 +22,7 @@ const addAuthor = asyncHandler(async(req,res,next) =>{
             throw new ApiError(500,"This author already exists");
         }
 
-        const author= new authorModel({authorName:name,authorImage:profileImage,authorBio:bio,moreBooks});
+        const author= new authorModel({authorName:name,authorImage:authorImageUrl,authorBio:bio,moreBooks});
         const savedAuthor = await author.save();
 
         res.status(201).json(new ApiResponse(201,savedAuthor,"Author is added successfully"));

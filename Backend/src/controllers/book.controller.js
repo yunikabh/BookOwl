@@ -21,6 +21,9 @@ const addBook = asyncHandler(async (req, res) => {
   const bookDetails = req.body;
   const authorName = bookDetails.author;
   let categoryIds = bookDetails.category;
+  const coverImageUrl = `${req.protocol}://${req.get('host')}/public/temp/${req.file.filename}`;
+  const authorImageUrl = `${req.protocol}://${req.get('host')}/public/temp/${req.file.filename}`;
+
 
   console.log(authorName);
   console.log(bookDetails);
@@ -57,18 +60,6 @@ const addBook = asyncHandler(async (req, res) => {
           )
         );
     }
-    // Find categories by ID (assuming categoryIds are sent)
-
-    // if (categoryIds && Array.isArray(categoryIds)) {
-    //     // If bookDetails.category contains category objects, extract their IDs
-
-    //   console.log("Category IDs:", categoryIds); // Debugging line
-    //   categoryIds = categoryIds.map((categoryId) => {
-    //     if (mongoose.Types.ObjectId.isValid(categoryId)) {
-    //       return new mongoose.Types.ObjectId(categoryId);
-    //     } else {
-    //   categoryIds = []; // If no categories selected, set it as an empty array
-    // }
     if (categoryIds && typeof categoryIds === 'string') {
       // Split category IDs string into an array
       categoryIds = categoryIds.split(',').map((categoryId) => {
@@ -86,8 +77,8 @@ const addBook = asyncHandler(async (req, res) => {
     bookDetails.author = author._id;
     
     console.log(req.file);
-    bookDetails.coverImage = req.file ? req.file.path : null;
-    bookDetails.author.authorImage =req.file ? req.file.path : null;
+    bookDetails.coverImage = coverImageUrl;
+    // bookDetails.author.authorImage =authorImageUrl;
     
     console.log("Creating book with details:", bookDetails);
     const savedBook = await Book.create(bookDetails);

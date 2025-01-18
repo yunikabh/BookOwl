@@ -9,6 +9,7 @@ import categoryRoutes from "./routes/category.route.js"
 import authorRoutes from "./routes/author.routes.js"
 import { ApiError } from './utils/apiError.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
+import upload from './middlewares/multer.middleware.js';
 
 const app = express();
 app.use(cors({
@@ -21,6 +22,8 @@ app.use(cookieParser());
 app.get("/",(req, res)=>{
   res.json({message:"Welcome to the Backend Server - Yunika"})
 })
+app.use('/public', express.static('public'));
+
 app.use('/auth', authRoutes)
 app.use('/book',bookRoutes)
 app.use('/userProfile',userRoutes)
