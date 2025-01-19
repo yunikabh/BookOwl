@@ -23,7 +23,7 @@ export default function Category() {
     // }
   };
   return (
-    <div className="w-screen max-w-full h-screen  bg-[#fcf3ec] overflow-hidden ">
+    <div className="w-screen max-w-full h-full  bg-[#fcf3ec] overflow-hidden ">
      <AddCategory />
       <CategoryList data= {data} />
     </div>

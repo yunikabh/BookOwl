@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+// import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,50 +19,50 @@ import $axios from "@/lib/axios.instance";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
-  bookName: z.string().min(1, "Book Name is required"),
-  // author: z.object({ authorName: z.string().min(1, "Author's Name is required") }),
-  author: z.string().min(1, "Author's Name is required"),
-  bookSummary: z.string(),
-  price: z.preprocess(
-    (value) => parseFloat(value),
-    z.number().positive({ message: "Price must be a positive number." })
-  ),
-  pages: z.preprocess(
-    (value) => parseFloat(value),
-    z.number().positive({ message: "Pages must be a positive number." })
-  ),
-  publishedDate: z.preprocess(
-    (val) => (typeof val === "string" ? new Date(val) : val),
-    z.date()
-  ),
-  category: z.array(z.string()),
-  language: z.string(),
-  // rating: z.preprocess(
-  //   (value) => parseFloat(value),
-  //   z
-  //     .number()
-  //     .min(1, { message: "Rating must be at least 1." })
-  //     .max(5, { message: "Rating cannot exceed 5." })
-  // ),
-  ISBN: z.preprocess(
-    (value) => parseFloat(value),
-    z.number().positive({ message: "Pages must be a positive number." })
-  ),
-  publisher: z.string(),
-  mood: z.array(z.string()),
-  //   customTags: z.array(z.string()),
-  stock: z.preprocess(
-    (value) => parseFloat(value),
-    z.number().positive({ message: "Pages must be a positive number." })
-  ),
-  coverImage: z
-  .any() // Start with `any()` for flexibility.
-  .refine(
-    (fileList) => fileList instanceof FileList && fileList.length > 0,
-    "Cover image is required"
-  ),
-});
+// const formSchema = z.object({
+//   bookName: z.string().min(1, "Book Name is required"),
+//   // author: z.object({ authorName: z.string().min(1, "Author's Name is required") }),
+//   author: z.string().min(1, "Author's Name is required"),
+//   bookSummary: z.string(),
+//   price: z.preprocess(
+//     (value) => parseFloat(value),
+//     z.number().positive({ message: "Price must be a positive number." })
+//   ),
+//   pages: z.preprocess(
+//     (value) => parseFloat(value),
+//     z.number().positive({ message: "Pages must be a positive number." })
+//   ),
+//   publishedDate: z.preprocess(
+//     (val) => (typeof val === "string" ? new Date(val) : val),
+//     z.date()
+//   ),
+//   category: z.array(z.string()),
+//   language: z.string(),
+//   // rating: z.preprocess(
+//   //   (value) => parseFloat(value),
+//   //   z
+//   //     .number()
+//   //     .min(1, { message: "Rating must be at least 1." })
+//   //     .max(5, { message: "Rating cannot exceed 5." })
+//   // ),
+//   ISBN: z.preprocess(
+//     (value) => parseFloat(value),
+//     z.number().positive({ message: "Pages must be a positive number." })
+//   ),
+//   publisher: z.string(),
+//   mood: z.array(z.string()),
+//   //   customTags: z.array(z.string()),
+//   stock: z.preprocess(
+//     (value) => parseFloat(value),
+//     z.number().positive({ message: "Pages must be a positive number." })
+//   ),
+//   coverImage: z
+//   .any() // Start with `any()` for flexibility.
+//   .refine(
+//     (fileList) => fileList instanceof FileList && fileList.length > 0,
+//     "Cover image is required"
+//   ),
+// });
 export default function AddBooks() {
   const [data, setData] = useState([]);
   useEffect(() => {
