@@ -9,6 +9,18 @@ import bcrypt from "bcrypt";
 //routes are called controller
 const router = express.Router();
 
+const generateAccessAndRefreshTokens = async(userId) =>{
+  try{
+    const user = await User.findById(userId)
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+    user.refreshToken = await user.save({validateBeforeSave:false});
+    return{accessToken,refreshToken};
+  } catch(error){
+    throw new ApiError(500,"Something went wrong while generating access token and refresh token.")
+  }
+  }
+
 //Register User
 
 const register = asyncHandler(async (req, res,next) => {
@@ -76,19 +88,11 @@ const login = asyncHandler(async (req, res) => {
       throw new ApiError(409, "Invalid credentials");
     }
 
-    const accessToken = jwt.sign(
-      {
-        data: {
-          id: user._id,
-          email: user.email,
 
-          //need to have role also 
-        },
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1h" }
-    );
-
+    const {accessToken,refreshToken} = await generateAccessAndRefreshTokens(user._id)
+      const loggedInUser = await User.findById(user._id).
+      select("-password -refreshToken")
+    
     const options = {
       httpOnly: true,//Makes the cookie inaccessible to client-side JavaScript
       secure: true,// Ensures the cookie is only sent over secure HTTPS connections
@@ -96,31 +100,48 @@ const login = asyncHandler(async (req, res) => {
     //Authentication successful
     res
       .status(200) //for browser
-      .cookie("accessToken", accessToken, options)// Adds a cookie named "accessToken" containing the JWT, using the options defined earlier.
-      .json(new ApiResponse(200, user, "Login successful"));
-  } catch (error) {
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken",refreshToken,options)// Adds a cookie named "accessToken" containing the JWT, using the options defined earlier.
+      .json(new ApiResponse(200, {user:loggedInUser,accessToken,refreshToken},"User logged in  successful"));
+  }
+   catch (error) {
     console.log("Error during login:", error.message);
     throw new ApiError(500, "Error during login");
   }
+
+
+
+
 });
 
 
 //Logout route 
  const logout = asyncHandler(async(req,res)=>{
-  const token = req.cookies.accessToken;//get token from the cookie
+  // Get tokens from cookies
+  const accessToken = req.cookies.accessToken;
+  const refreshToken = req.cookies.refreshToken;
 
-  if(!token){
-    throw new ApiError(404,"No token provided.Already logged out")
+  // Check if both tokens exist
+  if (!accessToken || !refreshToken) {
+    throw new ApiError(404, "No tokens provided. Already logged out.");
   }
+
   try{
-    const decodedToken = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+    const decodedToken = jwt.verify(accessToken,process.env.ACCESS_TOKEN_SECRET);
     
     console.log("dt: ",decodedToken);
     const userId = await User.findById(decodedToken.data.id).select("-password -refreshToken")
     console.log(`User with ID ${userId} has logged out`);
+    
+    const options = {
+      httpOnly: true,//Makes the cookie inaccessible to client-side JavaScript
+      secure: true,// Ensures the cookie is only sent over secure HTTPS connections
+    };
 
-    res.clearCookie('accessToken');
-    res.status(200).json(new ApiResponse(200,userId,"User logged out successfully."))
+   
+    res.status(200)
+    .clearCookie("accessToken",options)
+    .clearCookie("refreshToken",options).json(new ApiResponse(200,userId,"User logged out successfully."))
   }
   catch(error){
     console.error('Error verifying token:', error);
