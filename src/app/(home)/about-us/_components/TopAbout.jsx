@@ -22,7 +22,7 @@ export default function TopAbout() {
         </p>
         <Button>More <ChevronsRight /></Button>
         </div>
-        <img src="/photos/aboutus-img.jpg" className="rounded-xl" data-aos = "fade-left"></img>
+        <img src="/photos/us.jpg" className="rounded-xl" data-aos = "fade-left"></img>
       </div>
     </div>
   );
