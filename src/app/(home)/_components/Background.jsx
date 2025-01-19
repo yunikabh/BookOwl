@@ -11,7 +11,8 @@ export default function Background() {
           className="sm:w-[40%] w-full sm:mt-10 mt-5 text-primary "
           data-aos="fade-right"
         >
-          <h1 className="sm:text-5xl text-xl z-40 leading-snug sm:my-10 my-5 text-[#6E4151]">
+          <h1 className="sm:text-5xl text-xl z-40 leading-snug sm:my-10 my-5 text-[#6E4151]"></h1>
+          <h1 className="sm:text-5xl text-xl z-40 leading-snug sm:my-10 my-5 text-[#945F39]">
             Discover And Find Your New Favorite Books
           </h1>
           <p className="sm:leading-loose leading-normal text-[#e76e50] text-lg">

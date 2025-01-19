@@ -10,14 +10,14 @@ import { Menu, SquareX } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-const navItems = [
-  { id: 1, name: "Home", href: "/" },
-  { id: 2, name: "About us", href: "/about-us" },
-  { id: 3, name: "Contact us", href: "/" },
-];
+// const navItems = [
+//   { id: 1, name: "Home", href: "/" },
+//   { id: 2, name: "About us", href: "/about-us" },
+//   { id: 3, name: "Contact us", href: "/" },
+// ];
 const navDarkItems = [
   {
-    id: 4,
+    id: 1,
     name: "Browse",
     href: "/",
   },
@@ -38,22 +38,22 @@ export default function Navbar() {
 
         <NavigationMenu className="flex gap-10 text-[#945F39] px-[5%] mr-[5%]">
           <NavigationMenuList className="flex gap-24">
-            {navItems.map((item) => (
+            {/* {navItems.map((item) => (
               <NavigationMenuItem key={item.id}>
                 <a href={item.href}>{item.name}</a>
               </NavigationMenuItem>
-            ))}
+            ))} */}
             {navDarkItems.map((item) => (
               <NavigationMenuItem className="text-white" key={item.id}>
                 <a href={item.href}>{item.name}</a>
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>
-          <Button
+          <Button asChild
             variant="outline"
             className="flex text-white ml-16 bg-transparent"
           >
-            Login
+          <Link href="/login">Login</Link>  
           </Button>
         </NavigationMenu>
       </div>
@@ -95,14 +95,7 @@ function MobileNav() {
        </SquareX></div>
           <NavigationMenu className="text-white block">
             <NavigationMenuList className="flex flex-col gap-y-5 items-start ">
-              {navItems.map((item) => (
-                <NavigationMenuItem key={item.id} className="">
-                  <h1 className=""  >
-                    <a href={item.href}>{item.name}</a>
-                  </h1>
-                  
-                </NavigationMenuItem>
-              ))}
+
               {navDarkItems.map((item) => (
               <NavigationMenuItem className="text-white" key={item.id}>
                 <a href={item.href}>{item.name}</a>
@@ -111,11 +104,11 @@ function MobileNav() {
 
             </NavigationMenuList>
             {/* <Link href="/login"></Link> */}
-            <Button
+            <Button asChild
             variant="outline"
             className=" text-white mt-5 bg-transparent "
           >
-            Login
+          <Link href="/login">Login</Link>  
           </Button>
           </NavigationMenu>
         </div>

@@ -24,6 +24,7 @@ const SideItems =[
         icon: <Book />
 
     },
+    
     {
         id:3,
         name :"Stats", 
