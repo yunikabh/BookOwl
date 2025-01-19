@@ -3,30 +3,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
-
-
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-
   FormField,
   FormItem,
-  
   FormMessage,
 } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Mail, Eye, EyeOff, User, Lock } from "lucide-react";
+import { Mail, Eye, EyeOff, User, Lock, Phone } from "lucide-react";
 import $axios from "@/lib/axios.instance";
 import { useRouter } from "next/navigation";
 
-
 // Define form schema with Zod
 const formSchema = z.object({
-  name: z.string().min(5, { message: "name must be at least 5 characters." }),
+  name: z.string().min(5, { message: "Name must be at least 5 characters." }),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
@@ -35,14 +28,11 @@ const formSchema = z.object({
     .regex(/[0-9]/, "Password must include at least one number"),
   email: z.string().email("Email must be a valid address"),
   phoneNumber: z
-  .string()
-  .regex(/^\d+$/, "Phone number must contain only digits"),
-  
- 
-
+    .string()
+    .regex(/^\d+$/, "Phone number must contain only digits"),
 });
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const router = useRouter();
@@ -54,220 +44,201 @@ export default function LoginPage() {
       password: "",
       password1: "",
       email: "",
-      phoneNumber: 1,
+      phoneNumber: "",
     },
   });
- 
 
   async function onSubmit(values) {
-    const repsonse = await $axios.post("/auth/register", values);
-    if (!repsonse) {
-      throw new Error(`HTTP erroe!:Status: ${repsonse.status}`);
+    const response = await $axios.post("/auth/register", values);
+    if (!response) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
     router.push("/login");
   }
 
-
   return (
-    <div className="  flex justify-end w-full px-20 py-20 min-h-screen bg-[rgb(246,220,201)] overflow-hidden">
-      {/* <div className="z-50  h-64 "> */}
-      <img
-        src="/photos/logo.png"
-        alt="Logo"
-        className="absolute top-5 right-20 w-30 h-10"
-      ></img>
-      {/* </div>
-       */}
-      <div className="relative  ">
-        <div className="sm:absolute  sm:w-[750px] sm:h-[1625px] sm:flex  sm:justify-items-end sm:origin-top-left sm:rotate-[24deg] sm:right-[-40px] sm:top-[-450px] sm:overflow-hidden ">
-          <img src="/photos/book.png" alt="Book" className="w-100 h-100"></img>
-        </div>
-      </div>
-      {/* <div className=" flex sm:justify-between sm:flex-row flex-col sm:mx-[10%] mx-[10px] sm:mt-[50px] mt-0"></div> */}
-
-      <Card className=" w-full max-w-md  bg-[rgb(238,218,200)] shadow-lg rounded-lg border border-gray-100 ">
-        {/* <div className="z-50">
-        <img src="/photos/logo.png" alt="Logo"></img> */}
-
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 w-full flex flex-col items-center mt-5 mb-5 "
-          >
-            <h1 className="text-2xl font-bold italic text-[#6d433d] ">
-              {" "}
-              Welcome To Book Owl{" "}
-            </h1>
-            <h2 className="font-bold text-[#8d767c] ">Sign Up to continue</h2>
-
-            {/* name Field */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>name</FormLabel> */}
-                  <FormControl>
-                    <div className="relative w-full">
-                      <User className="absolute left-2.5 top-2.5  " size={18} />
-                      <input
-                        type="text"
-                        placeholder="Enter your name"
-                        {...field}
-                        className="w-full px-12 py-2  text-[#c2918b] rounded-full "
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+    <div className="flex justify-center items-center w-full min-h-screen bg-[rgb(246,220,201)] overflow-hidden">
+      {/* Card with Flex Layout */}
+      <Card className="w-full max-w-4xl bg-[#e1ceac] shadow-lg rounded-lg border border-gray-100 relative">
+        <div className="flex w-full">
+          {/* Owl Image Section */}
+          <div className="w-1/2 p-0">
+            <img
+              src="/photos/owl2.jpg"
+              alt="Owl"
+              className="w-full h-full object-cover rounded-l-lg" // Cover the full left side and rounded left corner
             />
+          </div>
 
-            {/* Email field */}
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>name</FormLabel> */}
-                  <FormControl>
-                    <div className="relative w-full">
-                      <Mail className="absolute left-2.5 top-2.5" size={18} />
-                      <input
-                        type="text"
-                        placeholder="Enter your email address"
-                        {...field}
-                        className="w-full px-12 py-2  text-[#c2918b] rounded-full "
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            {/* Number field */}
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>name</FormLabel> */}
-                  <FormControl>
-                    <div className="relative w-full">
-                      <Mail className="absolute left-2.5 top-2.5" size={18} />
-                      <input
-                        type="number"
-                        placeholder="Enter your phone number"
-                        {...field}
-                        className="w-full px-12 py-2  text-[#c2918b] rounded-full "
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Password Field */}
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>Password</FormLabel> */}
-                  <FormControl>
-                    <div className="relative w-full">
-                      <Lock className="absolute left-2.5 top-2.5" size={18} />
-                      <button
-                        type="button"
-                        className="absolute right-2.5 top-2.5 "
-                        onClick={() => setIsPasswordVisible((prev) => !prev)}
-                        // aria-label={showPassword ? "Hide password" : "Show password"}
-                      >
-                        {isPasswordVisible ? (
-                          <Eye size={18} />
-                        ) : (
-                          <EyeOff size={18} />
-                        )}
-                      </button>
-
-                      {/* <EyeOffIcon className="absolute right-2.5 top-2.5" size={18}/> */}
-                      <input
-                        type="password"
-                        placeholder="Create password"
-                        className="w-full px-12 py-2 text-[#c2918b] rounded-full"
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password1"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>Password</FormLabel> */}
-                  <FormControl>
-                    <div className="relative w-full">
-                      <Lock className="absolute left-2.5 top-2.5" size={18} />
-                      <button
-                        type="button"
-                        className="absolute right-2.5 top-2.5 "
-                        onClick={() =>
-                          setIsConfirmPasswordVisible((prev) => !prev)
-                        }
-                        // aria-label={showPassword ? "Hide password" : "Show password"}
-                      >
-                        {isConfirmPasswordVisible ? (
-                          <Eye size={18} />
-                        ) : (
-                          <EyeOff size={18} />
-                        )}
-                      </button>
-
-                      {/* <EyeOffIcon className="absolute right-2.5 top-2.5" size={18}/> */}
-                      <input
-                        type="password"
-                        placeholder="Confirm password"
-                        className="w-full px-12 py-2 text-[#c2918b] rounded-full"
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Submit Button */}
-            <Button
-              className="bg-[#5d768a] rounded-full  w-[150px]"
-              type="submit"
-            >
-              Create an account
-            </Button>
-            {/* <p className="ml-[70px] mt-2"> */}
-
-            <Button className="text-sm mt-2 bg-slate-100 text-[#a45254]">
-              Sign Up with Google{" "}
-            </Button>
-            <div className="flex">
-              <p className="text-[#a75257] text-sm">Already have an account?</p>
-              <a
-                href="/login"
-                className="text-sm text-[#8d767c] hover:underline"
+          {/* Form Section */}
+          <div className="w-1/2 p-6 flex flex-col justify-center">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6 w-full flex flex-col items-center"
               >
-                Sign-In
-              </a>
-            </div>
-          </form>
-        </Form>
+                <h1 className="text-2xl font-bold italic text-[#6d433d]">
+                  Welcome To Book Owl
+                </h1>
+                <h2 className="font-bold text-[#8d767c]">Sign Up to continue</h2>
+
+                {/* Name Field */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative w-full">
+                          <User className="absolute left-2.5 top-2.5" size={18} />
+                          <input
+                            type="text"
+                            placeholder="Enter your name"
+                            {...field}
+                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Email Field */}
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative w-full">
+                          <Mail className="absolute left-2.5 top-2.5" size={18} />
+                          <input
+                            type="email"
+                            placeholder="Enter your email address"
+                            {...field}
+                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Phone Number Field */}
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative w-full">
+                          <Phone className="absolute left-2.5 top-2.5" size={18} />
+                          <input
+                            type="text"
+                            placeholder="Enter your phone number"
+                            {...field}
+                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Password Field */}
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative w-full">
+                          <Lock className="absolute left-2.5 top-2.5" size={18} />
+                          <button
+                            type="button"
+                            className="absolute right-2.5 top-2.5"
+                            onClick={() => setIsPasswordVisible((prev) => !prev)}
+                          >
+                            {isPasswordVisible ? <Eye size={18} /> : <EyeOff size={18} />}
+                          </button>
+                          <input
+                            type={isPasswordVisible ? "text" : "password"}
+                            placeholder="Create password"
+                            {...field}
+                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Confirm Password Field */}
+                <FormField
+                  control={form.control}
+                  name="password1"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative w-full">
+                          <Lock className="absolute left-2.5 top-2.5" size={18} />
+                          <button
+                            type="button"
+                            className="absolute right-2.5 top-2.5"
+                            onClick={() => setIsConfirmPasswordVisible((prev) => !prev)}
+                          >
+                            {isConfirmPasswordVisible ? <Eye size={18} /> : <EyeOff size={18} />}
+                          </button>
+                          <input
+                            type={isConfirmPasswordVisible ? "text" : "password"}
+                            placeholder="Confirm password"
+                            {...field}
+                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Submit Button */}
+                <Button
+                  className="bg-[#5d768a] rounded-full w-[150px]"
+                  type="submit"
+                >
+                  Create an account
+                </Button>
+                <Button className="text-sm mt-2 bg-slate-100 text-[#a45254]">
+                  Sign Up with Google
+                </Button>
+                <div className="flex">
+                  <p className="text-[#a75257] text-sm">Already have an account?</p>
+                  <a
+                    href="/login"
+                    className="text-sm text-[#8d767c] hover:underline ml-1"
+                  >
+                    Sign-In
+                  </a>
+                </div>
+              </form>
+            </Form>
+          </div>
+        </div>
       </Card>
+      
+      {/* Logo Image Outside of Card */}
+      <div className="absolute top-4 right-20">
+        <img
+          src="/photos/logo.png" // Replace with your logo image path
+          alt="Logo"
+          className="w-32 h-12" // Adjust size of the logo
+        />
+      </div>
     </div>
   );
 }

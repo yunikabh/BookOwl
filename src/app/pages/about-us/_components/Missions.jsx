@@ -6,20 +6,19 @@ const missions= [
   {
     icon: <Target className="w-12 h-12 text-white" />,
     title: "Our Mission",
-    description: "Bridge workforce gaps with reliable, skilled, and culturally diverse manpower solutions for the Middle East and Europe, empowering Nepali careers."
-  },
+    description: "To create a world where every reader feels empowered, every story finds its audience, and the love for books thrives across generations. "
+     },
   {
     icon: <Handshake className="w-12 h-12 text-white" />,
     title: "Our Commitment",
-    description: "Deliver exceptional manpower services, fostering strong partnerships between employers and skilled Nepali professionals in the global market."
+    description: "We are committed to delivering an exceptional reading experience by curating inspiring and diverse books, offering personalized recommendations tailored to every reader, and empowering voices through a platform that values authentic sharing."
   },
   {
     icon: <Heart className="w-12 h-12 text-white" />,
     title: "Our Values",
-    description: "Uphold integrity, cultural sensitivity, and excellence in every placement, ensuring mutual growth and success for all stakeholders involved."
-  }
+    description: "At Book Owl, we are guided by our passion for reading, celebrating the transformative power of books and inspiring every reader.  With a commitment to integrity, we ensure transparency, authenticity, and meaningful recommendations for all."
+  },
 ]
-
 export default function Missions() {
   return (
     <div className="container mx-auto px-[5%] py-16">
