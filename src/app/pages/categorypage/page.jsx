@@ -8,6 +8,7 @@ export default function Categorypage(){
         <div>
 {/* <Sidebar/> */}
 <AllBooks/>
+
         </div>
     )
 }
