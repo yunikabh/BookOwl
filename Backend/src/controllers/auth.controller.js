@@ -22,12 +22,12 @@ export const generateAccessAndRefreshTokens = async(userId) =>{
         // Save the refresh token in the database
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
-        console.log("Databaase", user)
+        console.log("Database", user)
 
 
     return{accessToken,refreshToken};
   } catch(error){
-    throw new ApiError(500,"Something went wrong while generating access token and refresh token.")
+    throw new ApiError(500,"Something went wrong while generating access token and refresh token.");
   }
   }
 
@@ -119,7 +119,7 @@ const login = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Error during login");
   }
 
-  const refreshAccessToken = asyncHandler(async (req, res) => {
+ const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
     if (!incomingRefreshToken) {

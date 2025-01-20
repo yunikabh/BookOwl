@@ -40,8 +40,8 @@ const userSchema = new mongoose.Schema({
   },
   //Fields are optional
   profilePicture: {
-    type: String, // URL or file path to the profile picture
-    default: null,
+    type: String, 
+    default: ""// URL or file path to the profile picture
   },
   bio: {
     type: String,
@@ -67,7 +67,7 @@ userSchema.methods.generateAccessToken = function () {
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "1m" }
+    { expiresIn: "1h" }
   );
   return accessToken;
 }catch(error){

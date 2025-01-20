@@ -4,16 +4,28 @@ import asyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 import authorModel from "../models/author.model.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const router = express.Router();
 
 //add author
 const addAuthor = asyncHandler(async(req,res,next) =>{
     const {name,bio,moreBooks} = req.body;
-    // const authorImageUrl = `${req.protocol}://${req.get('host')}/public/temp/${req.file.filename}`;
+    const authorImage = req.file;
+    const authorImageLocalPath = authorImage ? authorImage.path : null;
+        console.log(authorImage);
+        if(!authorImageLocalPath){
+                    throw new ApiError(400,"Author image is required");
 
+        }
 
-    const authorImageUrl = req.file ? req.file.path : null;
+      const authorImageUrl=await  uploadOnCloudinary(authorImageLocalPath);
+      console.log("This is author image url",authorImageUrl);
+
+      if(!authorImageUrl || !authorImageUrl.url){
+        throw new ApiError(500, "Failed to upload author image");
+      }
+      console.log("THis is author vitra ko url",authorImageUrl.url)
 
 
         const existingAuthor = await authorModel.findOne({authorName:name});
@@ -23,7 +35,8 @@ const addAuthor = asyncHandler(async(req,res,next) =>{
             throw new ApiError(500,"This author already exists");
         }
 
-        const author= new authorModel({authorName:name,authorImage:authorImageUrl,authorBio:bio,moreBooks});
+        const author= new authorModel({authorName:name,authorImage:authorImageUrl.url,authorBio:bio,moreBooks});
+         
         const savedAuthor = await author.save();
 
         res.status(201).json(new ApiResponse(201,savedAuthor,"Author is added successfully"));
