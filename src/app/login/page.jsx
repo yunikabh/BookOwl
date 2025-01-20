@@ -105,29 +105,31 @@ export default function LoginPage() {
                 <h1 className="text-2xl font-bold italic text-[#6d433d]">
                   Welcome To Book Owl
                 </h1>
-                <h2 className="font-bold text-[#8d767c]">Sign Up to continue</h2>
+                <h2 className="font-bold text-[#8d767c]">Login to continue</h2>
 
-                {/* Name Field */}
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div className="relative w-full">
-                          <User className="absolute left-2.5 top-2.5" size={18} />
-                          <input
-                            type="text"
-                            placeholder="Enter your name"
-                            {...field}
-                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Email Field */}
+                                <FormField
+                                  control={form.control}
+                                  name="email"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormControl>
+                                        <div className="relative w-full">
+                                          <Mail className="absolute left-2.5 top-2.5" size={18} />
+                                          <input
+                                            type="email"
+                                            placeholder="Enter your email address"
+                                            {...field}
+                                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
+                                          />
+                                        </div>
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                
+                               
 
                 
                 {/* Password Field */}
