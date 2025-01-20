@@ -7,7 +7,7 @@ import ApiResponse from "../utils/apiResponse.js";
 import authorModel from "../models/author.model.js";
 import categoryModel from "../models/category.model.js";
 import mongoose from "mongoose";
-
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 //add book
 //edit book
@@ -22,12 +22,26 @@ const addBook = asyncHandler(async (req, res) => {
   const bookDetails = req.body;
   const authorName = bookDetails.author;
   let categoryIds = bookDetails.category;
-  const coverImageUrl = req.file ? req.file.path : null;
+  // const coverLocalPath = req.files?req.file.path : null;
 
-  console.log(authorName);
-  console.log(bookDetails);
-  // console.log(categoryIds);
-  //check if the book is added already or not
+  const coverImageLocalPath = req.file?req.file.path:null;
+  console.log("FILE",req.file);
+
+  if(!coverImageLocalPath){
+    throw new ApiError(400,"Cover image is required");
+  }
+
+   const coverImageURL = await uploadOnCloudinary(coverImageLocalPath);
+   console.log("Cover Image Local Path:", coverImageLocalPath); // Debugging
+   console.log("This is cover image url",coverImageURL)
+   // Check if the upload to Cloudinary was successful
+   if (!coverImageURL || !coverImageURL.url) {
+     throw new ApiError(500, "Failed to upload cover image");
+   }
+   bookDetails.coverImage = coverImageURL.url;
+
+
+    //check if the book is added already or not
   try {
     const existingBook = await Book.findOne({ ISBN: bookDetails.ISBN })
       .populate("category")
@@ -76,12 +90,10 @@ const addBook = asyncHandler(async (req, res) => {
     bookDetails.category = categoryIds;
     bookDetails.author = author._id;
 
-    console.log(req.file);
-    bookDetails.coverImage = coverImageUrl;
-    // bookDetails.author.authorImage =authorImageUrl;
 
-    console.log("Creating book with details:", bookDetails);
+    //Creation on book 
     const savedBook = await Book.create(bookDetails);
+    console.log("Creating book with details:", bookDetails);
     const populatedBook = await Book.findById(savedBook._id)
       .populate("category", "categoryName")
       .populate("author");

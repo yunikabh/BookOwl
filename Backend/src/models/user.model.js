@@ -86,7 +86,7 @@ userSchema.methods.generateRefreshToken = function () {
             },
           },
           process.env.REFRESH_TOKEN_SECERT,
-          { expiresIn: "5m" }
+          { expiresIn: "1d" }
         );
         return refreshToken;
     }catch(error){

@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
         const timestamp =Date.now();
         const fileExtension = path?.extname(file.originalname)
         cb(null, file.fieldname + '-' + timestamp + fileExtension)
-      }
+      }   
     })
 
 //Initialize multer with the configured storage
