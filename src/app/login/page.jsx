@@ -19,41 +19,66 @@ import { useRouter } from "next/navigation";
 
 // Define form schema with Zod
 const formSchema = z.object({
-  name: z.string().min(5, { message: "Name must be at least 5 characters." }),
+  // name: z.string().min(5, { message: "Name must be at least 5 characters." }),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
     .regex(/[A-Z]/, "Password must include at least one uppercase letter")
     .regex(/[a-z]/, "Password must include at least one lowercase letter")
     .regex(/[0-9]/, "Password must include at least one number"),
-  email: z.string().email("Email must be a valid address"),
-  phoneNumber: z
-    .string()
-    .regex(/^\d+$/, "Phone number must contain only digits"),
+    email: z.string().email("Email must be a valid address"),
+  
 });
 
-export default function SignUpPage() {
+export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  // const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      password: "",
-      password1: "",
+      // username: "",
       email: "",
-      phoneNumber: "",
+      password: "",
     },
   });
 
   async function onSubmit(values) {
-    const response = await $axios.post("/auth/register", values);
+    const response = await $axios.post("/auth/login", values);
+    console.log(response);
     if (!response) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(`HTTP error!: Status: ${response.status}`);
+
     }
-    router.push("/login");
+    if (response.status === 200) {
+      // Store the token in localStorage or cookie
+      const user = await response.data;
+      // console.log(user)
+      // console.log(response);
+      localStorage.setItem("token", response.data.data);
+      const role = user.data?.role;
+      console.log(role);
+      if (role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/pages/homepage");
+      }
+
+      // console.log("Submitted values:", values);
+    }
+    // const form = useForm<z.infer<typeof formSchema>>({
+    //   resolver: zodResolver(formSchema),
+    //   defaultValues: {
+    //     username: "",
+    //     password: "",
+
+    //   },
+    // });
+
+    // function onSubmit(values: z.infer<typeof formSchema>) {
+    //   console.log("Submitted values:", values);
+    // }
   }
 
   return (
