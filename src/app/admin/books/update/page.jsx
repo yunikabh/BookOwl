@@ -19,55 +19,62 @@ import $axios from "@/lib/axios.instance";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-// const formSchema = z.object({
-//   bookName: z.string().min(1, "Book Name is required"),
-//   // author: z.object({ authorName: z.string().min(1, "Author's Name is required") }),
-//   author: z.string().min(1, "Author's Name is required"),
-//   bookSummary: z.string(),
-//   price: z.preprocess(
-//     (value) => parseFloat(value),
-//     z.number().positive({ message: "Price must be a positive number." })
-//   ),
-//   pages: z.preprocess(
-//     (value) => parseFloat(value),
-//     z.number().positive({ message: "Pages must be a positive number." })
-//   ),
-//   publishedDate: z.preprocess(
-//     (val) => (typeof val === "string" ? new Date(val) : val),
-//     z.date()
-//   ),
-//   category: z.array(z.string()),
-//   language: z.string(),
-//   // rating: z.preprocess(
-//   //   (value) => parseFloat(value),
-//   //   z
-//   //     .number()
-//   //     .min(1, { message: "Rating must be at least 1." })
-//   //     .max(5, { message: "Rating cannot exceed 5." })
-//   // ),
-//   ISBN: z.preprocess(
-//     (value) => parseFloat(value),
-//     z.number().positive({ message: "Pages must be a positive number." })
-//   ),
-//   publisher: z.string(),
-//   mood: z.array(z.string()),
-//   //   customTags: z.array(z.string()),
-//   stock: z.preprocess(
-//     (value) => parseFloat(value),
-//     z.number().positive({ message: "Pages must be a positive number." })
-//   ),
-//   coverImage: z
-//   .any() // Start with `any()` for flexibility.
-//   .refine(
-//     (fileList) => fileList instanceof FileList && fileList.length > 0,
-//     "Cover image is required"
-//   ),
-// });
-export default function AddBooks() {
+const formSchema = z.object({
+  bookName: z.string().min(1, "Book Name is required"),
+  // author: z.object({ authorName: z.string().min(1, "Author's Name is required") }),
+  author: z.string().min(1, "Author's Name is required"),
+  bookSummary: z.string(),
+  price: z.preprocess(
+    (value) => parseFloat(value),
+    z.number().positive({ message: "Price must be a positive number." })
+  ),
+  pages: z.preprocess(
+    (value) => parseFloat(value),
+    z.number().positive({ message: "Pages must be a positive number." })
+  ),
+  publishedDate: z.preprocess(
+    (val) => (typeof val === "string" ? new Date(val) : val),
+    z.date()
+  ),
+  category: z.array(z.string()),
+  language: z.string(),
+  // rating: z.preprocess(
+  //   (value) => parseFloat(value),
+  //   z
+  //     .number()
+  //     .min(1, { message: "Rating must be at least 1." })
+  //     .max(5, { message: "Rating cannot exceed 5." })
+  // ),
+  ISBN: z.preprocess(
+    (value) => parseFloat(value),
+    z.number().positive({ message: "Pages must be a positive number." })
+  ),
+  publisher: z.string(),
+  mood: z.array(z.string()),
+  //   customTags: z.array(z.string()),
+  stock: z.preprocess(
+    (value) => parseFloat(value),
+    z.number().positive({ message: "Pages must be a positive number." })
+  ),
+  coverImage: z
+  .any() // Start with `any()` for flexibility.
+  .refine(
+    (fileList) => fileList instanceof FileList && fileList.length > 0,
+    "Cover image is required"
+  ),
+});
+export default function UpdateBooks() {
   const [data, setData] = useState([]);
+  const [bookData, setBookData] = useState(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const bookId = searchParams.get("id");
   useEffect(() => {
+    if (bookId) {
+      fetchBookDetails();
+    }
     getCategory();
-  }, []);
+  }, [bookId]);
 
   const getCategory = async () => {
     const CategoryResponse = await $axios.get("/category/getCategory");
@@ -77,7 +84,16 @@ export default function AddBooks() {
     }
     setData(CategoryResponse?.data.data);
   };
-  const router = useRouter();
+  const fetchBookDetails = async () => {
+    try {
+      const response = await $axios.get(`/book/${bookId}`);
+      setBookData(response?.data.data);
+    } catch (error) {
+      console.error("Error fetching book details:", error);
+    }
+  };
+
+ 
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -99,6 +115,12 @@ export default function AddBooks() {
       coverImage: null,
     },
   });
+  useEffect(() => {
+    if (bookData) {
+      form.reset(bookData); // Populate form with book details when data is available
+    }
+  }, [bookData, form]);
+
   const options = data.map((CategoryItems) => ({
     value: CategoryItems._id,
     label: CategoryItems.categoryName,
@@ -146,7 +168,7 @@ export default function AddBooks() {
     }
 
     try {
-      const response = await $axios.post("/book/addBook", formData);
+      const response = await $axios.put("/book/updateBook/${bookId}", formData);
       console.log("Book added successfully:", response.data);
       router.push("/admin/books");
     } catch (error) {

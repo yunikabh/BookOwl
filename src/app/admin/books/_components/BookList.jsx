@@ -18,18 +18,19 @@ export default function BookList({ data }) {
   const [searchBook, setSearchBook] = useState("");
   // const [editingBook,setEditingBook ] = useState(null);
   const filterdata = data.filter(
-    (book) => book.bookName.toLowerCase().includes(searchBook.toLowerCase()) ||
-    book.author.authorName.toLowerCase().includes(searchBook.toLowerCase())
+    (book) =>
+      book.bookName.toLowerCase().includes(searchBook.toLowerCase()) 
+      // book.author.name.toLowerCase().includes(searchBook.toLowerCase())
   );
-  const baseURL = "http://localhost:5000/";
-  // console.log(data.author);
-  const handleEditClick = (book) => {
-    setEditingBook(book);
-  };
+  // const baseUrl = "http://localhost:5000/";
+// console.log(data.author);
+const handleEditClick = (book) => {
+  setEditingBook(book);
+};
 
-  // const handleEditClose = () => {
-  //   setEditingCategory(null);
-  // };
+// const handleEditClose = () => {
+//   setEditingCategory(null);
+// };
   return (
     <div>
       <div className="w-full flex justify-end">
@@ -59,7 +60,7 @@ export default function BookList({ data }) {
               <TableRow key={data.ISBN}>
                 <TableCell>
                   <div className="rounded-lg w-16 h-24 overflow-hidden">
-                    {/* <img
+                    <img
                       src={
                         data.coverImage.replace(/\\/g, "/")
                           // : "/images/default-cover.jpg"
@@ -67,12 +68,7 @@ export default function BookList({ data }) {
                       alt="Cover Image"
                       className="w-full h-full object-contain"
                     />
-                    ; */}
-                    <img
-                      src={`${baseURL}${data.coverImage.replace(/\\/g, "/")}`}
-                      alt="Cover Image"
-                      className="w-full h-full object-contain"
-                    />
+                    ;
                   </div>
                 </TableCell>
                 <TableCell>
@@ -107,7 +103,7 @@ export default function BookList({ data }) {
           </TableBody>
         </Table>
       </Card>
-      {/* {editingBook && (
+       {/* {editingBook && (
               <UpdateCategory category={editingCategory} onClose={handleEditClose} />
             )} */}
     </div>
