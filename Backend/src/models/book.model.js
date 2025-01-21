@@ -41,8 +41,7 @@ const bookSchema = new mongoose.Schema({
           default: 0 
          },
        coverImage: {
-            type: String,
-            required:true,
+            type: String
            }, // URL or path of the book cover image
  
        ISBN: {
