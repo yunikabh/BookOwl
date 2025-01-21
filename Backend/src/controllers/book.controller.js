@@ -213,7 +213,7 @@ const updateBooks = asyncHandler(async (req, res) => {
     //   categoryIds = []; // If no categories, set it as an empty array
     // }
 
-    
+
     if (categoryIds && typeof categoryIds === "string") {
       // Split category IDs string into an array
       categoryIds = categoryIds.split(",").map((categoryId) => {

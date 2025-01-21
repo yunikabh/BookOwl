@@ -41,7 +41,8 @@ const bookSchema = new mongoose.Schema({
           default: 0 
          },
        coverImage: {
-            type: String
+            type: String,
+            required:true
            }, // URL or path of the book cover image
  
        ISBN: {
@@ -72,11 +73,11 @@ const bookSchema = new mongoose.Schema({
         ref:"Author",
          required: true
     },
-    reviews:{
+    reviews:[{
       type: mongoose.Schema.Types.ObjectId, 
       ref:"Review",
-      required:true
-    },
+      default:""
+    }],
     //  reviews: {
     //      userId: { 
     //        type: mongoose.Schema.Types.ObjectId, 
