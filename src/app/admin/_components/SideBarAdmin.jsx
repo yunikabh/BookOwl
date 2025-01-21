@@ -1,3 +1,4 @@
+"use client"
 import {
   Sidebar,
   SidebarContent,
@@ -8,6 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import $axios from "@/lib/axios.instance";
 import {
   Book,
   ExternalLinkIcon,
@@ -18,6 +20,8 @@ import {
   LayoutGrid,
   User,
 } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const SideItems = [
   {
@@ -72,37 +76,44 @@ const SideItems = [
 ];
 
 export default function SideBarAdmin() {
+  const router = useRouter();
+  const logout = async ()=>{
+try {
+  localStorage.removeItem("token");
+  await $axios.post("/auth/logout");
+  router.push("/");
+}
+catch (error){
+  console.log(error);
+}
+  };
   return (
-    // <div className="">
-    //    <div className="w-full bg-[#f5dac7] border-b-2 border-black"> <img src="/photos/logo.png" className="mb-3 "></img></div>
-    //     {SideItems.map((items)=>(
-    //         <div key={items.id}>
-    //       <a href={items.link}>   <div>  <h1 className="flex flex-row text-xl hover:bg-[#f5dac7] hover:text-primary py-2 "><span className="px-2">{items.icon}</span> {items.name}</h1></div></a>
-    //             </div>
-    //     ))}
-    // </div>
-    //    <div className="fixed w-[15%] h-[1000px] bg-[#f5dac7]  text-amber-900 " >
-    //      <div className="w-full bg-[#f5dac7] border-b-2 border-black"> <img src="/photos/logo.png" className="mb-3 "></img></div>
     <Sidebar className="fixed h-screen">
       <SidebarContent className="bg-[#e2b18b]">
         <SidebarGroup>
           <div className=" border-b-2 border-black ">
-            {" "}
             <img src="/photos/logo.png" className="mb-3 "></img>
           </div>
           <SidebarGroupLabel className="text-md">Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {SideItems.map((item) => (
-                <SidebarMenuItem className="" key={item.title}>
+                <SidebarMenuItem className="" key={item.id}>
                   <SidebarMenuButton
                     className=" hover:text-amber-900 hover:bg-[#fcf3ec] text-lg "
                     asChild
                   >
-                    <a href={item.link}>
+                    {item.id===8 ? (
+                      <button onClick={logout}>
+                        <span className="">{item.icon}</span>
+                        <span>{item.name}</span>
+                      </button>
+                    ):(
+                    <Link href={item.link}>
                       <span className="">{item.icon}</span>
                       <span>{item.name}</span>
-                    </a>
+                    </Link>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
