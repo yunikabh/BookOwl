@@ -38,6 +38,7 @@ try {
   console.log("Delete response:", response);
   if (response.status ===200){
     alert("category deleted successfully");
+    window.location.reload();
   }
   else{
     alert("failed to delete category");

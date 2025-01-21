@@ -21,8 +21,9 @@ export default function BookList({ data }) {
   const router = useRouter();
   // const [editingBook,setEditingBook ] = useState(null);
   const filterdata = data.filter(
-    (book) => book.bookName.toLowerCase().includes(searchBook.toLowerCase())
-    // book.author.name.toLowerCase().includes(searchBook.toLowerCase())
+    (book) =>
+      book.bookName.toLowerCase().includes(searchBook.toLowerCase()) ||
+      book.author.authorName.toLowerCase().includes(searchBook.toLowerCase())
   );
   // const baseUrl = "http://localhost:5000/";
   // console.log(data.author);
@@ -82,8 +83,9 @@ export default function BookList({ data }) {
                   <div className="rounded-lg w-16 h-24 overflow-hidden">
                     <img
                       src={
-                        data.coverImage.replace(/\\/g, "/")
-                        // : "/images/default-cover.jpg"
+                        data?.coverImage
+                          ? data.coverImage.replace(/\\/g, "/") // Replace backslashes with forward slashes
+                          : "/images/default-cover.jpg" // Fallback to default cover image
                       }
                       alt="Cover Image"
                       className="w-full h-full object-contain"

@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Select from "react-tailwindcss-select";
 import $axios from "@/lib/axios.instance";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 const formSchema = z.object({
   bookName: z.string().min(1, "Book Name is required"),
@@ -54,10 +54,10 @@ const formSchema = z.object({
       "Cover image is required"
     ),
 });
-export default function UpdateBooks({data , bookId}) {
-    console.log("form data:",data);
-    const router = useRouter();
-    const [categories, setCategories] = useState([]);
+export default function UpdateBooks({ data, bookId }) {
+  console.log("form data:", data);
+  const router = useRouter();
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     getCategory();
@@ -75,15 +75,15 @@ export default function UpdateBooks({data , bookId}) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      bookName: data?.bookName ,
-      author: data?.author.authorName ,
-      bookSummary: data?.bookSummary ,
-      price: data?.price ,
-      pages: data?.pages ,
-      publishedDate: data?.publishedDate ,
-      category: data?.category.categoryName || [],
+      bookName: data?.bookName,
+      author: data?.author.authorName,
+      bookSummary: data?.bookSummary,
+      price: data?.price,
+      pages: data?.pages,
+      publishedDate: data?.publishedDate,
+      category: data?.category?.map((item) => item.categoryName) || [], 
       language: data?.language,
-      ISBN: data?.ISBN ,
+      ISBN: data?.ISBN,
       publisher: data?.publisher,
       mood: data?.mood || [],
       stock: data?.stock,
@@ -121,7 +121,10 @@ export default function UpdateBooks({data , bookId}) {
     formData.append("price", values.price);
     formData.append("pages", values.pages);
     formData.append("publishedDate", values.publishedDate);
-    formData.append("category", values.category);
+    // formData.append("category", values.category);
+    values.category.forEach((item) => {
+      formData.append("category", item);
+    });
     formData.append("language", values.language);
     // formData.append("rating", values.rating);
     formData.append("ISBN", values.ISBN);
@@ -147,7 +150,6 @@ export default function UpdateBooks({data , bookId}) {
   if (!data) {
     return <div>Loading...</div>; // Loading state while data is being fetched
   }
-
 
   return (
     <div className="w-full flex flex-col items-center">

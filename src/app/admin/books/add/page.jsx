@@ -130,7 +130,10 @@ export default function AddBooks() {
     formData.append("price", values.price);
     formData.append("pages", values.pages);
     formData.append("publishedDate", values.publishedDate);
-    formData.append("category", values.category);
+    // formData.append("category", values.category);
+    values.category.forEach((item) => {
+      formData.append("category", item);
+    });
     formData.append("language", values.language);
     // formData.append("rating", values.rating);
     formData.append("ISBN", values.ISBN);
