@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Link from "next/link";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -85,12 +86,13 @@ export default function DealsCarousel() {
         }}
       >
         {books.map((book) => (
+       
           <SwiperSlide key={book.id}>
             {/* Book Card with AOS Animation */}
             <div
               data-aos="fade-up"
               data-aos-duration="1000"
-              className="flex flex-col items-center -mt-5 p-4 space-y-4 bg-gray-50 rounded-lg shadow-md transition-transform transform hover:scale-105"
+              className="flex flex-col items-center -mt-5 p-4 space-y-4 bg-gray-50 rounded-lg shadow-md "
             >
               {/* Book Image */}
               <img
@@ -106,6 +108,7 @@ export default function DealsCarousel() {
               </div>
             </div>
           </SwiperSlide>
+          
         ))}
       </Swiper>
     </div>

@@ -53,6 +53,7 @@ export default function LoginPage() {
     }
     if (response.status === 200) {
       // Store the token in localStorage or cookie
+      // Logic for successful response
       const user = await response.data;
       // console.log(user)
       // console.log(response);

@@ -16,7 +16,7 @@ export default function Bigdiscount() {
           <p className="text-lg text-gray-700 mb-6 font-serif mt-4">
           "Timeless classics and trending bestsellers – all in one place."
           </p>
-          <Link href="/">
+          <Link href="/pages/categorypage">
             <button className="bg-[#5d768a] text-white py-3 px-8 rounded-md shadow-md hover:bg-blue-400 mb-4">
               Grab Now
             </button>

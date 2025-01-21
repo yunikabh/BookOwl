@@ -1,5 +1,18 @@
-export default function Dashboard(){
+import SidebarUser from "./_components/SidebarUser"
+import ProfileSection from "./_components/ProfileSection"
+import PurchaseSection from "./_components/PurchaseSection"
+import ReviewsSection from "./_components/ReviewsSection"
+
+export default function UserDashboard(){
     return(
-        <h1>Welcome here</h1>
+        <div>
+         <SidebarUser/>
+         <ProfileSection/>
+         <PurchaseSection/>
+         <ReviewsSection/>
+      
+     
+    
+        </div>
     )
 }
