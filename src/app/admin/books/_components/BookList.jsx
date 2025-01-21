@@ -10,27 +10,47 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import $axios from "@/lib/axios.instance";
 // import $axios from "@/lib/axios.instance";
 import { Pencil, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function BookList({ data }) {
   const [searchBook, setSearchBook] = useState("");
+  const router = useRouter();
   // const [editingBook,setEditingBook ] = useState(null);
   const filterdata = data.filter(
-    (book) =>
-      book.bookName.toLowerCase().includes(searchBook.toLowerCase()) 
-      // book.author.name.toLowerCase().includes(searchBook.toLowerCase())
+    (book) => book.bookName.toLowerCase().includes(searchBook.toLowerCase())
+    // book.author.name.toLowerCase().includes(searchBook.toLowerCase())
   );
   // const baseUrl = "http://localhost:5000/";
-// console.log(data.author);
-const handleEditClick = (book) => {
-  setEditingBook(book);
-};
+  // console.log(data.author);
+  const handleEditClick = (book) => {
+    // setEditingBook(book._id);
+    router.push(`/admin/books/update/${book._id}`);
+  };
+  const handleDeleteClick = async (data) => {
+    const bookId = data._id;
+    const confirmDelete = confirm("Are you sure you want to Delete?");
+    if (!confirmDelete) return;
+    try {
+      const response = await $axios.delete(`/book/deleteBook/${bookId}`);
+      console.log("Delete response:", response);
+      if (response.status === 200) {
+        alert("Book deleted successfully");
+        window.location.reload();
+      } else {
+        alert("Deletion failed");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-// const handleEditClose = () => {
-//   setEditingCategory(null);
-// };
+  // const handleEditClose = () => {
+  //   setEditingCategory(null);
+  // };
   return (
     <div>
       <div className="w-full flex justify-end">
@@ -63,7 +83,7 @@ const handleEditClick = (book) => {
                     <img
                       src={
                         data.coverImage.replace(/\\/g, "/")
-                          // : "/images/default-cover.jpg"
+                        // : "/images/default-cover.jpg"
                       }
                       alt="Cover Image"
                       className="w-full h-full object-contain"
@@ -103,7 +123,7 @@ const handleEditClick = (book) => {
           </TableBody>
         </Table>
       </Card>
-       {/* {editingBook && (
+      {/* {editingBook && (
               <UpdateCategory category={editingCategory} onClose={handleEditClose} />
             )} */}
     </div>
