@@ -5,7 +5,7 @@ import ApiResponse from "../utils/apiResponse.js";
 import Book from "../models/book.model.js";
 import mongoose from "mongoose";
 import Review from "../models/review.model.js";
-
+import { pagination } from "../utils/pagination.js";
 
 
 // Utility function to calculate book ratings
@@ -122,8 +122,36 @@ const deleteReviewAndRating = asyncHandler(async (req, res) => {
   }
 });
 
+
+
+//GET reviews of each book
+      const getReviewsAndRating = asyncHandler(async(req,res)=>{
+          try {
+            const {bookId} = req.params;
+            console.log("THis is bookid",bookId);
+            if(!bookId){
+              throw new ApiError(400,"Book not found");
+            }
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 5;
+
+            const reviewsQuery = await Review.find({book:bookId}).select('-book');
+            console.log("THis is query", reviewsQuery);
+            const paginatedReviews = await pagination( reviewsQuery,page,limit);
+
+            res.status(200).json(new ApiResponse(200,paginatedReviews,
+              "Successfully paginated"))
+
+          } catch (error) {
+            throw new ApiError (500,"Something went wrong",error.message);
+          }
+      })
+
+
+
 export {
   addReviewAndRating,
   updateReviewAndRating,
   deleteReviewAndRating,
+  getReviewsAndRating,
 };

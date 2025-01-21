@@ -63,7 +63,7 @@ const updateCategory = asyncHandler(async(req,res)=>{
 const deleteCategory = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const deletedCategory = await Category.findByIdAndDelete(id);
+    const deletedCategory = await categoryModel.findByIdAndDelete(id);
 
     if (!deletedCategory) {
         throw new ApiError(404, 'Category not found');

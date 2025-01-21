@@ -1,5 +1,5 @@
 import {v2 as cloudinary} from "cloudinary"
-import fs, { unlink } from "fs";
+import fs from "fs";
 import 'dotenv/config';
 import { ApiError } from "./apiError.js";
 import { response } from "express";
@@ -13,6 +13,7 @@ cloudinary.config({
 });
 
 
+
 const uploadOnCloudinary = async(localFilePath) =>{
     console.log(uploadOnCloudinary);
     try {
@@ -20,14 +21,15 @@ const uploadOnCloudinary = async(localFilePath) =>{
             throw new ApiError(400,"File path not found");
         }
         const response = await cloudinary.uploader.upload(localFilePath
-            ,{resource_type:"auto",folder: 'BookOwl'});
+            ,{resource_type:"auto",folder:'BookOwl', public_id:"",overwrite: true, invalidate: true });
        // If file has been uploaded successfully
             console.log("File is uploaded on cloudinary",response.url);
+            console.log("This is response",response);
             return response;
 }
 catch (error) {
-    console.log(localFilePath);
-            fs.unlinkSync(localFilePath)//remove the locally saved temporary file as the upload operation failed 
+
+        fs.unlinkSync(localFilePath); // remove the locally saved temporary file as the upload operation failed 
             throw new ApiError(500,"locally saved temporary file as the upload operation failed ");
     }
 }
