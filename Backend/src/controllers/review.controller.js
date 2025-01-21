@@ -125,27 +125,29 @@ const deleteReviewAndRating = asyncHandler(async (req, res) => {
 
 
 //GET reviews of each book
-      const getReviewsAndRating = asyncHandler(async(req,res)=>{
-          try {
-            const {bookId} = req.params;
-            console.log("THis is bookid",bookId);
-            if(!bookId){
-              throw new ApiError(400,"Book not found");
-            }
-            const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 5;
+const getReviewsAndRating = asyncHandler(async (req, res) => {
+  try {
+    const { bookId } = req.params;
 
-            const reviewsQuery = await Review.find({book:bookId}).select('-book');
-            console.log("THis is query", reviewsQuery);
-            const paginatedReviews = await pagination( reviewsQuery,page,limit);
-              console.log("THis is paginated one",paginatedReviews);
-            res.status(200).json(new ApiResponse(200,paginatedReviews,
-              "Successfully paginated"))
+    if (!bookId) {
+      throw new ApiError(400, "Book not found");
+    }
 
-          } catch (error) {
-            throw new ApiError (500,"Something went wrong",error.message);
-          }
-      })
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+
+    // Create the query object
+    const reviewsQuery = Review.find({ book: bookId }).select("-book");
+
+    // Call the pagination function
+    const paginatedReviews = await pagination(reviewsQuery, page, limit);
+
+    res.status(200).json(new ApiResponse(200, paginatedReviews, "Successfully paginated"));
+  } catch (error) {
+    throw new ApiError(500, "Something went wrong", error.message);
+  }
+});
+
 
 
 

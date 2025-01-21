@@ -23,7 +23,7 @@ const addBook = asyncHandler(async (req, res) => {
   const authorName = bookDetails.author;
   let categoryIds = bookDetails.category;
   console.log("This is category ids", categoryIds);
-  const coverLocalPath = req.files?req.file.path : null;
+  // const coverLocalPath = req.files?req.file.path : null;
 
   const coverImageLocalPath = req.file ? req.file.path : null;
   console.log("FILE", req.file);
@@ -74,23 +74,23 @@ const addBook = asyncHandler(async (req, res) => {
           )
         );
       }
-
       bookDetails.category = categoryIds;
       console.log("The book category",bookDetails.category);
       bookDetails.author = author._id;
-    if (categoryIds && typeof categoryIds === "string") {
-      // Split category IDs string into an array
-      categoryIds = categoryIds.split(",").map((categoryId) => {
-        if (mongoose.Types.ObjectId.isValid(categoryId)) {
-          return new mongoose.Types.ObjectId(categoryId); // Convert to ObjectId
-        } else {
-          throw new ApiError(400, `Invalid category ID: ${categoryId}`);
-        }
-      });
-    } else {
-      categoryIds = []; // If no categories, set it as an empty array
-    }
 
+      if (categoryIds && typeof categoryIds === "string") {
+        // Split category IDs string into an array
+        categoryIds = categoryIds.split(",").map((categoryId) => {
+          if (mongoose.Types.ObjectId.isValid(categoryId)) {
+            return new mongoose.Types.ObjectId(categoryId); // Convert to ObjectId
+          } else {
+            throw new ApiError(400, `Invalid category ID: ${categoryId}`);
+          }
+        });
+      } else {
+        categoryIds = []; // If no categories, set it as an empty array
+      }
+      
 
     //Creation on book
     const savedBook = await Book.create(bookDetails);
