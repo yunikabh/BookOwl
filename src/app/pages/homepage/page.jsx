@@ -1,14 +1,16 @@
 
-import Bigdiscount from "./_components/bigdiscount"
-import Main from "./_components/main"
+import Bigdiscount from "./_components/bigdiscount";
+import Main from "./_components/main";
 // import Sidebar from "./_components/sidebar"
 // import Bookgrid from "./_components/bookgrid"
-import Firstdesign from "./_components/firstdesign"
-import CollectionCarousel from "./_components/CollectionCarousel"
-import DealsCarousel from "./_components/DealsCarousel"
-import Secondmain from "./_components/SecondMain"
+import Firstdesign from "./_components/firstdesign";
+import CollectionCarousel from "./_components/CollectionCarousel";
+import DealsCarousel from "./_components/DealsCarousel";
+import Secondmain from "./_components/SecondMain";
+import BestSeller from "./_components/BestSeller";
+
 // import NewArrivals from "./_components/NewArrivals"
-import End from "./_components/End"
+import End from "./_components/End";
 
 export default function Homepage(){
     return(
@@ -22,6 +24,7 @@ export default function Homepage(){
             <Bigdiscount/>
             <Secondmain/>
             {/* <NewArrivals/> */}
+            <BestSeller />
             <End/>
 
             
