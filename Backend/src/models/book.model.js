@@ -40,10 +40,10 @@ const bookSchema = new mongoose.Schema({
           type: Number,
           default: 0 
          },
-       coverImage: {
-            type: String,
-            required:true
-           }, // URL or path of the book cover image
+      //  coverImage: {
+      //       type: String,
+      //       // required:true
+      //      }, // URL or path of the book cover image
  
        ISBN: {
          type: String,

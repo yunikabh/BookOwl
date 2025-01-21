@@ -22,7 +22,8 @@ const addBook = asyncHandler(async (req, res) => {
   const bookDetails = req.body;
   const authorName = bookDetails.author;
   let categoryIds = bookDetails.category;
-  // const coverLocalPath = req.files?req.file.path : null;
+  console.log("This is category ids", categoryIds);
+  const coverLocalPath = req.files?req.file.path : null;
 
   const coverImageLocalPath = req.file ? req.file.path : null;
   console.log("FILE", req.file);
@@ -40,7 +41,7 @@ const addBook = asyncHandler(async (req, res) => {
   }
   bookDetails.coverImage = coverImageURL.url;
 
-  //check if the book is added already or not
+  // check if the book is added already or not
   try {
     const existingBook = await Book.findOne({ ISBN: bookDetails.ISBN })
       .populate("category")
@@ -72,7 +73,11 @@ const addBook = asyncHandler(async (req, res) => {
             "Book already exists with this ISBN "
           )
         );
-    }
+      }
+
+      bookDetails.category = categoryIds;
+      console.log("The book category",bookDetails.category);
+      bookDetails.author = author._id;
     if (categoryIds && typeof categoryIds === "string") {
       // Split category IDs string into an array
       categoryIds = categoryIds.split(",").map((categoryId) => {
@@ -86,8 +91,6 @@ const addBook = asyncHandler(async (req, res) => {
       categoryIds = []; // If no categories, set it as an empty array
     }
 
-    bookDetails.category = categoryIds;
-    bookDetails.author = author._id;
 
     //Creation on book
     const savedBook = await Book.create(bookDetails);
@@ -212,8 +215,7 @@ const updateBooks = asyncHandler(async (req, res) => {
     // } else {
     //   categoryIds = []; // If no categories, set it as an empty array
     // }
-
-
+    
     if (categoryIds && typeof categoryIds === "string") {
       // Split category IDs string into an array
       categoryIds = categoryIds.split(",").map((categoryId) => {
@@ -226,6 +228,7 @@ const updateBooks = asyncHandler(async (req, res) => {
     } else {
       categoryIds = []; // If no categories, set it as an empty array
     }
+
 
     // Update the book using findByIdAndUpdate with { new: true } to return the updated document
     const updateBook = await Book.findByIdAndUpdate(id, updatedData, {

@@ -138,7 +138,7 @@ const deleteReviewAndRating = asyncHandler(async (req, res) => {
             const reviewsQuery = await Review.find({book:bookId}).select('-book');
             console.log("THis is query", reviewsQuery);
             const paginatedReviews = await pagination( reviewsQuery,page,limit);
-
+              console.log("THis is paginated one",paginatedReviews);
             res.status(200).json(new ApiResponse(200,paginatedReviews,
               "Successfully paginated"))
 

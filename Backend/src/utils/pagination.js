@@ -25,6 +25,7 @@ return {
 
 }
     } catch (error) {
+        throw new ApiError(500,"Something went wrong during pagination",error.message);
         
     }
 }
