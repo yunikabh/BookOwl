@@ -78,6 +78,8 @@ const SideItems = [
 export default function SideBarAdmin() {
   const router = useRouter();
   const logout = async ()=>{
+  const confirmLogout = confirm("Are you sure you want to Logout?");
+    if (!confirmLogout) return;
 try {
   localStorage.removeItem("token");
   await $axios.post("/auth/logout");
