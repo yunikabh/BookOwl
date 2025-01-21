@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-// import { z } from "zod";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,10 +18,8 @@ import Select from "react-tailwindcss-select";
 import $axios from "@/lib/axios.instance";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
 const formSchema = z.object({
   bookName: z.string().min(1, "Book Name is required"),
-  // author: z.object({ authorName: z.string().min(1, "Author's Name is required") }),
   author: z.string().min(1, "Author's Name is required"),
   bookSummary: z.string(),
   price: z.preprocess(
@@ -38,43 +36,32 @@ const formSchema = z.object({
   ),
   category: z.array(z.string()),
   language: z.string(),
-  // rating: z.preprocess(
-  //   (value) => parseFloat(value),
-  //   z
-  //     .number()
-  //     .min(1, { message: "Rating must be at least 1." })
-  //     .max(5, { message: "Rating cannot exceed 5." })
-  // ),
+
   ISBN: z.preprocess(
     (value) => parseFloat(value),
     z.number().positive({ message: "Pages must be a positive number." })
   ),
   publisher: z.string(),
   mood: z.array(z.string()),
-  //   customTags: z.array(z.string()),
   stock: z.preprocess(
     (value) => parseFloat(value),
     z.number().positive({ message: "Pages must be a positive number." })
   ),
   coverImage: z
-  .any() // Start with `any()` for flexibility.
-  .refine(
-    (fileList) => fileList instanceof FileList && fileList.length > 0,
-    "Cover image is required"
-  ),
+    .any()
+    .refine(
+      (fileList) => fileList instanceof FileList && fileList.length > 0,
+      "Cover image is required"
+    ),
 });
-export default function UpdateBooks() {
-  const [data, setData] = useState([]);
-  const [bookData, setBookData] = useState(null);
+export default function UpdateBooks({ data, bookId }) {
+  console.log("form data:", data);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const bookId = searchParams.get("id");
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
-    if (bookId) {
-      fetchBookDetails();
-    }
     getCategory();
-  }, [bookId]);
+  }, []);
 
   const getCategory = async () => {
     const CategoryResponse = await $axios.get("/category/getCategory");
@@ -82,46 +69,28 @@ export default function UpdateBooks() {
     if (!CategoryResponse) {
       throw new Error(`HTTP erroe!:Status: ${CategoryResponse.status}`);
     }
-    setData(CategoryResponse?.data.data);
+    setCategories(CategoryResponse?.data.data);
   };
-  const fetchBookDetails = async () => {
-    try {
-      const response = await $axios.get(`/book/${bookId}`);
-      setBookData(response?.data.data);
-    } catch (error) {
-      console.error("Error fetching book details:", error);
-    }
-  };
-
- 
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      bookName: "",
-      author: "",
-      bookSummary: "",
-      price: 1,
-      pages: 1,
-      publishedDate: "",
-      category: [],
-      // rating: "",
-      ISBN: 1,
-      language: "",
-      publisher: "",
-      mood: [],
-      //   customTags: [],
-      stock: 1,
+      bookName: data?.bookName,
+      author: data?.author.authorName,
+      bookSummary: data?.bookSummary,
+      price: data?.price,
+      pages: data?.pages,
+      publishedDate: data?.publishedDate,
+      category: data?.category?.map((item) => item.categoryName) || [], 
+      language: data?.language,
+      ISBN: data?.ISBN,
+      publisher: data?.publisher,
+      mood: data?.mood || [],
+      stock: data?.stock,
       coverImage: null,
     },
   });
-  useEffect(() => {
-    if (bookData) {
-      form.reset(bookData); // Populate form with book details when data is available
-    }
-  }, [bookData, form]);
-
-  const options = data.map((CategoryItems) => ({
+  const options = categories.map((CategoryItems) => ({
     value: CategoryItems._id,
     label: CategoryItems.categoryName,
   }));
@@ -152,7 +121,10 @@ export default function UpdateBooks() {
     formData.append("price", values.price);
     formData.append("pages", values.pages);
     formData.append("publishedDate", values.publishedDate);
-    formData.append("category", values.category);
+    // formData.append("category", values.category);
+    values.category.forEach((item) => {
+      formData.append("category", item);
+    });
     formData.append("language", values.language);
     // formData.append("rating", values.rating);
     formData.append("ISBN", values.ISBN);
@@ -168,17 +140,20 @@ export default function UpdateBooks() {
     }
 
     try {
-      const response = await $axios.put("/book/updateBook/${bookId}", formData);
+      const response = await $axios.put(`/book/updateBook/${bookId}`, formData);
       console.log("Book added successfully:", response.data);
       router.push("/admin/books");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
+  if (!data) {
+    return <div>Loading...</div>; // Loading state while data is being fetched
+  }
 
   return (
     <div className="w-full flex flex-col items-center">
-      <h1 className="text-3xl text-center mt-[50px]">Add Book</h1>
+      <h1 className="text-3xl text-center mt-[50px]">Update Book</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -445,5 +420,3 @@ export default function UpdateBooks() {
     </div>
   );
 }
-
-

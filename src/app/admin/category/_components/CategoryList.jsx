@@ -12,6 +12,7 @@ import {
 import { Pencil, Trash } from "lucide-react";
 import UpdateCategory from "./UpdateCategory";
 import { useState } from "react";
+import $axios from "@/lib/axios.instance";
 
 export default function CategoryList({ data }) {
   //   const [searchBook,setSearchBook] = useState("");
@@ -27,6 +28,27 @@ export default function CategoryList({ data }) {
   const handleEditClose = () => {
     setEditingCategory(null);
   };
+  const handleDeleteClick = async (items)=>{
+const categoryId = items._id;
+const confirmDelete = confirm("Are you sure you want to delete?");
+if (!confirmDelete) return;
+
+try {
+  const response = await $axios.delete(`/category/deleteCategory/${categoryId}`);
+  console.log("Delete response:", response);
+  if (response.status ===200){
+    alert("category deleted successfully");
+    window.location.reload();
+  }
+  else{
+    alert("failed to delete category");
+  }
+  
+} catch (error) {
+ console.error(error);
+ alert("failed to delete category") ;
+}
+  }
   return (
     <div>
       {/* <div className="w-full flex justify-end">

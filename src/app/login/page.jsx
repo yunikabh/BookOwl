@@ -23,11 +23,9 @@ const formSchema = z.object({
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
-    .regex(/[A-Z]/, "Password must include at least one uppercase letter")
     .regex(/[a-z]/, "Password must include at least one lowercase letter")
     .regex(/[0-9]/, "Password must include at least one number"),
-    email: z.string().email("Email must be a valid address"),
-  
+  email: z.string().email("Email must be a valid address"),
 });
 
 export default function LoginPage() {
@@ -49,7 +47,6 @@ export default function LoginPage() {
     console.log(response);
     if (!response) {
       throw new Error(`HTTP error!: Status: ${response.status}`);
-
     }
     if (response.status === 200) {
       // Store the token in localStorage or cookie
@@ -57,9 +54,9 @@ export default function LoginPage() {
       const user = await response.data;
       // console.log(user)
       // console.log(response);
-      localStorage.setItem("token", response.data.data);
-      const role = user.data?.role;
-      console.log(role);
+      localStorage.setItem("token", response.data.data.accessToken);
+      const role = user.data?.user.role;
+      console.log("role:", role);
       if (role === "admin") {
         router.push("/admin");
       } else {
@@ -109,30 +106,30 @@ export default function LoginPage() {
                 <h2 className="font-bold text-[#8d767c]">Login to continue</h2>
 
                 {/* Email Field */}
-                                <FormField
-                                  control={form.control}
-                                  name="email"
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormControl>
-                                        <div className="relative w-full">
-                                          <Mail className="absolute left-2.5 top-2.5" size={18} />
-                                          <input
-                                            type="email"
-                                            placeholder="Enter your email address"
-                                            {...field}
-                                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
-                                          />
-                                        </div>
-                                      </FormControl>
-                                      <FormMessage />
-                                    </FormItem>
-                                  )}
-                                />
-                
-                               
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative w-full">
+                          <Mail
+                            className="absolute left-2.5 top-2.5"
+                            size={18}
+                          />
+                          <input
+                            type="email"
+                            placeholder="Enter your email address"
+                            {...field}
+                            className="w-full px-12 py-2 text-[#c2918b] rounded-full"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                
                 {/* Password Field */}
                 <FormField
                   control={form.control}
@@ -141,13 +138,22 @@ export default function LoginPage() {
                     <FormItem>
                       <FormControl>
                         <div className="relative w-full">
-                          <Lock className="absolute left-2.5 top-2.5" size={18} />
+                          <Lock
+                            className="absolute left-2.5 top-2.5"
+                            size={18}
+                          />
                           <button
                             type="button"
                             className="absolute right-2.5 top-2.5"
-                            onClick={() => setIsPasswordVisible((prev) => !prev)}
+                            onClick={() =>
+                              setIsPasswordVisible((prev) => !prev)
+                            }
                           >
-                            {isPasswordVisible ? <Eye size={18} /> : <EyeOff size={18} />}
+                            {isPasswordVisible ? (
+                              <Eye size={18} />
+                            ) : (
+                              <EyeOff size={18} />
+                            )}
                           </button>
                           <input
                             type={isPasswordVisible ? "text" : "password"}
@@ -162,33 +168,31 @@ export default function LoginPage() {
                   )}
                 />
 
-              
-                
                 {/* Submit Button */}
                 <Button
                   className="bg-[#5d768a] rounded-full w-[150px]"
                   type="submit"
                 >
-                 Login
+                  Login
                 </Button>
                 <Button className="text-sm mt-2 bg-slate-100 text-[#a45254]">
-              Login with Google{" "}
-            </Button>
-            <div className="flex">
-              <p className="text-[#a75257] text-sm">New User?</p>
-              <a
-                href="/signuppage"
-                className="text-sm text-[#8d767c] hover:underline"
-              >
-                Sign Up
-              </a>
+                  Login with Google{" "}
+                </Button>
+                <div className="flex">
+                  <p className="text-[#a75257] text-sm">New User?</p>
+                  <a
+                    href="/signuppage"
+                    className="text-sm text-[#8d767c] hover:underline"
+                  >
+                    Sign Up
+                  </a>
                 </div>
               </form>
             </Form>
           </div>
         </div>
       </Card>
-      
+
       {/* Logo Image Outside of Card */}
       <div className="absolute top-4 right-20">
         <img
