@@ -65,9 +65,26 @@ try {
 const updateCategory = asyncHandler(async(req,res)=>{
     const {id} = req.params;
     const{name,description} = req.body;
-    
+    const categoryIcon = req.file;
+
+    const categoryImageLocalPath = categoryIcon ? categoryIcon.path :null;
+
+    console.log(categoryIcon);
+    if(!categoryImageLocalPath){
+                throw new ApiError(400,"category image is required");
+
+    }
+
+  const categoryImageUrl=await  uploadOnCloudinary(categoryImageLocalPath);
+  console.log("This is author image url",categoryImageUrl);
+
+  if(!categoryImageUrl|| !categoryImageUrl.url){
+    throw new ApiError(500, "Failed to upload category icon");
+  }
+  console.log("THis is category vitra ko url",categoryImageUrl.url)
+
     try{
-            const updatedCategory = await categoryModel.findByIdAndUpdate(id,{categoryName:name,description},{ new: true, runValidators: true });
+            const updatedCategory = await categoryModel.findByIdAndUpdate(id,{categoryName:name,categoryIcon:categoryImageUrl.url,description},{ new: true, runValidators: true });
             if(!updatedCategory){
                 throw new ApiError(404, 'Category not found');
             }

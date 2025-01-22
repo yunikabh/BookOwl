@@ -9,7 +9,7 @@ const router = Router();
 
 router.route('/addCategory').post(verifyUser,upload.single("categoryIcon"),addCategory);
 router.route('/getCategory').get(getCategory);
-router.route('/updateCategory/:id').put(verifyUser,updateCategory);
+router.route('/updateCategory/:id').put(verifyUser,upload.single("categoryIcon"),updateCategory);
 router.route('/deleteCategory/:id').delete(verifyUser,deleteCategory);
 
 
