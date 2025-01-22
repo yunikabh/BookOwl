@@ -244,11 +244,11 @@ const deleteBooks = asyncHandler(async (req, res) => {
     const newArrivalBooks = asyncHandler(async(req,res) =>{
        try {
             const {limit} = req.query;
-            const maxBooks = limit ? parseInt(limit, 8) :10;
+            const maxBooks = limit ? parseInt(limit, 8) :8;
 
             //find and sort books by 'createdAt' in descending order
             const books = await Book.find()
-            .sort(createdAt = -1)
+            .sort({createdAt : -1})
             .limit(maxBooks)
             .populate("category","categoryName");
 
@@ -263,25 +263,29 @@ const deleteBooks = asyncHandler(async (req, res) => {
 
     //Deals of week books by lowest price . 
 
-    // const dealsOfTheWeek = asyncHandler(async(req,res) =>{
-    //         try {
-              
-    //         } catch (error) {
-              
-    //         }
+    const dealsOfTheWeek = asyncHandler(async(req,res) =>{
+            try {
+              const {limit} = req.query;
+              const maxBooks = limit ? parseInt(limit,8) :8
+
+              const books = await Book.find()
+              .sort({price : 1})
+              .limit(maxBooks)
+              .populate("category","categoryName");
+
+              res.status(200).json( new ApiResponse(200,books,"The low priced books are retrived"));
+            } catch (error) {
+                         throw new ApiError(500, "Error filtering deals of the week  books", error.message); 
+
+            }
+    })
 
 
 
 
 
-    // })
-
-
-    
 
 
 
 
-
-
-export { addBook, getBooks, getBookById, updateBooks, deleteBooks,newArrivalBooks };
+export { addBook, getBooks, getBookById, updateBooks, deleteBooks,newArrivalBooks,dealsOfTheWeek };
