@@ -8,6 +8,8 @@ import authorModel from "../models/author.model.js";
 import categoryModel from "../models/category.model.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { pagination } from "../utils/pagination.js";
+
 
 //add book
 //edit book
@@ -109,6 +111,8 @@ const addBook = asyncHandler(async (req, res) => {
 //getBooks all
 const getBooks = asyncHandler(async (req, res) => {
   try {
+    const page = parseInt(req.query.page || 1);
+    const limit = parseInt(req.query.limit || 8) ;
     const books = await Book.find()
       .populate("category", "categoryName")
       .populate("author");
@@ -116,9 +120,11 @@ const getBooks = asyncHandler(async (req, res) => {
       throw new ApiError(404, "Book not found");
     }
 
+    const bookQuery = await  Book.find();
+    const paginatedBooks = await pagination(bookQuery, page, limit);
     res
       .status(200)
-      .json(new ApiResponse(200, books, "Book successfully retrived"));
+      .json(new ApiResponse(200, paginatedBooks, "Book successfully retrived"));
   } catch (error) {
     throw new ApiError(404, "Problem in fetching book", error.message);
   }
@@ -250,7 +256,8 @@ const deleteBooks = asyncHandler(async (req, res) => {
             const books = await Book.find()
             .sort({createdAt : -1})
             .limit(maxBooks)
-            .populate("category","categoryName");
+            .populate("category","categoryName")
+            .populate("author");
 
             res.status(200).json( new ApiResponse(200,books,"The newly added books are retrived"));
 
@@ -271,7 +278,9 @@ const deleteBooks = asyncHandler(async (req, res) => {
               const books = await Book.find()
               .sort({price : 1})
               .limit(maxBooks)
-              .populate("category","categoryName");
+              .populate("category","categoryName")
+              .populate("author")
+
 
               res.status(200).json( new ApiResponse(200,books,"The low priced books are retrived"));
             } catch (error) {
@@ -279,13 +288,5 @@ const deleteBooks = asyncHandler(async (req, res) => {
 
             }
     })
-
-
-
-
-
-
-
-
 
 export { addBook, getBooks, getBookById, updateBooks, deleteBooks,newArrivalBooks,dealsOfTheWeek };
