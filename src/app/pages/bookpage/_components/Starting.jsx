@@ -3,26 +3,33 @@
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 
-export default function Starting() {
+export default function Starting({ data }) {
   // Example rating value (you can pass this dynamically later)
-  const rating = 4.5;
+  const rating = data.averageRating || 0;
 
+  console.log(data);
   return (
     <div className="p-6 max-w-5xl mx-auto bg-white shadow  flex flex-col lg:flex-row gap-8 ">
       {/* Left Column: Book Cover */}
       <div className="flex flex-col items-center w-full lg:w-1/2">
         <img
-          src="/photos/cursed.jpeg"
-          alt="Book"
-          className="w-60 h-96 object-cover mb-4"
+          src={
+            data?.coverImage
+              ? data.coverImage.replace(/\\/g, "/") // Replace backslashes with forward slashes
+              : "/images/default-cover.jpg" // Fallback to default cover image
+          }
+          alt="Cover Image"
+          className="w-full h-full object-contain rounded-sm"
         />
       </div>
 
       {/* Right Column: Book Details */}
       <div className="flex flex-col mt-24 lg:mt-3 w-full lg:w-1/2">
-        <p className="text-gray-500 text-lg italic">By Eryn Brooks</p>
+        <p className="text-gray-500 text-lg italic">
+          By {data.author.authorName}
+        </p>
         <h1 className="text-2xl font-bold text-[#b68a6a] mb-2">
-          Cursed By the Black Heart
+          {data.bookName}
         </h1>
         <div className="flex items-center mb-2">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -39,27 +46,30 @@ export default function Starting() {
           <span className="ml-2 text-gray-600">({rating})</span>
         </div>
 
-        <p className="text-lg font-semibold text-green-600 mb-3">Price: 400</p>
-        <p className="text-gray-600 mb-3">
-          The story explores themes of lies, the blurring of lines between
-          heroes and villains, and the search for peace with the past.
+        <p className="text-lg font-semibold text-green-600 mb-3">
+          Price: Rs {data.price}
         </p>
-        <p className="text-gray-500">Genre: Fantasy</p>
-        <p className="text-gray-500">Pages: 157</p>
-        <p className="text-gray-500">Published Date: October 3, 2024</p>
-        <p className="text-gray-500">Language:English</p>
-        <p className="text-gray-500">ISBN:9781501110368</p>
-        <p className="text-gray-500">Published By: Darkstone Publishing House</p>
-        <p className="text-gray-500">Mood:[Intense,Suspenseful,Emotional,Mysterious]</p>
-        
-
+        <p className="text-gray-600 mb-3">{data.bookSummary}</p>
+        <p className="text-gray-500">
+          {" "}
+          Category:{" "}
+          {data.category.length > 0
+            ? data.category.map((cat) => cat.categoryName).join(", ")
+            : "N/A"}
+        </p>
+        <p className="text-gray-500">Pages: {data.pages}</p>
+        <p className="text-gray-500">Published Date: {data.publishedDate}</p>
+        <p className="text-gray-500">Language: {data.language}</p>
+        <p className="text-gray-500">ISBN: {data.ISBN}</p>
+        <p className="text-gray-500">Published By: {data.publisher}</p>
+        <p className="text-gray-500">
+          Mood: {data.mood.length > 0 ? data.mood.join(", ") : "N/A"}
+        </p>
         <div className="flex gap-4 mt-6">
           <Button className="rounded-full bg-[#265073]">Buy Now</Button>
           <Button className="rounded-full bg-[#265073]">Add To Cart</Button>
         </div>
       </div>
     </div>
-
-    
   );
 }

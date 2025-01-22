@@ -11,7 +11,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import { ChevronDown, UserCircle, ShoppingCart, Bell, Search } from "lucide-react";
+import { ChevronDown, UserCircle, Search } from "lucide-react";
+import $axios from "@/lib/axios.instance";
+import { useRouter } from "next/navigation";
 
 const navItems = [
   { id: 1, name: "Home", href: "/" },
@@ -20,6 +22,18 @@ const navItems = [
 ];
 
 export default function Navbar1() {
+  const router = useRouter();
+  const logout = async () =>{
+    const confirmLogout = confirm("Are you sure you want to logout?");
+    if (!confirmLogout) return;
+try {
+  localStorage.removeItem("token");
+  await $axios.post("/auth/logout");
+  router.push("/login");
+} catch (error) {
+  console.log(error);
+}
+  }
   return (
     <div className="flex justify-between py-2 px-[5%]">
       {/* Logo */}
@@ -93,7 +107,7 @@ export default function Navbar1() {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <button
-                  onClick={() => alert("Logout clicked")}
+                  onClick={logout}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Logout
