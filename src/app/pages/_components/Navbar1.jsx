@@ -21,10 +21,11 @@ const navItems = [
 
 export default function Navbar1() {
   return (
-    <div
-      className="w-full absolute -mt-16 sm:-mt-4 md:-mt-8 lg:-mt-16 flex justify-between items-center px-4 sm:px-6 lg:px-10 z-50"
-      data-aos="fade-in"
-    >
+    // <div
+    //   className="w-full absolute -mt-16 sm:-mt-4 md:-mt-8 lg:-mt-16 flex justify-between items-center px-4 sm:px-6 lg:px-10 z-50"
+    //   data-aos="fade-in"
+    // >
+    <div className="flex justify-between py-2 px-[5%]">
       {/* Logo */}
       <div>
         <img src="/photos/logo.png" alt="Logo" className="h-16" />

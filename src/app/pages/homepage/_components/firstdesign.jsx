@@ -6,7 +6,7 @@ import "aos/dist/aos.css"; // Import AOS styles
 export default function FirstDesign() {
   return (
     <div
-      className="relative px-[5%] bg-[#af886b] text-white p-8 flex flex-col lg:flex-row items-center justify-between rounded-lg mt-16"
+      className=" px-[5%] bg-[#af886b] text-white p-8 flex flex-col lg:flex-row items-center justify-between"
       data-aos="fade-down"
     >
       {/* Left Section */}
