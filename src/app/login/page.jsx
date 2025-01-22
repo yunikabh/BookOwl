@@ -101,7 +101,7 @@ export default function LoginPage() {
                 className="space-y-6 w-full flex flex-col items-center"
               >
                 <h1 className="text-2xl font-bold italic text-[#6d433d]">
-                  Welcome To Book Owl
+                  Welcome Back !
                 </h1>
                 <h2 className="font-bold text-[#8d767c]">Login to continue</h2>
 

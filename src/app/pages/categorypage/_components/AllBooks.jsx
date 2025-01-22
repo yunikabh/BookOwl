@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+
 
 const booksData = [
     // Fiction Books
@@ -103,125 +104,126 @@ const booksData = [
 ];
 
 export default function AllBooks() {
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedMoods, setSelectedMoods] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedMoods, setSelectedMoods] = useState([]);
+ 
+  // Set initial category based on URL parameter
+  
+  const booksByCategory = booksData.reduce((acc, book) => {
+    if (!acc[book.category]) acc[book.category] = [];
+    acc[book.category].push(book);
+    return acc;
+  }, {});
 
+  const booksByMood = booksData.reduce((acc, book) => {
+    if (!acc[book.mood]) acc[book.mood] = [];
+    acc[book.mood].push(book);
+    return acc;
+  }, {});
 
-    const booksByCategory = booksData.reduce((acc, book) => {
-        if (!acc[book.category]) acc[book.category] = [];
-        acc[book.category].push(book);
-        return acc;
-    }, {});
+  const categories = Object.keys(booksByCategory);
+  const moods = Object.keys(booksByMood);
 
-    const booksByMood = booksData.reduce((acc, book) => {
-        if (!acc[book.mood]) acc[book.mood] = [];
-        acc[book.mood].push(book);
-        return acc;
-      }, {});
-
-    const categories = Object.keys(booksByCategory);
-    const moods = Object.keys(booksByMood);
-
-    const handleCategoryChange = (category) => {
-        setSelectedCategories((prev) =>
-            prev.includes(category)
-                ? prev.filter((c) => c !== category)
-                : [...prev, category]
-        );
-    };
-
-    const handleMoodChange = (mood) => {
-        setSelectedMoods((prev) =>
-          prev.includes(mood)
-            ? prev.filter((m) => m !== mood)
-            : [...prev, mood]
-        );
-      };
-
-    // const displayedBooks = selectedCategories.length
-    //     ? booksData.filter((book) => selectedCategories.includes(book.category))
-    //     : booksData;
-
-    const displayedBooks = booksData.filter(
-        (book) =>
-          (!selectedCategories.length || selectedCategories.includes(book.category)) &&
-          (!selectedMoods.length || selectedMoods.includes(book.mood))
-      );
-      return (
-        <div className="flex flex-col relative mt-20 ">
-          <div className="flex flex-1">
-            <aside className="w-64 bg-gray-100 p-4 mt-12">
-              <h2 className="text-xl font-semibold text-gray-700 mb-4">Filter</h2>
-    
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">Type</h3>
-                <ul className="space-y-2">
-                  {categories.map((category) => (
-                    <li key={category}>
-                      <label className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          value={category}
-                          checked={selectedCategories.includes(category)}
-                          onChange={() => handleCategoryChange(category)}
-                          className="form-checkbox h-5 w-5 text-blue-500"
-                        />
-                        <span className="text-gray-700 capitalize">
-                          {category.replace("-", " ")}
-                        </span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-    
-              <div>
-                <h3 className="text-lg font-medium text-gray-800 mb-2">Mood</h3>
-                <ul className="space-y-2">
-                  {moods.map((mood) => (
-                    <li key={mood}>
-                      <label className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          value={mood}
-                          checked={selectedMoods.includes(mood)}
-                          onChange={() => handleMoodChange(mood)}
-                          className="form-checkbox h-5 w-5 text-blue-500"
-                        />
-                        <span className="text-gray-700 capitalize">
-                          {mood.replace("-", " ")}
-                        </span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </aside>
-   
-                <main className="flex-1 p-6">
-                    <ScrollArea className="space-y-6">
-                        {/* <h2 className="text-2xl font-semibold text-gray-700 mb-4">Books</h2> */}
-                        <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-                            {displayedBooks.map((book) => (
-                                <Card key={book.id} className="w-full shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
-                                    <CardHeader className="text-center">
-                                        <img
-                                            src="/photos/fiction.jpg"
-                                            alt={book}
-                                            className=" object-cover rounded-lg"
-                                        />
-                                    </CardHeader>
-                                    <CardContent>
-                                        <h3 className="text-lg font-semibold text-gray-800">{book.title}</h3>
-                                        <p className="text-sm text-gray-600">by {book.author}</p>
-                                        <p className="mt-2 text-xl font-bold text-gray-900">{book.price}</p>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </ScrollArea>
-                </main>
-            </div>
-        </div>
+  const handleCategoryChange = (category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
     );
+  };
+
+  const handleMoodChange = (mood) => {
+    setSelectedMoods((prev) =>
+      prev.includes(mood)
+        ? prev.filter((m) => m !== mood)
+        : [...prev, mood]
+    );
+  };
+
+  const displayedBooks = booksData.filter(
+    (book) =>
+      (!selectedCategories.length || selectedCategories.includes(book.category)) &&
+      (!selectedMoods.length || selectedMoods.includes(book.mood))
+  );
+
+  return (
+    <div className="flex flex-col relative mt-20">
+      <div className="flex flex-1">
+        <aside className="w-64 bg-gray-100 p-4 mt-12">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">Filter</h2>
+          <div className="mb-6">
+            <h3 className="text-lg font-medium text-gray-800 mb-2">Type</h3>
+            <ul className="space-y-2">
+              {categories.map((category) => (
+                <li key={category}>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      value={category}
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => handleCategoryChange(category)}
+                      className="form-checkbox h-5 w-5 text-blue-500"
+                    />
+                    <span className="text-gray-700 capitalize">
+                      {category.replace("-", " ")}
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">Mood</h3>
+            <ul className="space-y-2">
+              {moods.map((mood) => (
+                <li key={mood}>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      value={mood}
+                      checked={selectedMoods.includes(mood)}
+                      onChange={() => handleMoodChange(mood)}
+                      className="form-checkbox h-5 w-5 text-blue-500"
+                    />
+                    <span className="text-gray-700 capitalize">
+                      {mood.replace("-", " ")}
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+        <main className="flex-1 p-6">
+          <ScrollArea className="space-y-6">
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+              {displayedBooks.map((book) => (
+                <Card
+                  key={book.id}
+                  className="w-full shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+                >
+                  <CardHeader className="text-center">
+                    <img
+                      src="/photos/fiction.jpg"
+                      alt={book.title}
+                      className="object-cover rounded-lg"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {book.title}
+                    </h3>
+                    <p className="text-sm text-gray-600">by {book.author}</p>
+                    <p className="mt-2 text-xl font-bold text-gray-900">
+                      {book.price}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </ScrollArea>
+        </main>
+      </div>
+    </div>
+  );
 }

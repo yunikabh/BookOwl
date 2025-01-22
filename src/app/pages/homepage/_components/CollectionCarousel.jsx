@@ -1,4 +1,5 @@
-"use client"; // For client-side rendering
+"use client";
+import { useRouter } from 'next/navigation';// Import useRouter
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,21 +14,44 @@ import {
   Mail,
   History,
   BookHeart,
-  Link,
 } from "lucide-react";
 
+
+
+// const handleNavigation = () => {
+//   router.push("/pages/categorypage"); // Replace with your target route
+// }
+
+// const categories = [
+//   { name: "Fiction", icon: <BookOpen size={24} />, route: "/pages/categorypage" },
+//   { name: "Thriller", icon: <Feather size={24} />, route: "/pages/categorypage" },
+//   { name: "Non-fiction", icon: <ClipboardList size={24} />, route: "/pages/categorypage" },
+//   { name: "Fantasy", icon: <Heart size={24} />, route: "/pages/categorypage" },
+//   { name: "Biography", icon: <User size={24} />, route: "/pages/categorypage" },
+//   { name: "Romance", icon: <BookHeart size={24} />, route: "/pages/categorypage" },
+//   { name: "Mystery", icon: <Mail size={24} />, route: "/pages/categorypage" },
+//   { name: "Historical", icon: <History size={24} />, route: "/pages/categorypage" },
+// ];
 const categories = [
-  { name: "Fiction", icon: <BookOpen size={24} /> },
-  { name: "Thriller", icon: <Feather size={24} /> },
-  { name: "Non-fiction", icon: <ClipboardList size={24} /> },
-  { name: "Fantasy", icon: <Heart size={24} /> },
-  { name: "Biography", icon: <User size={24} /> },
-  { name: "Romance", icon: <BookHeart  size={24}/>},
-  { name: "Mystery", icon: <Mail size={24} /> },
-  { name: "Historical", icon: <History size={24} /> },
+  { name: "Fiction", icon: <BookOpen size={24} />, route: "/pages/categorypage?category=Fiction" },
+  { name: "Thriller", icon: <Feather size={24} />, route: "/pages/categorypage?category=Thriller" },
+  { name: "Non-fiction", icon: <ClipboardList size={24} />, route: "/pages/categorypage?category=Non-fiction" },
+  { name: "Fantasy", icon: <Heart size={24} />, route: "/pages/categorypage?category=Fantasy" },
+  { name: "Biography", icon: <User size={24} />, route: "/pages/categorypage?category=Biography" },
+  { name: "Romance", icon: <BookHeart size={24} />, route: "/pages/categorypage?category=Romance" },
+  { name: "Mystery", icon: <Mail size={24} />, route: "/pages/categorypage?category=Mystery" },
+  { name: "Historical", icon: <History size={24} />, route: "/pages/categorypage?category=Historical" },
 ];
 
+
+
 const CollectionCarousel = () => {
+  const router = useRouter(); // Initialize useRouter
+
+  const handleCategoryClick = (route) => {
+    router.push(route);
+  };
+
   return (
     <div className="bg-white py-8 px-4 mt-16 h-52 rounded-full ml-10 mr-10 border border-black">
       <Swiper
@@ -44,7 +68,10 @@ const CollectionCarousel = () => {
       >
         {categories.map((category, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className="flex flex-col items-center space-y-2 cursor-pointer"
+              onClick={() => handleCategoryClick(category.route)} // Attach click handler
+            >
               <div className="h-16 w-16 mt-7 text-white flex items-center justify-center rounded-full bg-black text-xl">
                 {category.icon}
               </div>
