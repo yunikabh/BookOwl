@@ -22,7 +22,7 @@ export default function Homepage(){
 
   const getData = async () => {
     // try {
-    const response = await $axios.get("/book/getBooks");
+    const response = await $axios.get("/book/dealsOfTheWeek");
     console.log(response);
     if (!response) {
       throw new Error(`HTTP erroe!:Status: ${response.status}`);
