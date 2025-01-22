@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Star } from "lucide-react";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 export default function Review() {
   const initialReviews = [
     {
@@ -50,6 +51,9 @@ export default function Review() {
     },
    
   ];
+   useEffect(() => {
+      AOS.init({ duration: 1000 }); // Customize duration as needed
+    }, []);
 
   const [reviews, setReviews] = useState(initialReviews);
   const [newReview, setNewReview] = useState({ rating: 0, comment: "" });
@@ -79,7 +83,8 @@ export default function Review() {
     : reviews;
 
   return (
-    <div className="p-6 shadow-lg rounded-lg bg-gray-50 max-w-5xl mx-auto mt-8">
+    <div className="p-6 shadow-lg rounded-lg bg-gray-50 max-w-5xl mx-auto mt-8"
+    data-aos="fade-out">
       {/* Ratings Summary */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8">
         <div>
