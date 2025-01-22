@@ -11,7 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import { ChevronDown, UserCircle, Search } from "lucide-react";
+import { ChevronDown, UserCircle, Search ,ShoppingCart,Bell} from "lucide-react";
 import $axios from "@/lib/axios.instance";
 import { useRouter } from "next/navigation";
 
