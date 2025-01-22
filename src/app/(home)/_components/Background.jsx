@@ -15,7 +15,7 @@ export default function Background() {
           <h1 className="sm:text-5xl text-xl z-40 leading-snug sm:my-10 my-5 text-[#945F39]">
             Discover And Find Your New Favorite Books
           </h1>
-          <p className="sm:leading-loose leading-normal text-[#e76e50] text-lg">
+          <p className="sm:leading-loose leading-normal text-[#945F39] text-lg">
             Explore a world of stories, ideas, and knowledge. Whether you&apos;re
             into gripping thrillers, heartwarming romances, or insightful
             non-fiction, BookOwl helps you discover the books you&apos;ll love. Dive

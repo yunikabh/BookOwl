@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Menu, SquareX } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // const navItems = [
 //   { id: 1, name: "Home", href: "/" },
@@ -23,11 +23,29 @@ const navDarkItems = [
   },
 ];
 export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <div className="">
       <MobileNav />
       <div
-        className="hidden fixed w-[100%]  lg:flex justify-between items-center ml-[5%] bg-transparent z-50 "
+        className={`hidden fixed w-[100%] lg:flex justify-between items-center pl-[5%] z-50 transition-all duration-300 ${
+          isScrolled ? "bg-[#BA9C84] shadow-md" : "bg-transparent"
+        }`}
         data-aos="fade-down"
       >
         <div className="">
@@ -49,11 +67,12 @@ export default function Navbar() {
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>
-          <Button asChild
+          <Button
+            asChild
             variant="outline"
             className="flex text-white ml-16 bg-transparent"
           >
-          <Link href="/login">Login</Link>  
+            <Link href="/login">Login</Link>
           </Button>
         </NavigationMenu>
       </div>
@@ -89,27 +108,31 @@ function MobileNav() {
       {/* Menu Items */}
       {isOpen && (
         <div className="absolute  right-0 w-[70%] h-full bg-[#945F39] z-50 p-4 shadow-lg flex flex-col">
-          
-          <div className="flex justify-end"> <SquareX className="size-8 cursor-pointer  text-white" onClick={toggleMenu}>
-          {isOpen ? "Close Menu" : "Open Menu"}
-       </SquareX></div>
+          <div className="flex justify-end">
+            {" "}
+            <SquareX
+              className="size-8 cursor-pointer  text-white"
+              onClick={toggleMenu}
+            >
+              {isOpen ? "Close Menu" : "Open Menu"}
+            </SquareX>
+          </div>
           <NavigationMenu className="text-white block">
             <NavigationMenuList className="flex flex-col gap-y-5 items-start ">
-
               {navDarkItems.map((item) => (
-              <NavigationMenuItem className="text-white" key={item.id}>
-                <a href={item.href}>{item.name}</a>
-              </NavigationMenuItem>
-            ))}
-
+                <NavigationMenuItem className="text-white" key={item.id}>
+                  <a href={item.href}>{item.name}</a>
+                </NavigationMenuItem>
+              ))}
             </NavigationMenuList>
             {/* <Link href="/login"></Link> */}
-            <Button asChild
-            variant="outline"
-            className=" text-white mt-5 bg-transparent "
-          >
-          <Link href="/login">Login</Link>  
-          </Button>
+            <Button
+              asChild
+              variant="outline"
+              className=" text-white mt-5 bg-transparent "
+            >
+              <Link href="/login">Login</Link>
+            </Button>
           </NavigationMenu>
         </div>
       )}
