@@ -6,7 +6,8 @@ import Main from "./_components/main";
 import Firstdesign from "./_components/firstdesign";
 import CollectionCarousel from "./_components/CollectionCarousel";
 import DealsCarousel from "./_components/DealsCarousel";
-import Secondmain from "./_components/SecondMain";
+// import Secondmain from "./_components/SecondMain";
+import BookCollections from  "./_components/BookCollections"
 // import BestSeller from "./_components/BestSeller";
 
 // import NewArrivals from "./_components/NewArrivals"
@@ -41,7 +42,8 @@ export default function Homepage(){
             <Main/>
             <DealsCarousel data = {data}/>
             <Bigdiscount/>
-            <Secondmain/>
+            {/* <Secondmain/> */}
+            <BookCollections />
             {/* <NewArrivals/> */}
             {/* <BestSeller /> */}
             <End/>
