@@ -203,7 +203,7 @@ export default function AllBooks() {
                         {/* <h2 className="text-2xl font-semibold text-gray-700 mb-4">Books</h2> */}
                         <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
                             {displayedBooks.map((book) => (
-                                <Card key={book.id} className="w-full">
+                                <Card key={book.id} className="w-full shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
                                     <CardHeader className="text-center">
                                         <img
                                             src="/photos/fiction.jpg"
