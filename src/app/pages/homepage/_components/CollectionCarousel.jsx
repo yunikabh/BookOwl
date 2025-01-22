@@ -16,7 +16,7 @@ import { Navigation } from "swiper/modules";
 // } from "lucide-react";
 import { useEffect, useState } from "react";
 import $axios from "@/lib/axios.instance";
-import { Heart } from "lucide-react";
+// import { Heart } from "lucide-react";
 
 // const categories = [
 //   { name: "Fiction", icon: <BookOpen size={24} /> },
@@ -68,9 +68,10 @@ const getData = async () => {
         {data.map((category) => (
           <SwiperSlide key={category._id}>
             <div className="flex flex-col items-center space-y-2">
-              <div className="h-16 w-16 mt-7 text-white flex items-center justify-center rounded-full bg-black text-xl">
+              <div className="h-16 w-16 mt-7 text-white flex items-center justify-center rounded-full bg-slate-400 text-xl">
                 {/* {category.icon} */}
-                <Heart  size={24} /> 
+                {/* <Heart  size={24} />  */}
+               <img src= {category.categoryIcon} className="p-2" />
               </div>
               <h3 className="text-lg font-bold">{category.categoryName}</h3>
             </div>
