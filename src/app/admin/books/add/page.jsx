@@ -123,6 +123,7 @@ export default function AddBooks() {
 
   // }
   const onSubmit = async (values) => {
+    console.log("values:",values);
     const formData = new FormData();
     formData.append("bookName", values.bookName);
     formData.append("author", values.author);
@@ -147,10 +148,12 @@ export default function AddBooks() {
       console.error("Cover image is not selected");
       return;
     }
+    console.log("FormData being sent:", [...formData.entries()]);
 
     try {
       const response = await $axios.post("/book/addBook", formData);
       console.log("Book added successfully:", response.data);
+      // console.log("formdata:", formData)
       router.push("/admin/books");
     } catch (error) {
       console.error("Error submitting form:", error);
