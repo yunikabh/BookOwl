@@ -1,4 +1,4 @@
-
+"use client"
 import Bigdiscount from "./_components/bigdiscount";
 import Main from "./_components/main";
 // import Sidebar from "./_components/sidebar"
@@ -7,12 +7,31 @@ import Firstdesign from "./_components/firstdesign";
 import CollectionCarousel from "./_components/CollectionCarousel";
 import DealsCarousel from "./_components/DealsCarousel";
 import Secondmain from "./_components/SecondMain";
-import BestSeller from "./_components/BestSeller";
+// import BestSeller from "./_components/BestSeller";
 
 // import NewArrivals from "./_components/NewArrivals"
 import End from "./_components/End";
+import { useEffect, useState } from "react";
+import $axios from "@/lib/axios.instance";
 
 export default function Homepage(){
+    const [data, setData] = useState([]);
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    // try {
+    const response = await $axios.get("/book/getBooks");
+    console.log(response);
+    if (!response) {
+      throw new Error(`HTTP erroe!:Status: ${response.status}`);
+    }
+    setData(response?.data.data);
+    // } catch (err) {
+    // setErrorMap(err.message);
+    // }
+  };
     return(
         <div>
             <Firstdesign/>
@@ -20,11 +39,11 @@ export default function Homepage(){
             {/* <Sidebar/> */}
             {/* <Bookgrid/> */}
             <Main/>
-            <DealsCarousel/>
+            <DealsCarousel data = {data}/>
             <Bigdiscount/>
             <Secondmain/>
             {/* <NewArrivals/> */}
-            <BestSeller />
+            {/* <BestSeller /> */}
             <End/>
 
             

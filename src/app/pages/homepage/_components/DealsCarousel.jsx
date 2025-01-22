@@ -1,6 +1,6 @@
 "use client"; // Enable client-side rendering
 
-import { useEffect } from "react";
+import { useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -10,65 +10,68 @@ import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
 
-const books = [
-  {
-    id: 1,
-    title: "Caaele Bipin",
-    author: "Floyd Mila",
-    price: "$12.00 USD",
-    image: "", // Replace with your image paths
-  },
-  {
-    id: 2,
-    title: "A Novel Designer",
-    author: "Robert Fox",
-    price: "$14.00 USD",
-    image: "", // Replace with your image paths
-  },
-  {
-    id: 3,
-    title: "Desi A Magazine",
-    author: "B. Simmons",
-    price: "$12.00 USD",
-    image: "", // Replace with your image paths
-  },
-  {
-    id: 4,
-    title: "Better Reading",
-    author: "Floyd Mila",
-    price: "$12.00 USD",
-    image: "", // Replace with your image paths
-  },
+// const books = [
+//   {
+//     id: 1,
+//     title: "Caaele Bipin",
+//     author: "Floyd Mila",
+//     price: "$12.00 USD",
+//     image: "", // Replace with your image paths
+//   },
+//   {
+//     id: 2,
+//     title: "A Novel Designer",
+//     author: "Robert Fox",
+//     price: "$14.00 USD",
+//     image: "", // Replace with your image paths
+//   },
+//   {
+//     id: 3,
+//     title: "Desi A Magazine",
+//     author: "B. Simmons",
+//     price: "$12.00 USD",
+//     image: "", // Replace with your image paths
+//   },
+//   {
+//     id: 4,
+//     title: "Better Reading",
+//     author: "Floyd Mila",
+//     price: "$12.00 USD",
+//     image: "", // Replace with your image paths
+//   },
 
-  {
-    id: 5,
-    title: "Better Reading",
-    author: "Floyd Mila",
-    price: "$12.00 USD",
-    image: "", // Replace with your image paths
-  },
+//   {
+//     id: 5,
+//     title: "Better Reading",
+//     author: "Floyd Mila",
+//     price: "$12.00 USD",
+//     image: "", // Replace with your image paths
+//   },
 
-  {
-    id: 6,
-    title: "Better Reading",
-    author: "Floyd Mila",
-    price: "$12.00 USD",
-    image: "", // Replace with your image paths
-  },
+//   {
+//     id: 6,
+//     title: "Better Reading",
+//     author: "Floyd Mila",
+//     price: "$12.00 USD",
+//     image: "", // Replace with your image paths
+//   },
 
-  {
-    id: 7,
-    title: "Better Reading",
-    author: "Floyd Mila",
-    price: "$12.00 USD",
-    image: "", // Replace with your image paths
-  },
-];
+//   {
+//     id: 7,
+//     title: "Better Reading",
+//     author: "Floyd Mila",
+//     price: "$12.00 USD",
+//     image: "", // Replace with your image paths
+//   },
+// ];
 
-export default function DealsCarousel() {
+
+
+export default function DealsCarousel({data}) {
   useEffect(() => {
     AOS.init(); // Initialize AOS for scroll animations
   }, []);
+  
 
   return (
     <div className="bg-white py-8 px-4  rounded-lg shadow-md border mx-[5%] -mt-3">
@@ -84,8 +87,8 @@ export default function DealsCarousel() {
           1024: { slidesPerView: 4 },
         }}
       >
-        {books.map((book) => (
-          <SwiperSlide key={book.id}>
+        {data.map((book) => (
+          <SwiperSlide key={book._id}>
             {/* Book Card with AOS Animation */}
             <div
               data-aos="fade-up"
@@ -94,14 +97,18 @@ export default function DealsCarousel() {
             >
               {/* Book Image */}
               <img
-                src="/photos/cursed.jpeg"
-                alt={book}
-                className="w-40 h-60 object-cover rounded-md"
-              />
+                      src={
+                        book?.coverImage
+                          ? book.coverImage.replace(/\\/g, "/") // Replace backslashes with forward slashes
+                          : "/images/default-cover.jpg" // Fallback to default cover image
+                      }
+                      alt="Cover Image"
+                      className="w-full h-full object-contain"
+                    />
               {/* Book Info */}
               <div className="text-center">
-                <p className="text-gray-600 text-sm">By {book.author}</p>
-                <h3 className="text-lg font-bold">{book.title}</h3>
+                <p className="text-gray-600 text-sm">By {book.author.authorName}</p>
+                <h3 className="text-lg font-bold">{book.bookName}</h3>
                 <p className="text-gray-800 text-sm">{book.price}</p>
               </div>
             </div>

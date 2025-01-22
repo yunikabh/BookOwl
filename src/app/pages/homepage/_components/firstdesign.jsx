@@ -1,12 +1,12 @@
 "use client";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import "aos/dist/aos.css"; // Import AOS styles
 
 export default function FirstDesign() {
   return (
     <div
-      className="relative bg-[#af886b] text-white p-8 flex flex-col lg:flex-row items-center justify-between rounded-lg mt-16"
+      className="relative px-[5%] bg-[#af886b] text-white p-8 flex flex-col lg:flex-row items-center justify-between rounded-lg mt-16"
       data-aos="fade-down"
     >
       {/* Left Section */}
