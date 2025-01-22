@@ -59,7 +59,7 @@ export default function LoginPage() {
       if (role === "admin") {
         router.push("/admin");
       } else {
-        router.push("/pages/homepage");
+        router.push("/");
       }
 
       // console.log("Submitted values:", values);

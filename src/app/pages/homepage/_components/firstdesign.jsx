@@ -2,7 +2,7 @@
 // import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import "aos/dist/aos.css"; // Import AOS styles
-
+import Link from "next/link"
 export default function FirstDesign() {
   return (
     <div
@@ -21,9 +21,11 @@ export default function FirstDesign() {
           Dive into the pages, and let the story find you.
         </p>
         <div className="mt-6">
+        <Link href="./categorypage">
           <Button className="bg-[#5d768a] text-lg w-40 h-12 text-white hover:scale-105 rounded-full">
             Explore Now
           </Button>
+          </Link>
         </div>
       </div>
 

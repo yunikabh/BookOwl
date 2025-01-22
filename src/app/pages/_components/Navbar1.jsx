@@ -15,7 +15,7 @@ import { ChevronDown, UserCircle, Search } from "lucide-react";
 
 const navItems = [
   { id: 1, name: "Home", href: "/" },
-  { id: 2, name: "About us", href: "/about-us" },
+  { id: 2, name: "About us", href: "/pages/about-us" },
   { id: 3, name: "Contact us", href: "/" },
 ];
 

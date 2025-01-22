@@ -8,7 +8,7 @@ export default function Starting() {
   const rating = 4.5;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto bg-white shadow rounded-md flex flex-col lg:flex-row gap-8 lg:mt-20">
+    <div className="p-6 max-w-5xl mx-auto bg-white shadow  flex flex-col lg:flex-row gap-8 ">
       {/* Left Column: Book Cover */}
       <div className="flex flex-col items-center w-full lg:w-1/2">
         <img

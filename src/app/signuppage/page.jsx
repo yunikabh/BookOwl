@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -33,6 +34,7 @@ const formSchema = z.object({
 });
 
 export default function SignUpPage() {
+  const[error,setError]=useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const router = useRouter();
@@ -49,11 +51,18 @@ export default function SignUpPage() {
   });
 
   async function onSubmit(values) {
-    const response = await $axios.post("/auth/register", values);
-    if (!response) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const response = await $axios.post("/auth/register", values);
+      console.log("response is ",response)
+      if (!response) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      router.push("/login");
+      
+    } catch (error) {
+      console.log("error is",error)
+      setError(error.ms)
     }
-    router.push("/login");
   }
 
   return (
@@ -69,7 +78,12 @@ export default function SignUpPage() {
               className="w-full h-full object-cover rounded-l-lg" // Cover the full left side and rounded left corner
             />
           </div>
+{error?(
+  <>
+  </>
+):<>
 
+</>}
           {/* Form Section */}
           <div className="w-1/2 p-6 flex flex-col justify-center">
             <Form {...form}>

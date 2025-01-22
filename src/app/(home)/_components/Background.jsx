@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 // import BookCarousel from "./BookCarousel";
-
+import Link from "next/link";
 export default function Background() {
   return (
     <div className="w-full bg-[#f5dac7] relative overflow-x-hidden overflow-hidden h-[900px] shadow-2xl py-12">
@@ -15,16 +15,17 @@ export default function Background() {
           <h1 className="sm:text-5xl text-xl z-40 leading-snug sm:my-10 my-5 text-[#945F39]">
             Discover And Find Your New Favorite Books
           </h1>
-          <p className="sm:leading-loose leading-normal text-[#945F39] text-lg">
+          <p className="sm:leading-loose leading-normal text-[#265073] text-lg">
             Explore a world of stories, ideas, and knowledge. Whether you&apos;re
             into gripping thrillers, heartwarming romances, or insightful
             non-fiction, BookOwl helps you discover the books you&apos;ll love. Dive
             into your next great read today!
           </p>
-
+         <Link href="./pages/homepage">
           <Button className="my-10 bg-[#265073] " data-aos="fade-up">
             Explore
           </Button>
+          </Link>
         </div>
         <div className="z-30 " data-aos="fade-left">
           <img src="/photos/coffeeimage.png" />
