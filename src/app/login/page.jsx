@@ -156,7 +156,7 @@ export default function LoginPage() {
                           </button>
                           <input
                             type={isPasswordVisible ? "text" : "password"}
-                            placeholder="Create password"
+                            placeholder="Enter your password"
                             {...field}
                             className="w-full px-12 py-2 text-[#c2918b] rounded-full"
                           />

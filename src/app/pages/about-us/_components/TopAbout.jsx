@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { ChevronsRight } from "lucide-react";
+
 
 export default function TopAbout() {
   return (
     <div className="bg-[#e3ceaf] rounded-lg w-full mb-10 shadow-lg">
-      <div className="ml-8 mt-20 p-8">
+      <div className="ml-8  p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           {/* Text Section */}
           <div data-aos="fade-right">
@@ -15,9 +14,7 @@ export default function TopAbout() {
               Welcome to Book Owl, your ultimate destination for discovering and exploring the books that matter most to you. At Book Owl, we understand the profound impact that books can have on our lives—they transport us to new worlds, broaden our perspectives, and touch our hearts in ways nothing else can. That’s why we’ve created a platform designed especially for readers, where your passion for stories takes center stage. Here, you’re not just a visitor; you’re part of a vibrant community of book lovers. Discover a diverse collection of books curated across genres, themes, and styles, from timeless classics to emerging voices, ensuring there’s something for everyone.
             </p>
             <div className="mt-6">
-              <Button className="bg-[#265073] text-white hover:bg-[#183f57]">
-                Learn More <ChevronsRight className="ml-2" />
-              </Button>
+
             </div>
           </div>
           

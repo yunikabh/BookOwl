@@ -103,7 +103,7 @@ export default function DealsCarousel({data}) {
                           : "/images/default-cover.jpg" // Fallback to default cover image
                       }
                       alt="Cover Image"
-                      className="w-full h-full object-contain"
+                      className="w-50 h-80 object-contain"
                     />
               {/* Book Info */}
               <div className="text-center">

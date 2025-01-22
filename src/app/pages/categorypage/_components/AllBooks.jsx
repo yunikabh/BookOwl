@@ -148,7 +148,7 @@ export default function AllBooks() {
           (!selectedMoods.length || selectedMoods.includes(book.mood))
       );
       return (
-        <div className="flex flex-col relative mt-20 ">
+        <div className="flex flex-col  ">
           <div className="flex flex-1">
             <aside className="w-64 bg-gray-100 p-4 mt-12">
               <h2 className="text-xl font-semibold text-gray-700 mb-4">Filter</h2>
