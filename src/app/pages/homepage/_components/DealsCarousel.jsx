@@ -1,6 +1,6 @@
 "use client"; // Enable client-side rendering
 
-import { useEffect} from "react";
+import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
+import { useRouter } from "next/navigation";
 
 // const books = [
 //   {
@@ -65,13 +66,15 @@ import { Navigation } from "swiper/modules";
 //   },
 // ];
 
-
-
-export default function DealsCarousel({data}) {
+export default function DealsCarousel({ data }) {
   useEffect(() => {
     AOS.init(); // Initialize AOS for scroll animations
   }, []);
-  
+  const router = useRouter();
+  const handleBookClick = (id) => {
+    router.push(`/pages/bookpage/${id}`);
+    console.log(id);
+  };
 
   return (
     <div className="bg-white py-8 px-4  rounded-lg shadow-md border mx-[5%] -mt-3">
@@ -91,23 +94,26 @@ export default function DealsCarousel({data}) {
           <SwiperSlide key={book._id}>
             {/* Book Card with AOS Animation */}
             <div
+              onClick={() => handleBookClick(book._id)} // Pass the correct book ID
               data-aos="fade-up"
               data-aos-duration="1000"
               className="flex flex-col items-center -mt-5 p-4 space-y-4 bg-gray-50 rounded-lg shadow-md transition-transform transform hover:scale-105"
             >
               {/* Book Image */}
               <img
-                      src={
-                        book?.coverImage
-                          ? book.coverImage.replace(/\\/g, "/") // Replace backslashes with forward slashes
-                          : "/images/default-cover.jpg" // Fallback to default cover image
-                      }
-                      alt="Cover Image"
-                      className="w-50 h-80 object-contain"
-                    />
+                src={
+                  book?.coverImage
+                    ? book.coverImage.replace(/\\/g, "/") // Replace backslashes with forward slashes
+                    : "/images/default-cover.jpg" // Fallback to default cover image
+                }
+                alt="Cover Image"
+                className="w-50 h-80 object-contain"
+              />
               {/* Book Info */}
               <div className="text-center">
-                <p className="text-gray-600 text-sm">By {book.author.authorName}</p>
+                <p className="text-gray-600 text-sm">
+                  By {book.author.authorName}
+                </p>
                 <h3 className="text-lg font-bold">{book.bookName}</h3>
                 <p className="text-gray-800 text-sm">{book.price}</p>
               </div>
