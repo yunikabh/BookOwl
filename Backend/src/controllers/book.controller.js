@@ -185,37 +185,6 @@ const updateBooks = asyncHandler(async (req, res) => {
     console.log("This is category ids:", categoryIds);
     updatedData.category = categoryIds;
 
-
-
-    // Validate categories, if provided
-
-    // Check if categoryIds is a string and needs to be split into an array
-    // if (typeof categoryIds === "string") {
-    //   // Split the comma-separated string into an array
-    //   categoryIds = categoryIds.split(",").map((categoryId) => {
-    //     // Trim any spaces around the IDs and convert to ObjectId
-    //     const trimmedCategoryId = categoryId.trim();
-
-    //     // Check if the ID is a valid ObjectId and convert it
-    //     if (mongoose.Types.ObjectId.isValid(trimmedCategoryId)) {
-    //       return new mongoose.Types.ObjectId(trimmedCategoryId); // Convert to ObjectId
-    //     } else {
-    //       throw new ApiError(400, `Invalid category ID: ${trimmedCategoryId}`);
-    //     }
-    //   });
-    // } else if (Array.isArray(categoryIds)) {
-    //   // If categoryIds is already an array, directly map it to ObjectIds
-    //   categoryIds = categoryIds.map((categoryId) => {
-    //     if (mongoose.Types.ObjectId.isValid(categoryId)) {
-    //       return new mongoose.Types.ObjectId(categoryId); // Convert to ObjectId
-    //     } else {
-    //       throw new ApiError(400, `Invalid category ID: ${categoryId}`);
-    //     }
-    //   });
-    // } else {
-    //   categoryIds = []; // If no categories, set it as an empty array
-    // }
-    
     if (categoryIds && typeof categoryIds === "string") {
       // Split category IDs string into an array
       categoryIds = categoryIds.split(",").map((categoryId) => {
@@ -270,4 +239,49 @@ const deleteBooks = asyncHandler(async (req, res) => {
   }
 });
 
-export { addBook, getBooks, getBookById, updateBooks, deleteBooks };
+    //New arrival books by created date 
+
+    const newArrivalBooks = asyncHandler(async(req,res) =>{
+       try {
+            const {limit} = req.query;
+            const maxBooks = limit ? parseInt(limit, 8) :10;
+
+            //find and sort books by 'createdAt' in descending order
+            const books = await Book.find()
+            .sort(createdAt = -1)
+            .limit(maxBooks)
+            .populate("category","categoryName");
+
+            res.status(200).json( new ApiResponse(200,books,"The newly added books are retrived"));
+
+            
+          } catch (error) {
+           throw new ApiError(500, "Error filtering new arrival books", error.message); 
+          }
+    })
+
+
+    //Deals of week books by lowest price . 
+
+    // const dealsOfTheWeek = asyncHandler(async(req,res) =>{
+    //         try {
+              
+    //         } catch (error) {
+              
+    //         }
+
+
+
+
+
+    // })
+
+
+    
+
+
+
+
+
+
+export { addBook, getBooks, getBookById, updateBooks, deleteBooks,newArrivalBooks };

@@ -5,6 +5,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 import categoryModel from "../models/category.model.js"
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const router = express.Router();
 
@@ -12,18 +13,37 @@ const router = express.Router();
 
 const addCategory = asyncHandler(async(req,res) =>{
         const {name,description} = req.body;
+        const categoryIcon = req.file;
 
-            const existingCategory = await categoryModel.findOne({categoryName:name});
+        const categoryImageLocalPath = categoryIcon ? categoryIcon.path :null;
+
+        console.log(categoryIcon);
+        if(!categoryImageLocalPath){
+                    throw new ApiError(400,"Author image is required");
+
+        }
+
+      const categoryImageUrl=await  uploadOnCloudinary(categoryImageLocalPath);
+      console.log("This is author image url",categoryImageUrl);
+
+      if(!categoryImageUrl|| !categoryImageUrl.url){
+        throw new ApiError(500, "Failed to upload category icon");
+      }
+      console.log("THis is category vitra ko url",categoryImageUrl.url)
+
+
+
+
+            const existingCategory = await categoryModel.findOne({categoryName:name,categoryIcon:categoryImageUrl.url});
             if(existingCategory){
                 throw  new ApiError(400,"Category already exists");
             }
     
-            const category = new categoryModel({categoryName:name,description});
+            const category = new categoryModel({categoryName:name,categoryIcon:categoryImageUrl.url,description});
             const savedCategory = await category.save();
     
             res.status(201).json(new ApiResponse(201,savedCategory,"Category added successfully"));
             
-      
 });
 
 //getAllCategory
