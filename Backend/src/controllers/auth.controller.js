@@ -199,7 +199,9 @@ const login = asyncHandler(async (req, res) => {
    
     res.status(200)
     .clearCookie("accessToken",options)
-    .clearCookie("refreshToken",options).json(new ApiResponse(200,userId,"User logged out successfully."))
+    .clearCookie("refreshToken",options)
+    .clearCookie("role", options)
+    .json(new ApiResponse(200,userId,"User logged out successfully."))
   }
   catch(error){
     console.error('Error verifying token:', error);
