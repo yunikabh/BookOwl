@@ -8,7 +8,6 @@ import authorModel from "../models/author.model.js";
 import categoryModel from "../models/category.model.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { pagination } from "../utils/pagination.js";
 
 
 //add book
@@ -113,18 +112,26 @@ const getBooks = asyncHandler(async (req, res) => {
   try {
     const page = parseInt(req.query.page || 1);
     const limit = parseInt(req.query.limit || 8) ;
-    const books = await Book.find()
-      .populate("category", "categoryName")
-      .populate("author");
-    if (books.length === 0) {
-      throw new ApiError(404, "Book not found");
-    }
+   
+    console.log("this is p",page)
+    console.log("this is p",limit)
 
-    const bookQuery = await  Book.find();
-    const paginatedBooks = await pagination(bookQuery, page, limit);
+
+    const bookQuery = await  Book.find()
+    .populate("category", "categoryName")
+    .populate("author")
+    .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+  if (bookQuery.length === 0) {
+    throw new ApiError(404, "Book not found");
+
+  }
+  console.log("this is bookquery", bookQuery);
     res
       .status(200)
-      .json(new ApiResponse(200, paginatedBooks, "Book successfully retrived"));
+      .json(new ApiResponse(200, bookQuery, "Book successfully retrived"));
   } catch (error) {
     throw new ApiError(404, "Problem in fetching book", error.message);
   }
