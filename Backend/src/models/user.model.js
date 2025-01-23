@@ -62,6 +62,8 @@ userSchema.methods.generateAccessToken = function () {
       data: {
         id: this._id,
         email:this.email,
+        name:this.name,
+        role:this.role
 
         //need to have role also
       },
@@ -82,6 +84,9 @@ userSchema.methods.generateRefreshToken = function () {
             data: {
               id: this._id,
               email: this.email,
+              name:this.name,
+              role:this.role
+
     
             },
           },
