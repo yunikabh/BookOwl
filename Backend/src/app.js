@@ -7,6 +7,7 @@ import userRoutes from "./routes/user.route.js"
 import cartRoutes from "./routes/cart.route.js"
 import categoryRoutes from "./routes/category.route.js"
 import authorRoutes from "./routes/author.routes.js"
+import contactUsRoutes from "./routes/contactUs.route.js"
 import { ApiError } from './utils/apiError.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
 import upload from './middlewares/multer.middleware.js';
@@ -30,7 +31,7 @@ app.use('/userProfile',userRoutes)
 app.use('/cart',cartRoutes)
 app.use('/category',categoryRoutes)
 app.use('/author',authorRoutes)
-
+app.use('/contact',contactUsRoutes)
 
 // app.use((err, req, res, next) => {
 //   console.error(err.stack);  // Optional: Log the error stack for debugging

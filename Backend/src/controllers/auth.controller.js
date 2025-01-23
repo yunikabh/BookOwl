@@ -112,6 +112,7 @@ const login = asyncHandler(async (req, res) => {
       .status(200) //for browser
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken",refreshToken,options)// Adds a cookie named "accessToken" containing the JWT, using the options defined earlier.
+      .cookie("role", user.role, options) // Set role in a cookie
       .json(new ApiResponse(200, {user:loggedInUser,accessToken,refreshToken},"User logged in  successful"));
   }
    catch (error) {
