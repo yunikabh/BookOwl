@@ -19,6 +19,7 @@ import {
   LayoutDashboardIcon,
   LayoutGrid,
   User,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -69,6 +70,12 @@ const SideItems = [
   },
   {
     id: 8,
+    name: "Contact",
+    link: "/admin/contact",
+    icon: <Users />,
+  },
+  {
+    id: 9,
     name: "Logout",
     link: "/admin",
     icon: <ExternalLinkIcon />,
@@ -82,6 +89,7 @@ export default function SideBarAdmin() {
     if (!confirmLogout) return;
 try {
   localStorage.removeItem("token");
+  localStorage.removeItem("role");
   await $axios.post("/auth/logout");
   router.push("/");
 }
@@ -105,7 +113,7 @@ catch (error){
                     className=" hover:text-amber-900 hover:bg-[#fcf3ec] text-lg "
                     asChild
                   >
-                    {item.id===8 ? (
+                    {item.id===9 ? (
                       <button onClick={logout}>
                         <span className="">{item.icon}</span>
                         <span>{item.name}</span>

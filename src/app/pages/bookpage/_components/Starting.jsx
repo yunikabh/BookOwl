@@ -26,7 +26,7 @@ export default function Starting({ data }) {
               : "/images/default-cover.jpg" // Fallback to default cover image
           }
           alt="Cover Image"
-          className="w-full h-full object-contain rounded-sm"
+          className="w-80 h-auto object-contain rounded-sm"
         />
       </div>
 
