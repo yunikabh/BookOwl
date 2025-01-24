@@ -59,7 +59,7 @@ export default function CategoryFilter({ data, loading, selectedCategory }) {
 
   return (
     <div className="flex px-[5%]">
-      <div className="w-64 flex-shrink-0 bg-gray-100 p-4 mt-5">
+      <div className="w-64 flex-shrink-0 bg-gray-100 p-4 mt-5 -ml-24">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">Filter</h2>
         <Separator className="my-3 bg-gray-300" />
 

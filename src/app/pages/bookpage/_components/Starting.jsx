@@ -58,19 +58,19 @@ export default function Starting({ data }) {
           Price: Rs {data.price}
         </p>
         <p className="text-gray-600 mb-3">{data.bookSummary}</p>
-        <p className="text-gray-500">
+        <p className="text-gray-500 font-bold">
           {" "}
           Category:{" "}
           {data.category.length > 0
             ? data.category.map((cat) => cat.categoryName).join(", ")
             : "N/A"}
         </p>
-        <p className="text-gray-500">Pages: {data.pages}</p>
-        <p className="text-gray-500">Published Date: {data.publishedDate}</p>
-        <p className="text-gray-500">Language: {data.language}</p>
-        <p className="text-gray-500">ISBN: {data.ISBN}</p>
-        <p className="text-gray-500">Published By: {data.publisher}</p>
-        <p className="text-gray-500">
+        <p className="text-gray-500 font-bold">Pages: {data.pages}</p>
+        <p className="text-gray-500 font-bold">Published Date: {data.publishedDate}</p>
+        <p className="text-gray-500 font-bold">Language: {data.language}</p>
+        <p className="text-gray-500 font-bold">ISBN: {data.ISBN}</p>
+        <p className="text-gray-500 font-bold">Published By: {data.publisher}</p>
+        <p className="text-gray-500 font-bold">
           Mood: {data.mood.length > 0 ? data.mood.join(", ") : "N/A"}
         </p>
         <div className="flex gap-4 mt-6">

@@ -11,8 +11,8 @@ export default function AllBooks({ data , loading }) {
     <div className="">
       <div className="">
       
-        <main className=" px-6">
-          <ScrollArea className="space-y-6">
+        <main className=" p-10 ">
+          <ScrollArea className="space-y-6 ">
             
          
             {loading ? (
@@ -25,7 +25,7 @@ export default function AllBooks({ data , loading }) {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full">
+            <div className="grid grid-cols-2 gap-8 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full">
               {data.map((book) => (
                 <BookCard key={book._id} book={book} />
               ))}

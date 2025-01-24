@@ -9,7 +9,7 @@ export default function BookCard({book}){
         console.log(book._id);
     }
     return(
-        <Card key={book._id} className=" shadow-lg cursor-pointer rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+        <Card key={book._id} className=" mt-5 shadow-lg cursor-pointer rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
            onClick={handleBookClick}>
                   <CardHeader className="text-center p-4">
                     <img
