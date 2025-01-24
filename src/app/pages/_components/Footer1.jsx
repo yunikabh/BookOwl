@@ -26,12 +26,9 @@ export default function Footer1() {
       <div className="text-gray-600 ">
         <p className="font-bold pb-4 text-xl text-black">Contact us</p>
         <h1> <Phone /> +977 9843987416</h1>
-        <h1><Mail />alishashrestha7777@gmail.com </h1>
-        <h1> <Phone /> +977 9840848426</h1>
-        <h1><Mail />neupaneaisha45@gmail.com </h1>
-        <h1> <Phone />  +977 9843179104 </h1>
-        <h1><Mail />yunikabh09@gmail.com </h1>
-        <h1>Authors</h1>
+        <h1><Mail />bookowl@gmail.com </h1>
+       
+       
       </div>
     </div>
     <div className="w-full px-[5%] bg-[#265073] flex justify-between text-white">

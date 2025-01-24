@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-
 import {
   Form,
   FormControl,
@@ -34,7 +33,7 @@ const formSchema = z.object({
 });
 
 export default function SignUpPage() {
-  const[error,setError]=useState("");
+  const [error, setError] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const router = useRouter();
@@ -53,39 +52,31 @@ export default function SignUpPage() {
   async function onSubmit(values) {
     try {
       const response = await $axios.post("/auth/register", values);
-      console.log("response is ",response)
       if (!response) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       router.push("/login");
-      
     } catch (error) {
-      console.log("error is",error)
-      setError(error.ms)
+      setError(error.message);
     }
   }
 
   return (
-    <div className="flex justify-center items-center w-full min-h-screen bg-[rgb(246,220,201)] overflow-hidden">
+    <div className="flex justify-center items-center w-full min-h-screen bg-[rgb(246,220,201)] overflow-hidden p-4">
       {/* Card with Flex Layout */}
       <Card className="w-full max-w-4xl bg-[#e1ceac] shadow-lg rounded-lg border border-gray-100 relative">
-        <div className="flex w-full">
+        <div className="flex flex-col md:flex-row w-full">
           {/* Owl Image Section */}
-          <div className="w-1/2 p-0">
+          <div className="w-full md:w-1/2 hidden md:block">
             <img
               src="/photos/owl2.jpg"
               alt="Owl"
-              className="w-full h-full object-cover rounded-l-lg" // Cover the full left side and rounded left corner
+              className="w-full h-full object-cover rounded-l-lg"
             />
           </div>
-{error?(
-  <>
-  </>
-):<>
 
-</>}
           {/* Form Section */}
-          <div className="w-1/2 p-6 flex flex-col justify-center">
+          <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -203,7 +194,9 @@ export default function SignUpPage() {
                           <button
                             type="button"
                             className="absolute right-2.5 top-2.5"
-                            onClick={() => setIsConfirmPasswordVisible((prev) => !prev)}
+                            onClick={() =>
+                              setIsConfirmPasswordVisible((prev) => !prev)
+                            }
                           >
                             {isConfirmPasswordVisible ? <Eye size={18} /> : <EyeOff size={18} />}
                           </button>
@@ -244,13 +237,13 @@ export default function SignUpPage() {
           </div>
         </div>
       </Card>
-      
-      {/* Logo Image Outside of Card */}
-      <div className="absolute top-4 right-20">
+
+      {/* Responsive Logo */}
+      <div className="absolute top-4 right-4 md:right-20">
         <img
-          src="/photos/logo.png" // Replace with your logo image path
+          src="/photos/logo.png"
           alt="Logo"
-          className="w-32 h-12" // Adjust size of the logo
+          className="w-24 md:w-32 h-auto" 
         />
       </div>
     </div>
