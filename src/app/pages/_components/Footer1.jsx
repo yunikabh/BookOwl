@@ -4,11 +4,11 @@ import Link from "next/link";
 export default function Footer1() {
   return (
     <div>
-      <div className="w-full px-[5%] grid sm:grid-cols-3 grid-cols-1 m-auto gap-11 z-40 border-2 border-[#265073] py-5">
+      <div className="w-full px-[5%] grid sm:grid-cols-3 grid-cols-1 m-auto gap-11  bg-[#E6D4B9] z-40 border-2 border-[#265073] py-5">
         {/* Logo and Description */}
         <div>
           <img src="/photos/logo.png" alt="Book Owl Logo" />
-          <p>
+          <p className="text-[#265073] font-serif text-lg">
             BookOwl: Guiding You to Your Next Great Adventure, One Page at a Time!
           </p>
         </div>
