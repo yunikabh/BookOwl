@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -15,87 +15,46 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Camera } from "lucide-react";
-import $axios from "@/lib/axios.instance"; // Adjust import path as needed
-import { useRouter } from "next/navigation";
 
 // Schema for form validation using Zod
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
+  username: z.string().startsWith("@", "Username must start with '@'."),
   bio: z.string().max(200, "Bio cannot exceed 200 characters.").optional(),
-  phoneNumber: z.preprocess(
-    (value) => parseFloat(value),
-    z.number().positive({ message: "Pages must be a positive number." })
-  ),
-  address: z.object({
-    city: z.string().min(5, "City name must be at least 5 characters."),
-  }),
+  phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits."),
+  address: z.string().min(5, "Address must be at least 5 characters."),
 });
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState(null); // Profile state
-  const [loading, setLoading] = useState(true); // Loading state
-  const router = useRouter();
-  const userId = localStorage.getItem("id"); // Get user ID from localStorage
-
-  // React Hook Form setup
   const form = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "",
+      name: "neupaneaisha45",
+      username: "@neupaneaisha45",
       bio: "",
-      phoneNumber: "",
-      address: { city: "" },
+      phone: "",
+      address: "",
     },
   });
 
-  // Fetch user profile data
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await $axios.get(`/userProfile/getUserById/${userId}`);
-        if (response && response.status === 200) {
-          setProfile(response.data.data); // Set profile state
-        }
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      } finally {
-        setLoading(false); // Ensure loading stops even on error
-      }
-    };
+  const fileInputRef = useRef(null);
 
-    getData();
-  }, [userId]);
+  const onSubmit = (data) => {
+    console.log("Profile Updated:", data);
+    alert("Profile Updated Successfully!");
+  };
 
-  // Update form values when profile data is fetched
-  useEffect(() => {
-    if (profile) {
-      form.reset({
-        name: profile.name || "",
-        bio: profile.bio || "",
-        phoneNumber: profile.phoneNumber || "",
-        address: { city: profile.address?.city || "" },
-      });
-    }
-  }, [profile, form]);
-
-  // Form submission
-  const onSubmit = async (data) => {
-    try {
-      const UpdateResponse = await $axios.put(
-        `/userProfile/updateUser/${userId}`,
-        data
-      );
-      console.log("Profile Updated:", UpdateResponse);
-      alert("Profile Updated Successfully!");
-      router.push("/pages/userdashboard");
-    } catch (error) {
-      console.error("Error submitting form:", error);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("File uploaded:", file.name);
+      alert(`File uploaded: ${file.name}`);
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>; // Show a loading spinner or placeholder while loading
-  }
+  const triggerFileUpload = () => {
+    fileInputRef.current.click();
+  };
 
   return (
     <div className="h-screen flex flex-col">
@@ -113,11 +72,22 @@ export default function ProfilePage() {
               <div className="flex items-center gap-6">
                 <div className="relative">
                   <div className="w-32 h-32 rounded-full bg-[#BD9D86] flex items-center justify-center text-white text-6xl font-light">
-                    {form.getValues("name")?.[0]?.toUpperCase()}
+                    {form.getValues("name")[0]?.toUpperCase()}
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-full border border-gray-200 flex items-center justify-center shadow cursor-pointer">
+                  <div
+                    onClick={triggerFileUpload}
+                    className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-full border border-gray-200 flex items-center justify-center shadow cursor-pointer"
+                  >
                     <Camera className="w-5 h-5 text-gray-500 hover:text-gray-700" />
                   </div>
+                  {/* Hidden File Input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
 
@@ -142,6 +112,21 @@ export default function ProfilePage() {
                     )}
                   />
 
+                  {/* Username Field */}
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Enter your username" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   {/* Bio Field */}
                   <FormField
                     control={form.control}
@@ -150,10 +135,7 @@ export default function ProfilePage() {
                       <FormItem>
                         <FormLabel>Bio</FormLabel>
                         <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Tell us about yourself"
-                          />
+                          <Input {...field} placeholder="Tell us about yourself" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -163,15 +145,12 @@ export default function ProfilePage() {
                   {/* Phone Number Field */}
                   <FormField
                     control={form.control}
-                    name="phoneNumber"
+                    name="phone"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Enter your phone number"
-                          />
+                          <Input {...field} placeholder="Enter your phone number" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -181,12 +160,12 @@ export default function ProfilePage() {
                   {/* Address Field */}
                   <FormField
                     control={form.control}
-                    name="address.city"
+                    name="address"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>City</FormLabel>
+                        <FormLabel>Address</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Enter your city" />
+                          <Input {...field} placeholder="Enter your address" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
