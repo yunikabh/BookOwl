@@ -13,9 +13,8 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import {
   ChevronDown,
-  Search,
   ShoppingCart,
-  Bell,
+
 } from "lucide-react";
 import $axios from "@/lib/axios.instance";
 import { useRouter } from "next/navigation";
@@ -68,30 +67,14 @@ export default function Navbar1() {
             </NavigationMenuItem>
           ))}
 
-          {/* Search Option */}
-          <div className="flex items-center ">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search"
-                className="border border-gray-300 rounded-md px-3 py-1 text-sm  max-w-xs pr-8"
-              />
-              <button className=" absolute right-2 -translate-y-2.5 top-1/2  text-gray-500 hover:text-gray-900">
-                <Search className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+          
 
           {/* Add to Cart */}
           <div>
             <ShoppingCart className="w-6 h-6 text-[#5d768a] hover:text-gray-900" />
           </div>
 
-          {/* Notifications */}
-          <div>
-            <Bell className="w-6 h-6 text-[#5d768a] hover:text-gray-900" />
-          </div>
-
+          
           {/* Profile Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -107,12 +90,14 @@ export default function Navbar1() {
               className="bg-white border border-gray-200 rounded-md shadow-lg mt-2 w-40"
               align="end"
             >
+        
+
               <DropdownMenuItem asChild>
                 <a
-                  href="/profile"
+                  href="/pages/userdashboard"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
-                  My Profile
+                  My Account
                 </a>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
