@@ -12,6 +12,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import CategoryFilter from "./_components/CategoryFilter";
 
 export default function CategoryPage() {
   const router = useRouter();
@@ -53,7 +54,12 @@ export default function CategoryPage() {
 
   return (
     <div>
-      {data.length > 0 && <AllBooks data={data} loading={loading} />}
+      <div className="flex flex-row px-[5%]">
+        <CategoryFilter slugCategoryId={""} />
+
+        {data.length > 0 && <AllBooks data={data} loading={loading} />}
+      </div>
+      {/* {data.length > 0 && <AllBooks data={data} loading={loading} />} */}
 
       <Pagination className="mt-4">
         <PaginationContent>

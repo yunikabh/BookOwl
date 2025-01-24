@@ -19,6 +19,7 @@ import {
   LayoutDashboardIcon,
   LayoutGrid,
   User,
+  UserCircle,
   Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -76,6 +77,12 @@ const SideItems = [
   },
   {
     id: 9,
+    name: "Users",
+    link: "/admin/users",
+    icon: <UserCircle />,
+  },
+  {
+    id: 10,
     name: "Logout",
     link: "/admin",
     icon: <ExternalLinkIcon />,
@@ -113,7 +120,7 @@ catch (error){
                     className=" hover:text-amber-900 hover:bg-[#fcf3ec] text-lg "
                     asChild
                   >
-                    {item.id===9 ? (
+                    {item.id===10 ? (
                       <button onClick={logout}>
                         <span className="">{item.icon}</span>
                         <span>{item.name}</span>

@@ -51,11 +51,11 @@ export default function AllBooks({ data , loading }) {
   //       (!selectedMoods.length || selectedMoods.includes(book.mood))
   //   );
   return (
-    <div className="flex flex-col px-[5%]">
-      <div className="flex flex-row">
-        <div className="flex-shrink-0"><CategoryFilter /></div>
+    <div className="">
+      <div className="">
+        {/* <div className="flex-shrink-0"><CategoryFilter /></div> */}
       
-        <main className="flex-1 px-6">
+        <main className=" px-6">
           <ScrollArea className="space-y-6">
             
             {/* <h2 className="text-2xl font-semibold text-gray-700 mb-4">Books</h2> */}

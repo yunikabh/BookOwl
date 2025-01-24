@@ -19,11 +19,12 @@ import {
 } from "lucide-react";
 import $axios from "@/lib/axios.instance";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const navItems = [
-  { id: 1, name: "Home", href: "/" },
+  { id: 1, name: "Home", href: "/pages/homepage" },
   { id: 2, name: "About us", href: "/pages/about-us" },
-  { id: 3, name: "Contact us", href: "/" },
+  { id: 3, name: "Contact us", href: "/pages/contactus" },
 ];
 
 export default function Navbar1() {
@@ -52,9 +53,9 @@ export default function Navbar1() {
   return (
     <div className="flex justify-between py-2 px-[5%]">
       {/* Logo */}
-      <div>
+      <Link href="/pages/homepage">
         <img src="/photos/logo.png" alt="Logo" className="h-16" />
-      </div>
+      </Link>
 
       {/* Navigation Menu */}
       <NavigationMenu className="text-[#5d768a] gap-10">
