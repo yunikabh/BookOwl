@@ -31,7 +31,7 @@ const getData = async () => {
     }
   };
   const handleClick = (id) => {
-  router.push(`/pages/categorypage/${id}`)
+  router.push(`/pages/categorypage?category=${id}`)
   }
   
   return (

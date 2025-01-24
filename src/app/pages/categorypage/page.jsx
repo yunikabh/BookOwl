@@ -1,40 +1,41 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation"; // For URL management
-import AllBooks from "./_components/AllBooks";
 import $axios from "@/lib/axios.instance";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import CategoryFilter from "./_components/CategoryFilter";
+import CategoryFilter from "./_components/CategoryFilter"; // Make sure CategoryFilter is correctly imported
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 export default function CategoryPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category"); // Get the category ID from the URL
   const initialPage = parseInt(searchParams.get("page")) || 1; // Get initial page from the URL
+
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalPage, setTotalPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  // Fetch the books data whenever the page changes
   useEffect(() => {
-    getData(currentPage);
-  }, [currentPage]);
+    getData(currentPage, categoryParam);
+  }, [currentPage, categoryParam]); // Re-fetch when currentPage or categoryParam changes
 
-  const getData = async (page) => {
+  const getData = async (page, category) => {
     try {
       setLoading(true);
-      const response = await $axios.get(`/book/getBooks?page=${page}&limit=8`);
+      let url = `/book/getBooks?page=${page}&limit=8`; // Default URL
+
+      // If a category is specified, add it to the API request
+      if (category) {
+        url += `&category=${category}`;
+      }
+
+      const response = await $axios.get(url);
       console.log("API Response:", response);
 
       if (response && response.data) {
-        setData(response.data.data || []); // Handle empty data
+        setData(response.data.data || []);
         setTotalPage(response.data.totalPage || 1);
       }
     } catch (error) {
@@ -47,23 +48,27 @@ export default function CategoryPage() {
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPage) {
       setCurrentPage(page);
-      router.push(`?page=${page}`, undefined, { shallow: true }); // Update the URL with the new page
-      getData(page); // Explicitly call `getData` for immediate update
+      router.push(`?page=${page}&category=${categoryParam}`, undefined, {
+        shallow: true,
+      }); // Update the URL with the new page
+      getData(page, categoryParam); // Explicitly call `getData` for immediate update
     }
   };
 
   return (
     <div>
       <div className="flex flex-row px-[5%]">
-        <CategoryFilter slugCategoryId={""} />
-
-        {data.length > 0 && <AllBooks data={data} loading={loading} />}
+        {/* Pass categoryParam to CategoryFilter */}
+        <CategoryFilter
+          selectedCategory={categoryParam}
+          data={data}
+          loading={loading}
+        />
       </div>
-      {/* {data.length > 0 && <AllBooks data={data} loading={loading} />} */}
 
+      {/* Pagination Component */}
       <Pagination className="mt-4">
         <PaginationContent>
-          {/* Previous Button */}
           <PaginationItem>
             <PaginationPrevious
               href="#"
@@ -91,14 +96,6 @@ export default function CategoryPage() {
             </PaginationItem>
           ))}
 
-          {/* Ellipsis */}
-          {totalPage > 5 && currentPage < totalPage - 2 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-
-          {/* Next Button */}
           <PaginationItem>
             <PaginationNext
               href="#"
