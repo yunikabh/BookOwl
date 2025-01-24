@@ -13,7 +13,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-16 -mt-20">
+    <div className="min-h-screen p-8" >
       <div className="container max-w-5xl bg-white shadow-lg rounded-xl p-12">
         {/* Profile Section */}
         <div className="flex items-center gap-6">

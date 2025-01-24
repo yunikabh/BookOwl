@@ -17,7 +17,7 @@ const UserSidebar = () => {
   ];
 
   return (
-    <div className="max-h-screen w-64 bg-[#bd9d86] left-0 top-20 flex flex-col">
+    <div className=" w-64 bg-[#bd9d86] ">
       {/* Welcome Section */}
       <div className="p-4 text-center border-b border-gray-700">
         <h1 className="text-2xl font-serif font-bold text-[#8B3623]">Welcome to Your Dashboard</h1>
