@@ -7,6 +7,7 @@ import Author from "../_components/Author";
 import DisplayReview from "../_components/DisplayReview";
 import You from "../_components/You";
 import Recommendations from "../_components/Recommendation";
+import AddReview from "../_components/AddReview"
 
 
 export default function BookDetailsId() {
@@ -38,6 +39,7 @@ export default function BookDetailsId() {
     <>
       <Starting data={data} />
       <Author data = {data} />
+      <AddReview bookData= {data} />
       <DisplayReview data = {data} />
       <You />
       <Recommendations />

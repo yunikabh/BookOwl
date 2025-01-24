@@ -1,11 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Star } from "lucide-react";
+// import { useState, useEffect } from "react";
+// import { Star } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import $axios from "@/lib/axios.instance";
 export default function Review({ data }) {
-  const [Reviews, setReviews] = useState();
+  // const [Reviews, setReviews] = useState();
   useEffect(() => {
     getData();
   }, []);
