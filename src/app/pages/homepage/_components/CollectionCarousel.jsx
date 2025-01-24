@@ -2,35 +2,14 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-
 import { Navigation } from "swiper/modules";
-// import {
-//   BookOpen,
-//   Feather,
-//   ClipboardList,
-//   Heart,
-//   User,
-//   Mail,
-//   History,
-//   BookHeart,
-// } from "lucide-react";
 import { useEffect, useState } from "react";
 import $axios from "@/lib/axios.instance";
-// import { Heart } from "lucide-react";
-
-// const categories = [
-//   { name: "Fiction", icon: <BookOpen size={24} /> },
-//   { name: "Thriller", icon: <Feather size={24} /> },
-//   { name: "Non-fiction", icon: <ClipboardList size={24} /> },
-//   { name: "Fantasy", icon: <Heart size={24} /> },
-//   { name: "Biography", icon: <User size={24} /> },
-//   { name: "Romance", icon: <BookHeart  size={24}/>},
-//   { name: "Mystery", icon: <Mail size={24} /> },
-//   { name: "Historical", icon: <History size={24} /> },
-// ];
+import { useRouter } from "next/navigation";
 
 
 const CollectionCarousel = () => {
+  const router = useRouter();
   const [data, setData] = useState([]);
   useEffect(() => {
     getData();
@@ -51,6 +30,10 @@ const getData = async () => {
       setError(`Error fetching data: ${err.message}`);
     }
   };
+  const handleClick = (id) => {
+  router.push(`/pages/categorypage/${id}`)
+  }
+  
   return (
     <div className="bg-white py-8 px-4 mt-16 h-52 rounded-full ml-10 mr-10 border border-black">
       <Swiper
@@ -67,7 +50,7 @@ const getData = async () => {
       >
         {data.map((category) => (
           <SwiperSlide key={category._id}>
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col items-center space-y-2" onClick={()=>handleClick(category._id)}>
               <div className="h-16 w-16 mt-7 text-white flex items-center justify-center rounded-full bg-slate-400 text-xl">
                 {/* {category.icon} */}
                 {/* <Heart  size={24} />  */}

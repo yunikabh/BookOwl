@@ -20,6 +20,9 @@ export default function Author({data}){
         />
         <div>
           {/* Author Description */}
+          <p className="text-gray-700 font-semibold mb-2 font-serif">
+           {data.author.authorName}
+          </p>
           <p className="text-[#265073] font-serif">
            {data.author.authorBio}
           </p>

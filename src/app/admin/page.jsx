@@ -1,9 +1,23 @@
+"use client"
+import { useRouter } from "next/navigation";
 import Dashboard from "./_components/Dashboard";
+import { useEffect } from "react";
 
-export default function Admin(){
+const Admin=()=>{
+    const router = useRouter();
+    const role = localStorage.getItem("role");
+    useEffect(()=>{
+        if (role !== "admin");
+        router.push("/login");
+    },[role,router]);
+
+    if (role !== "admin"){
+        return <>loading...</>
+    }
     return(
         <div className="overflow-hidden"> 
             <Dashboard/>
         </div>
     )
 }
+export default Admin;

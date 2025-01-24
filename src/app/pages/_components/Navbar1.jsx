@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -11,35 +11,51 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import { ChevronDown, UserCircle, Search ,ShoppingCart,Bell} from "lucide-react";
+import {
+  ChevronDown,
+  Search,
+  ShoppingCart,
+  Bell,
+} from "lucide-react";
 import $axios from "@/lib/axios.instance";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const navItems = [
-  { id: 1, name: "Home", href: "/" },
+  { id: 1, name: "Home", href: "/pages/homepage" },
   { id: 2, name: "About us", href: "/pages/about-us" },
-  { id: 3, name: "Contact us", href: "/" },
+  { id: 3, name: "Contact us", href: "/pages/contactus" },
 ];
 
 export default function Navbar1() {
   const router = useRouter();
-  const logout = async () =>{
+  const [userInitial, setUserInitial] = useState("");
+  useEffect(() => {
+    const userName = localStorage.getItem("name");
+    if (userName) {
+      setUserInitial(userName.charAt(0).toUpperCase());
+    }
+  }, []);
+  const logout = async () => {
     const confirmLogout = confirm("Are you sure you want to logout?");
     if (!confirmLogout) return;
-try {
-  localStorage.removeItem("token");
-  await $axios.post("/auth/logout");
-  router.push("/login");
-} catch (error) {
-  console.log(error);
-}
-  }
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("name");
+      localStorage.removeItem("id");
+      localStorage.removeItem("role");
+      await $axios.post("/auth/logout");
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex justify-between py-2 px-[5%]">
       {/* Logo */}
-      <div>
+      <Link href="/pages/homepage">
         <img src="/photos/logo.png" alt="Logo" className="h-16" />
-      </div>
+      </Link>
 
       {/* Navigation Menu */}
       <NavigationMenu className="text-[#5d768a] gap-10">
@@ -72,7 +88,7 @@ try {
           </div>
 
           {/* Notifications */}
-          <div >
+          <div>
             <Bell className="w-6 h-6 text-[#5d768a] hover:text-gray-900" />
           </div>
 
@@ -80,14 +96,16 @@ try {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center font-medium text-[#5d768a]">
-                <UserCircle className="w-6 h-6 text-[#5d768a]" />
+                {/* <UserCircle className="w-6 h-6 text-[#5d768a]" /> */}
+                <div className="w-8 h-8 flex items-center justify-center bg-[#af886b] rounded-full text-white cursor-pointer">
+                  {userInitial}
+                </div>
                 <ChevronDown className="w-5 h-5 ml-1" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               className="bg-white border border-gray-200 rounded-md shadow-lg mt-2 w-40"
               align="end"
-            
             >
         
 

@@ -1,4 +1,5 @@
 "use client";
+// import Cookies from "js-cookie";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -55,7 +56,12 @@ export default function LoginPage() {
       // console.log(response);
       localStorage.setItem("token", response.data.data.accessToken);
       const role = user.data?.user.role;
-      console.log("role:", role);
+      const id = user.data?.user._id;
+      const name = user.data?.user.name;
+      localStorage.setItem("id", id);
+      localStorage.setItem("name",name);
+      // console.log("role:", role);
+      // Cookies.set('role', role.trim(), { expires: 7, path: '/' });  // Ensuring there's no newline or extra spaces
       if (role === "admin") {
         router.push("/admin");
       } else {
