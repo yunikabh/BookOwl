@@ -11,7 +11,7 @@ import BookCollections from  "./_components/BookCollections"
 // import BestSeller from "./_components/BestSeller";
 
 // import NewArrivals from "./_components/NewArrivals"
-import End from "./_components/End";
+// import End from "./_components/End";
 import { useEffect, useState } from "react";
 import $axios from "@/lib/axios.instance";
 
@@ -46,7 +46,7 @@ export default function Homepage(){
             <BookCollections />
             {/* <NewArrivals/> */}
             {/* <BestSeller /> */}
-            <End/>
+            {/* <End/> */}
 
             
         
