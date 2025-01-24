@@ -1,22 +1,39 @@
 "use client";
-import React, { useState } from "react";
+
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Camera } from "lucide-react";
 
+// Schema for form validation using Zod
+const profileSchema = z.object({
+  name: z.string().min(2, "Name must be at least  4 characters."),
+  username: z.string().startsWith("@", "Username must start with '@'."),
+  bio: z.string().max(200, "Bio cannot exceed 200 characters.").optional(),
+  phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits."),
+  address: z.string().min(5, "Address must be at least 5 characters."),
+});
+
 export default function ProfilePage() {
-  const [editName, setEditName] = useState(false);
-  const [name, setName] = useState("neupaneaisha45");
+  const form = useForm({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      name: "neupaneaisha45",
+      username: "@neupaneaisha45",
+      bio: "",
+      phone: "",
+      address: "",
+    },
+  });
 
-  const [editUsername, setEditUsername] = useState(false);
-  const [username, setUsername] = useState("@neupaneaisha45");
-
-  const toggleEditName = () => setEditName(!editName);
-  const toggleEditUsername = () => setEditUsername(!editUsername);
-
-  const handleNameChange = (e) => setName(e.target.value);
-  const handleUsernameChange = (e) =>
-    setUsername(e.target.value.startsWith("@") ? e.target.value : "@" + e.target.value);
+  const onSubmit = (data) => {
+    console.log("Profile Updated:", data);
+    alert("Profile Updated Successfully!");
+  };
 
   return (
     <div className="min-h-screen bg-[#E6D4B9] flex items-start justify-center py-12">
@@ -28,106 +45,98 @@ export default function ProfilePage() {
           <div className="flex items-center gap-6">
             <div className="relative">
               <div className="w-32 h-32 rounded-full bg-[#BD9D86] flex items-center justify-center text-white text-6xl font-light">
-                {name[0]?.toUpperCase()}
+                {form.getValues("name")[0]?.toUpperCase()}
               </div>
-              {/* Camera Icon */}
               <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-full border border-gray-200 flex items-center justify-center shadow cursor-pointer">
                 <Camera className="w-5 h-5 text-gray-500 hover:text-gray-700" />
               </div>
             </div>
           </div>
 
-          {/* Name Section */}
-          <Card>
-            <CardContent className="p-6 space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">Name</div>
-                  {editName ? (
-                    <div className="flex items-center gap-4">
-                      <input
-                        type="text"
-                        value={name}
-                        onChange={handleNameChange}
-                        className="border border-gray-300 rounded p-2 w-full"
-                      />
-                      <Button
-                        onClick={toggleEditName}
-                        variant="link"
-                        className="text-green-500 hover:text-green-600"
-                      >
-                        Update
-                      </Button>
-                      <Button
-                        onClick={() => setEditName(false)}
-                        variant="link"
-                        className="text-red-500 hover:text-red-600"
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  ) : (
-                    <div>{name}</div>
-                  )}
-                </div>
-                {!editName && (
-                  <Button
-                    onClick={toggleEditName}
-                    variant="link"
-                    className="text-red-500 hover:text-red-600"
-                  >
-                    Update
-                  </Button>
+          {/* Form Section */}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Name Field */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter your name" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-            </CardContent>
-          </Card>
+              />
 
-          {/* Username Section */}
-          <Card>
-            <CardContent className="p-6 space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">Username</div>
-                  {editUsername ? (
-                    <div className="flex items-center gap-4">
-                      <input
-                        type="text"
-                        value={username}
-                        onChange={handleUsernameChange}
-                        className="border border-gray-300 rounded p-2 w-full"
-                      />
-                      <Button
-                        onClick={toggleEditUsername}
-                        variant="link"
-                        className="text-green-500 hover:text-green-600"
-                      >
-                        Update
-                      </Button>
-                      <Button
-                        onClick={() => setEditUsername(false)}
-                        variant="link"
-                        className="text-red-500 hover:text-red-600"
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  ) : (
-                    <div>{username}</div>
-                  )}
-                </div>
-                {!editUsername && (
-                  <Button
-                    onClick={toggleEditUsername}
-                    variant="link"
-                    className="text-red-500 hover:text-red-600"
-                  >
-                    Update
-                  </Button>
+              {/* Username Field */}
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter your username" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-            </CardContent>
-          </Card>
+              />
+
+              {/* Bio Field */}
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bio</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Tell us about yourself" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Phone Number Field */}
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone Number</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter your phone number" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Address Field */}
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Address</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter your address" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Submit Button */}
+              <Button type="submit" className="w-full bg-[#8B3623] text-white">
+                Save Changes
+              </Button>
+            </form>
+          </Form>
         </div>
       </div>
     </div>
