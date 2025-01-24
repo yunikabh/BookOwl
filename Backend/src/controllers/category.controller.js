@@ -147,14 +147,7 @@ const getBooksByCategories = asyncHandler(async (req, res) => {
   }
 });
 
-//get category stats 
 
-// const getCategoryStats = asyncHandler(async(req,res)=>{
-// try {
-//     const categoryStats = await 
-// } catch (error) {
-    
-// }
 
 
 

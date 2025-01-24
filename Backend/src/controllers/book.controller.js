@@ -119,19 +119,19 @@ console.log(formattedDate);
 //getBooks all
 const getBooks = asyncHandler(async (req, res) => {
   try {
-    const page = parseInt(req.query.page || 1);
-    const limit = parseInt(req.query.limit || 8) ;
+    // const page = parseInt(req.query.page || 1);
+    // const limit = parseInt(req.query.limit || 8) ;
    
-    console.log("this is p",page)
-    console.log("this is p",limit)
+    // console.log("this is p",page)
+    // console.log("this is p",limit)
 
 
     const bookQuery = await  Book.find()
     .populate("category", "categoryName")
     .populate("author")
-    .sort({ createdAt: -1 }) // Sort by createdAt in descending order
-        .skip((page - 1) * limit)
-        .limit(limit);
+    // .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+    //     .skip((page - 1) * limit)
+    //     .limit(limit);
 
   if (bookQuery.length === 0) {
     throw new ApiError(404, "Book not found");
