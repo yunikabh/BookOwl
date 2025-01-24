@@ -84,7 +84,7 @@ const login = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
       console.log("logged in user: ",user);
     if (!user) {
-      throw new ApiError(409, "Email does not exists ");
+      return res.status(409).send({ message: "Invalid credentials" });
     }
     //check password
     const plainPassword = password;
