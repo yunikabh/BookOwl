@@ -70,31 +70,6 @@ const onSubmit = async (data) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 rounded-xl shadow-sm mb-6 space-y-3">
         <h3 className="text-2xl font-semibold mb-4 text-[#c2918b]">Write a Review</h3>
 
-        {/* User Field (Read-only) */}
-        {/* <FormItem>
-          <FormLabel>User</FormLabel>
-          <FormControl>
-            <input
-              type="text"
-            //   value={user.name}
-              readOnly
-              className="mt-2 p-2 w-full border border-gray-300 rounded-lg"
-            />
-          </FormControl>
-        </FormItem> */}
-
-        {/* Book Field (Read-only) */}
-        {/* <FormItem>
-          <FormLabel>Book</FormLabel>
-          <FormControl>
-            <input
-              type="text"
-            //   value={book.title}
-              readOnly
-              className="mt-2 p-2 w-full border border-gray-300 rounded-lg"
-            />
-          </FormControl>
-        </FormItem> */}
 
         {/* Rating Field */}
         <FormField
@@ -120,26 +95,7 @@ const onSubmit = async (data) => {
             </FormItem>
           )}
         />
-
-        {/* Review Title Field */}
-        {/* <FormField
-          control={form.control}
-          name="reviewTitle"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Review Title</FormLabel>
-              <FormControl>
-                <input
-                  type="text"
-                  {...field}
-                  className="mt-2 p-2 w-full border border-gray-300 rounded-lg"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
+        
         {/* Review Text Field */}
         <FormField
           control={form.control}
