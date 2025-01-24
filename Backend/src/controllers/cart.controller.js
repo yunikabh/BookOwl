@@ -38,7 +38,7 @@ const addToCart = asyncHandler(async (req, res) => {
     (item) => item.bookId.toString() === bookId
   );
 
-  if (itemIndex) {
+  if (itemIndex >= 0) {
     throw new ApiError(404, "Already in the cart.");
   }
 
