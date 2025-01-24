@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addBook,getBooks,getBookById,updateBooks,deleteBooks, newArrivalBooks,dealsOfTheWeek} from "../controllers/book.controller.js";
+import { addBook,getBooks,getBookById,updateBooks,deleteBooks, newArrivalBooks,dealsOfTheWeek,getBooksStats} from "../controllers/book.controller.js";
 import { verifyUser } from "../middlewares/auth.middleware.js";
 import upload from "../middlewares/multer.middleware.js";
 import { addReviewAndRating, deleteReviewAndRating, updateReviewAndRating, getReviewsAndRating} from "../controllers/review.controller.js";
@@ -21,5 +21,6 @@ router.route("/getReviewsAndRating/:bookId").get(verifyUser,getReviewsAndRating)
 //Filter by
 router.route("/newArrivalsBook").get(verifyUser,newArrivalBooks);
 router.route("/dealsOfTheWeek").get(verifyUser,dealsOfTheWeek);
+router.route("/getBooksStats").get(verifyUser,getBooksStats);
 
 export default router;
