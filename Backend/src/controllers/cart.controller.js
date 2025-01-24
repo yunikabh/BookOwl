@@ -220,14 +220,26 @@ const removeFromCart = asyncHandler(async (req, res) => {
 
 //  Delete all items from the cart
 const deleteCart = asyncHandler(async (req, res) => {
-  const cartId = req.params.id;
-  const deleteCart = await cartModel.findByIdAndDelete(cartId);
-  if (!deleteCart) {
+  const userId = req.user?._id;
+  // Find the user's cart by userId
+  const cart = await cartModel.findOne({ userId });
+
+  if (!cart) {
     throw new ApiError(404, "Cart not found.");
   }
+
+  // Clear all items from the cart
+  cart.items = [];
+
+  // Reset total price
+  cart.totalPrice = 0;
+
+  // Save the updated cart with no items
+  const updatedCart = await cart.save();
+
   res
     .status(200)
-    .json(new ApiResponse(200, deleteCart, "Cart deleted successfully"));
+    .json(new ApiResponse(200, updatedCart, "Cart deleted successfully"));
 });
 
 export { addToCart, getCartDetails, updateCart, deleteCart,removeFromCart };

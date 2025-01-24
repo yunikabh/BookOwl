@@ -8,7 +8,7 @@ const router = Router();
 router.route('/addToCart/:userId').post(verifyUser,addToCart);
 router.route('/getCartDetails/:id').get(verifyUser,getCartDetails);
 router.route('/updateCart/:id').put(verifyUser,updateCart);
-router.route('/deleteCart/:id').delete(verifyUser,deleteCart);
+router.route('/deleteCart/:id').put(verifyUser,deleteCart);
 router.route('/removeFromCart/:id').put(verifyUser,removeFromCart)
 
 
