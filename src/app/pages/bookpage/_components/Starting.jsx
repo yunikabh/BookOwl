@@ -4,21 +4,35 @@ import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import $axios from "@/lib/axios.instance";
+import { useRouter } from "next/navigation";
 export default function Starting({ data }) {
-
   useEffect(() => {
     AOS.init({ duration: 1000 }); // Customize duration as needed
   }, []);
-
+  const router = useRouter();
   // Example rating value (you can pass this dynamically later)
   const rating = data.averageRating || 0;
-
+  const userId = localStorage.getItem("id");
   console.log(data);
+  const handleAddCart = async () => {
+    try {
+      const bookkoId = { bookId: data._id };
+      const response = await $axios.post(`/cart/addToCart/${userId}`, bookkoId);
+      console.log(response);
+      alert("Book added to cart");
+      router.push("/pages/addtocart");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="p-6 max-w-5xl mx-auto bg-white shadow  flex flex-col lg:flex-row gap-8 ">
       {/* Left Column: Book Cover */}
-      <div className="flex flex-col items-center w-full lg:w-1/2"
-      data-aos="fade-right">
+      <div
+        className="flex flex-col items-center w-full lg:w-1/2"
+        data-aos="fade-right"
+      >
         <img
           src={
             data?.coverImage
@@ -31,8 +45,10 @@ export default function Starting({ data }) {
       </div>
 
       {/* Right Column: Book Details */}
-      <div className="flex flex-col mt-24 lg:mt-3 w-full lg:w-1/2"
-      data-aos="fade-left">
+      <div
+        className="flex flex-col mt-24 lg:mt-3 w-full lg:w-1/2"
+        data-aos="fade-left"
+      >
         <p className="text-gray-500 text-lg italic">
           By {data.author.authorName}
         </p>
@@ -66,16 +82,22 @@ export default function Starting({ data }) {
             : "N/A"}
         </p>
         <p className="text-gray-500 font-bold">Pages: {data.pages}</p>
-        <p className="text-gray-500 font-bold">Published Date: {data.publishedDate}</p>
+        <p className="text-gray-500 font-bold">
+          Published Date: {data.publishedDate}
+        </p>
         <p className="text-gray-500 font-bold">Language: {data.language}</p>
         <p className="text-gray-500 font-bold">ISBN: {data.ISBN}</p>
-        <p className="text-gray-500 font-bold">Published By: {data.publisher}</p>
+        <p className="text-gray-500 font-bold">
+          Published By: {data.publisher}
+        </p>
         <p className="text-gray-500 font-bold">
           Mood: {data.mood.length > 0 ? data.mood.join(", ") : "N/A"}
         </p>
         <div className="flex gap-4 mt-6">
           <Button className="rounded-full bg-[#265073]">Buy Now</Button>
-          <Button className="rounded-full bg-[#265073]">Add To Cart</Button>
+          <Button className="rounded-full bg-[#265073]" onClick={handleAddCart}>
+            Add To Cart
+          </Button>
         </div>
       </div>
     </div>

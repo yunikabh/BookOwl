@@ -1,45 +1,59 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Trash2, X } from "lucide-react";
+import $axios from "@/lib/axios.instance";
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Desil A Magazine",
-      image: "/photos/cursed.jpeg",
-      author: "B. Simmons",
-      price: 12.0,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "Better Reading",
-      image: "/photos/cursed.jpeg",
-      author: "Floyd Mila",
-      price: 12.0,
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: "Breaking Barriers",
-      image: "/photos/cursed.jpeg",
-      author: "Emma Roberts",
-      price: 18.0,
-      quantity: 2,
-    },
-    {
-      id: 4,
-      name: "Legends of the Sky",
-      image: "/photos/cursed.jpeg",
-      author: "Andrew Miles",
-      price: 19.5,
-      quantity: 1,
-    },
-  ]);
+  const [data, setData] = useState();
+  // const [cartItems, setCartItems] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Desil A Magazine",
+  //     image: "/photos/cursed.jpeg",
+  //     author: "B. Simmons",
+  //     price: 12.0,
+  //     quantity: 2,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Better Reading",
+  //     image: "/photos/cursed.jpeg",
+  //     author: "Floyd Mila",
+  //     price: 12.0,
+  //     quantity: 1,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Breaking Barriers",
+  //     image: "/photos/cursed.jpeg",
+  //     author: "Emma Roberts",
+  //     price: 18.0,
+  //     quantity: 2,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Legends of the Sky",
+  //     image: "/photos/cursed.jpeg",
+  //     author: "Andrew Miles",
+  //     price: 19.5,
+  //     quantity: 1,
+  //   },
+  // ]);
+  useEffect(() => {
+    getData();
+  }, []);
+  const getData = async () => {
+    const response = await $axios.get("/cart/getCartDetails");
+    console.log("Cart", response);
+    if (!response) {
+      throw new Error(`HTTP erroe!:Status: ${response.status}`);
+    }
+    setData(response?.data.data.items);
+    console.log(response?.data.data.items);
+  };
 
   const handleDeleteItem = (id) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
@@ -67,26 +81,26 @@ export default function CartPage() {
     );
   };
 
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <div className="min-h-screen bg-[#E6D4B9] flex flex-col items-center py-10 px-4">
       {/* Page Container */}
-      <Card className="max-w-6xl w-full bg-white p-6 rounded-lg shadow-md">
-        {/* Page Header */}
-        <h1 className="text-3xl font-bold font-serif text-center mb-6 text-[#B83214]">
+      {/* <Card className="max-w-6xl w-full bg-white p-6 rounded-lg shadow-md"> */}
+      {/* Page Header */}
+      {/* <h1 className="text-3xl font-bold font-serif text-center mb-6 text-[#B83214]">
           My Cart
-        </h1>
+        </h1> */}
 
-        {/* Cart Items */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* Cart Items */}
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {cartItems.map((item) => (
             <div
               key={item.id}
               className="relative flex flex-col items-center justify-between p-4 border rounded-lg shadow-sm bg-white"
-            >
-              {/* Delete Icon */}
-              <button
+            > */}
+      {/* Delete Icon */}
+      {/* <button
                 className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
                 onClick={() => handleDeleteItem(item.id)}
               >
@@ -120,10 +134,10 @@ export default function CartPage() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
 
-        {/* Total and Actions */}
-        <div className="flex justify-between items-center mt-6">
+      {/* Total and Actions */}
+      {/* <div className="flex justify-between items-center mt-6">
           <h2 className="text-xl font-bold text-gray-800">
             Total: ${totalPrice.toFixed(2)}
           </h2>
@@ -139,7 +153,7 @@ export default function CartPage() {
             </Button>
           </div>
         </div>
-      </Card>
+      </Card> */}
     </div>
   );
 }
