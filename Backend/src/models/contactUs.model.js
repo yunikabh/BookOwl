@@ -24,9 +24,6 @@ const contactSchema = new mongoose.Schema({
      required: true,
       maxlength: 500 
     },
-  attachment: {
-    type: String,
-  }, // Path to file if uploaded
   createdAt: {
     type: Date,
     default: Date.now,

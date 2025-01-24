@@ -68,6 +68,8 @@ const getUserById = asyncHandler(async (req, res) => {
           throw new ApiError(500,"Something went wrong",error.message);
         }
  })
+
+ 
 const updateUser = asyncHandler(async(req,res) =>{
    try {
     // Extract user ID from the token
@@ -79,15 +81,14 @@ const updateUser = asyncHandler(async(req,res) =>{
      // Extract data from the request body
      const{name,phoneNumber,bio,address}= req.body; //phonenumber how change 
      
-
+console.log("this is",req.body);
      
      const updatedUser = await User.findByIdAndUpdate(userId,{name,phoneNumber,bio,address},
-      { new: true, runValidators: true } // Return updated user, validate input
-     )
+      { new: true, runValidators: true }) // Return updated user, validate input
      if(!updatedUser){
       throw new ApiError(404,"User not found");
      }
-     res.status(200).json(new ApiResponse(200,"Profile Updated Successfully",updatedUser))
+     res.status(200).json(new ApiResponse(200,updatedUser,"Profile Updated Successfully"))
    } catch (error) {
             throw new ApiError(500,"Error in updating profile",error.message);
    }

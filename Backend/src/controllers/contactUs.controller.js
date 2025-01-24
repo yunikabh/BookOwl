@@ -8,9 +8,6 @@ import { verifyUser } from "../middlewares/auth.middleware.js";
 
 //add contact us 
 const contactUs = asyncHandler(async(req,res) =>{
-
-    
-    
     try {
               const name= req.user.name;
               const email= req.user.email;

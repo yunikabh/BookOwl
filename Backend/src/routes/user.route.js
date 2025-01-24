@@ -5,6 +5,7 @@ import upload from "../middlewares/multer.middleware.js";
 // import { register, login,addBook,getBooks,getBookById,updateBooks,deleteBooks } from "../controllers/user.controller.js";
 
 const router = Router();
+
 router.route("/getUsers").get(getUser);
 router.route("/getUserById/:id").get(getUserById);
 router.route("/updateUser/:id").put(verifyUser,updateUser);
