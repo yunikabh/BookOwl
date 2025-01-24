@@ -21,9 +21,9 @@ export default function Background() {
             non-fiction, BookOwl helps you discover the books you&apos;ll love. Dive
             into your next great read today!
           </p>
-         <Link href="./pages/homepage">
+         <Link href="/browse">
           <Button className="my-10 bg-[#265073] " data-aos="fade-up">
-            Explore
+            Browse
           </Button>
           </Link>
         </div>
