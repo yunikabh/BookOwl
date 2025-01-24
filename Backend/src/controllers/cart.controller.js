@@ -72,10 +72,13 @@ const addToCart = asyncHandler(async (req, res) => {
   // Save the cart to the database
 
   const savedCart = await cart.save();
+  const populatedCart = await cartModel
+    .findById(savedCart._id)
+    .populate("items.bookId");
   console.log("Item is added to the cart");
   return res
     .status(200)
-    .json(new ApiResponse(200, savedCart, "Item added to cart successfully"));
+    .json(new ApiResponse(200, populatedCart, "Item added to cart successfully"));
 });
 
 //get Cartdetails

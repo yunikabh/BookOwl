@@ -5,8 +5,8 @@ import {addToCart,getCartDetails, updateCart,deleteCart } from "../controllers/c
 
 const router = Router();
 
-router.route('/addToCart/:id').post(verifyUser,addToCart);
-router.route('/getCartDetails').get(verifyUser,getCartDetails);
+router.route('/addToCart/:userId').post(verifyUser,addToCart);
+router.route('/getCartDetails/:id').get(verifyUser,getCartDetails);
 router.route('/updateCart/:id').put(verifyUser,updateCart);
 router.route('/deleteCart/:id').delete(verifyUser,deleteCart);
 
