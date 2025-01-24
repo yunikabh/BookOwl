@@ -94,8 +94,8 @@ const login = asyncHandler(async (req, res) => {
 
     const matchPassword = await bcrypt.compare(plainPassword, hashedPassword);
     if (!matchPassword) {
-      // return res.status(409).send({ message: "Invalid credentials" });
-      throw new ApiError(409, "Invalid credentials");
+      return res.status(409).send({ message: "Invalid credentials" });
+      // throw new ApiError(409, "Invalid credentials");
     }
 
 
