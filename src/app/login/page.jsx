@@ -60,6 +60,7 @@ export default function LoginPage() {
       const name = user.data?.user.name;
       localStorage.setItem("id", id);
       localStorage.setItem("name",name);
+      localStorage.setItem("role",role);
       // console.log("role:", role);
       // Cookies.set('role', role.trim(), { expires: 7, path: '/' });  // Ensuring there's no newline or extra spaces
       if (role === "admin") {

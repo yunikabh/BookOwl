@@ -6,8 +6,9 @@ import { useEffect } from "react";
 const Admin=()=>{
     const router = useRouter();
     const role = localStorage.getItem("role");
+    console.log("my role", role);
     useEffect(()=>{
-        if (role !== "admin");
+        if (role !== "admin")
         router.push("/login");
     },[role,router]);
 
