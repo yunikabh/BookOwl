@@ -19,7 +19,7 @@ const navDarkItems = [
   {
     id: 1,
     name: "Browse",
-    href: "/",
+    href: "/browse",
   },
 ];
 export default function Navbar() {
