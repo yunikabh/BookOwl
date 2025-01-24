@@ -28,6 +28,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
+  const [error, setError] = useState(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const router = useRouter();
 
@@ -40,28 +41,36 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values) {
-    const response = await $axios.post("/auth/login", values);
-    if (response && response.status === 200) {
-      const user = await response.data;
-      localStorage.setItem("token", response.data.data.accessToken);
-      const role = user.data?.user.role;
-      const id = user.data?.user._id;
-      const name = user.data?.user.name;
-      localStorage.setItem("id", id);
-      localStorage.setItem("name",name);
-      localStorage.setItem("role",role);
-      // console.log("role:", role);
-      // Cookies.set('role', role.trim(), { expires: 7, path: '/' });  // Ensuring there's no newline or extra spaces
-      if (role === "admin") {
-        router.push("/admin");
-      } else {
-        router.push("/pages/homepage");
+    try {
+      const response = await $axios.post("/auth/login", values);
+      if (response && response.status === 200) {
+        const user = await response.data;
+        localStorage.setItem("token", response.data.data.accessToken);
+        const role = user.data?.user.role;
+        const id = user.data?.user._id;
+        const name = user.data?.user.name;
+        localStorage.setItem("id", id);
+        localStorage.setItem("name", name);
+        localStorage.setItem("role", role);
+        // console.log("role:", role);
+        // Cookies.set('role', role.trim(), { expires: 7, path: '/' });  // Ensuring there's no newline or extra spaces
+        if (role === "admin") {
+          router.push("/admin");
+        } else {
+          router.push("/pages/homepage");
+        }
       }
+    } catch (error) {
+      console.log(error);
+      const errorMessage =
+        error?.response?.data?.message || "An unexpected error occurred.";
+      setError(errorMessage);
     }
   }
 
   return (
     <div className="flex justify-center items-center w-full min-h-screen bg-[rgb(246,220,201)] overflow-hidden">
+      
       <Card className="w-full max-w-4xl bg-[#e1ceac] shadow-lg rounded-lg border border-gray-100 relative flex flex-col md:flex-row">
         {/* Owl Image Section - Hidden on smaller screens */}
         <div className="hidden md:block w-1/2 p-0">
@@ -71,6 +80,7 @@ export default function LoginPage() {
             className="w-full h-full object-cover rounded-l-lg"
           />
         </div>
+        
 
         {/* Form Section */}
         <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
@@ -79,6 +89,11 @@ export default function LoginPage() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-6 w-full flex flex-col items-center"
             >
+              {error && (
+        <div className="text-red-500 bg-red-100 p-3 rounded-md mb-4">
+          {error}
+        </div>
+      )}
               <h1 className="text-xl md:text-2xl font-bold italic text-[#6d433d]">
                 Welcome To Book Owl
               </h1>
@@ -94,10 +109,7 @@ export default function LoginPage() {
                   <FormItem>
                     <FormControl>
                       <div className="relative w-full">
-                        <Mail
-                          className="absolute left-2.5 top-2.5"
-                          size={18}
-                        />
+                        <Mail className="absolute left-2.5 top-2.5" size={18} />
                         <input
                           type="email"
                           placeholder="Enter your email address"
@@ -119,16 +131,11 @@ export default function LoginPage() {
                   <FormItem>
                     <FormControl>
                       <div className="relative w-full">
-                        <Lock
-                          className="absolute left-2.5 top-2.5"
-                          size={18}
-                        />
+                        <Lock className="absolute left-2.5 top-2.5" size={18} />
                         <button
                           type="button"
                           className="absolute right-2.5 top-2.5"
-                          onClick={() =>
-                            setIsPasswordVisible((prev) => !prev)
-                          }
+                          onClick={() => setIsPasswordVisible((prev) => !prev)}
                         >
                           {isPasswordVisible ? (
                             <Eye size={18} />
