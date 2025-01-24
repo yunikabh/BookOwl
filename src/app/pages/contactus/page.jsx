@@ -68,13 +68,13 @@ export default function ContactUs() {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-[#e6d4b9]">
       <div className="container max-w-7xl mx-auto px-4">
         <div className="mb-14 text-center">
           <h1 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
-            <span className="text-[#af886b]">Get </span>
+            <span className="text-[#8f3623]">Get </span>
             <span className="text-blue-800">In </span>
-            <span className="text-[#af886b]">Touch</span>
+            <span className="text-[#8f3623]">Touch</span>
           </h1>
           <p className="text-lg text-gray-600">
             We&apos;d love to assist you. Fill out the form or reach out through
@@ -84,7 +84,7 @@ export default function ContactUs() {
         <div className="grid gap-10 md:grid-cols-2">
           <div className="grid gap-8 sm:grid-cols-2">
             <ContactInfo
-              icon={<Mail className="h-6 w-6 text-[#af886b]" />}
+              icon={<Mail className="h-6 w-6 text-[#8f3623]" />}
               title="Email Us"
               description="Our team is ready to assist."
               link="bookowl@gmail.com"
@@ -98,14 +98,14 @@ export default function ContactUs() {
               linkText="Start a new chat"
             /> */}
             <ContactInfo
-              icon={<MapPin className="h-6 w-6 text-[#af886b]" />}
+              icon={<MapPin className="h-6 w-6 text-[#8f3623]" />}
               title="Visit Us"
               description="Drop by our college for a chat."
               link="#"
               linkText="Balkumari, Lalitpur, Nepal"
             />
             <ContactInfo
-              icon={<Phone className="h-6 w-6 text-[#af886b]" />}
+              icon={<Phone className="h-6 w-6 text-[#8f3623]" />}
               title="Call Us"
               description="We're available Sun-Fri, 7am-2pm."
               link="9843987316"
@@ -192,7 +192,7 @@ export default function ContactUs() {
           </div>
         </div>
         <div className="mt-16">
-          <h2 className="mb-4 text-2xl font-bold text-[#af886b]">
+          <h2 className="mb-4 text-2xl font-bold text-[#8f3623]">
             Our Location
           </h2>
 
