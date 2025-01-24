@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 
+
 //add book
 //edit book
 //getbooks
@@ -33,6 +34,7 @@ const addBook = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Cover image is required");
   }
 
+
   const coverImageURL = await uploadOnCloudinary(coverImageLocalPath);
   console.log("Cover Image Local Path:", coverImageLocalPath); // Debugging
   console.log("This is cover image url", coverImageURL);
@@ -41,6 +43,13 @@ const addBook = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to upload cover image");
   }
   bookDetails.coverImage = coverImageURL.url;
+  console.log("This is date",bookDetails.publishedDate);
+
+  
+const formattedDate = new Date(bookDetails.publishedDate);
+
+console.log(formattedDate);
+
 
   // check if the book is added already or not
   try {

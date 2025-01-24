@@ -1,6 +1,7 @@
 import express from "express";
+import mongoose from "mongoose";
 // import User from "../models/user.model.js";
-// import Book from "../models/book.model.js";
+import Book from "../models/book.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
@@ -111,6 +112,42 @@ const deleteCategory = asyncHandler(async (req, res) => {
 
 
 //Filetring with category 
+const getBooksByCategories = asyncHandler(async (req, res) => {
+  
+  try {
+      
+      const { categories } = req.query;
+  
+    // Ensure categories query param exists
+    if (!categories) {
+      throw new ApiError(400, "No categories provided");
+    }
+  
+    // Split the category IDs and validate each one
+    const categoryIds = categories.split(",").filter(mongoose.isValidObjectId);
+  
+    if (categoryIds.length === 0) {
+      throw new ApiError(400, "Invalid category IDs");
+    }
+  
+    // Fetch books that belong to any of the provided categories
+    const books = await Book.find({ category: { $in: categoryIds } })
+      .populate("category","categoryName")
+      .populate("author") // If categories are referenced, populate their details
+      .exec();
+  
+    if (!books || books.length === 0) {
+      throw new ApiError(404, "No books found for the given categories");
+    }
+  
+    res.status(200).json(new ApiResponse(200,books,"Books filtered successfully"))
+    
+  } catch (error) {
+    throw new ApiError(400,"Something went wrong during filtering",error.message);
+  }
+});
+
+
 
 
 
@@ -118,5 +155,6 @@ export {
      addCategory,
      getCategory,
      updateCategory,
-     deleteCategory
+     deleteCategory,
+     getBooksByCategories
     };
