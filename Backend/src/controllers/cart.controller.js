@@ -88,8 +88,8 @@ const getCartDetails = asyncHandler(async (req, res) => {
 
   //Find cart of the user
   const cart = await cartModel
-    .findOne({ userId })
-    .populate("items.bookId", "bookName,coverImage,price");
+    .findOne({ userId }).populate("items.bookId");
+
 
   if (!cart) {
     throw new ApiError(404, "Cart not found");
@@ -161,6 +161,10 @@ const updateCart = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, updatedCart, "Cart updated successfully"));
 });
+
+
+
+//Remove a item and recalculate the total price from cart 
 
 //  Delete all items from the cart
 const deleteCart = asyncHandler(async (req, res) => {
