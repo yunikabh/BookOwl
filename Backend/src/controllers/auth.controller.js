@@ -84,7 +84,7 @@ const login = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
       console.log("logged in user: ",user);
     if (!user) {
-      throw new ApiError(409, "Invalid credentials");
+      throw new ApiError(409, "Email does not exists ");
     }
     //check password
     const plainPassword = password;
@@ -116,8 +116,7 @@ const login = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, {user:loggedInUser,accessToken,refreshToken},"User logged in  successful"));
   }
    catch (error) {
-    console.log("Error during login:", error.message);
-    throw new ApiError(500, "Error during login");
+    throw new ApiError(500, "Error during login",error.message);
   }
 
  const refreshAccessToken = asyncHandler(async (req, res) => {
