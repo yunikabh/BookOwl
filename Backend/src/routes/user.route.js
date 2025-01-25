@@ -1,8 +1,7 @@
 import { Router } from "express";
 import { getUser, getUserById,updateUser,deleteUser ,updateUserProfile} from "../controllers/user.controller.js";
 import { verifyUser } from "../middlewares/auth.middleware.js";
-import upload from "../middlewares/multer.middleware.js";
-// import { register, login,addBook,getBooks,getBookById,updateBooks,deleteBooks } from "../controllers/user.controller.js";
+import upload from "../middlewares/multer.middleware.js";// import { register, login,addBook,getBooks,getBookById,updateBooks,deleteBooks } from "../controllers/user.controller.js";
 
 const router = Router();
 

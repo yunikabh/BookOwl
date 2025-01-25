@@ -20,7 +20,7 @@ const addCategory = asyncHandler(async(req,res) =>{
 
         console.log(categoryIcon);
         if(!categoryImageLocalPath){
-                    throw new ApiError(400,"Author image is required");
+                    throw new ApiError(400,"category image is required");
 
         }
 
