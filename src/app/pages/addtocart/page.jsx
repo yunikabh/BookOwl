@@ -1,74 +1,110 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Trash2, X } from "lucide-react";
+import $axios from "@/lib/axios.instance";
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Desil A Magazine",
-      image: "/photos/cursed.jpeg",
-      author: "B. Simmons",
-      price: 12.0,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "Better Reading",
-      image: "/photos/cursed.jpeg",
-      author: "Floyd Mila",
-      price: 12.0,
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: "Breaking Barriers",
-      image: "/photos/cursed.jpeg",
-      author: "Emma Roberts",
-      price: 18.0,
-      quantity: 2,
-    },
-    {
-      id: 4,
-      name: "Legends of the Sky",
-      image: "/photos/cursed.jpeg",
-      author: "Andrew Miles",
-      price: 19.5,
-      quantity: 1,
-    },
-  ]);
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(true); // Loading state to track data fetching
+  const [quantity, setQuantity] = useState(1); // Set initial quantity from API or default to 1
 
-  const handleDeleteItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+  useEffect(() => {
+    getData();
+  }, []);
+  const getData = async () => {
+    const userId = localStorage.getItem("id");
+    try {
+      const response = await $axios.get(`/cart/getCartDetails/${userId}`);
+      console.log("Cart", response);
+
+      if (!response) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      setData(response?.data.data.items);
+    } catch (error) {
+      console.error("Error fetching cart details:", error);
+    } finally {
+      setLoading(false); // Data fetching completed
+    }
   };
 
-  const handleDeleteAll = () => {
-    setCartItems([]);
+  // const handleDeleteItem = async (id) => {
+  //   const bookId = id;
+  //   const confirmDelete = confirm("Are you sure you want to remove?");
+  //   if (!confirmDelete) return;
+
+  //   try {
+  //     const response = await $axios.put(`/cart/removeFromCart/${bookId}`);
+  //     console.log("Delete response:", response);
+  //     if (response.status === 200) {
+  //       alert("Book removed from cart");
+  //       window.location.reload();
+  //     } else {
+  //       alert("failed to remove");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert("failed to remove");
+  //   }
+  // };
+  const handleDeleteAll = async () => {
+    const id = localStorage.getItem("id");
+    // const bookId = id;
+    const confirmDelete = confirm("Are you sure you want to remove?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await $axios.put(`/cart/deleteCart/${id}`);
+      console.log("Delete response:", response);
+      if (response.status === 200) {
+        alert("Book removed from cart");
+        window.location.reload();
+      } else {
+        alert("failed to remove");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("failed to remove");
+    }
+  };
+  // const handleIncreaseQuantity = (id) => {
+  //   setCartItems(
+  //     cartItems.map((item) =>
+  //       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+  //     )
+  //   );
+  // };
+
+  // const handleDecreaseQuantity = (id) => {
+  //   setCartItems(
+  //     cartItems.map((item) =>
+  //       item.id === id && item.quantity > 1
+  //         ? { ...item, quantity: item.quantity - 1 }
+  //         : item
+  //     )
+  //   );
+  // };
+  const handleIncreaseQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1); // Increase the quantity
   };
 
-  const handleIncreaseQuantity = (id) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
+  const handleDecreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1); // Decrease only if quantity > 1
+    }
+  };
+
+  // const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#E6D4B9] flex items-center justify-center">
+        Loading...
+      </div>
     );
-  };
-
-  const handleDecreaseQuantity = (id) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
-
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
+  }
   return (
     <div className="min-h-screen bg-[#E6D4B9] flex flex-col items-center py-10 px-4">
       {/* Page Container */}
@@ -80,40 +116,45 @@ export default function CartPage() {
 
         {/* Cart Items */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {cartItems.map((item) => (
+          {data.map((item) => (
             <div
-              key={item.id}
+              key={item._id}
               className="relative flex flex-col items-center justify-between p-4 border rounded-lg shadow-sm bg-white"
             >
               {/* Delete Icon */}
               <button
                 className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
-                onClick={() => handleDeleteItem(item.id)}
+                // onClick={() => handleDeleteItem(item._id)}
               >
                 <X size={20} />
               </button>
               <img
-                src={item.image}
-                alt={item.name}
+                src={item.bookId.coverImage}
+                alt={item.bookId.bookName}
                 className="w-40 h-60 object-cover rounded-md mb-4"
               />
-              <h2 className="font-medium text-gray-700 text-center">{item.name}</h2>
-              <p className="text-sm text-gray-700 text-center">By {item.author}</p>
-              <p className="text-sm text-gray-500 text-center">Price: ${item.price.toFixed(2)}</p>
+              <h2 className="font-medium text-gray-700 text-center">
+                {item.bookId.bookNameame}
+              </h2>
+              {/* <p className="text-sm text-gray-700 text-center">By {item.author}</p> */}
+              <p className="text-sm text-gray-500 text-center">
+                Price: Rs {item.bookId.price.toFixed(2)}
+              </p>
               <div className="flex items-center gap-2 mt-4">
                 <Button
                   variant="outline"
                   className="px-3 py-1"
-                  onClick={() => handleDecreaseQuantity(item.id)}
-                  disabled={item.quantity === 1}
+                  onClick={() => handleDecreaseQuantity()}
+                  // disabled={item.quantity === 1}
                 >
                   -
                 </Button>
-                <span>{item.quantity}</span>
+                {/* <span>{item.quantity}</span> */}
+                <span>{quantity}</span>
                 <Button
                   variant="outline"
                   className="px-3 py-1"
-                  onClick={() => handleIncreaseQuantity(item.id)}
+                  onClick={() => handleIncreaseQuantity()}
                 >
                   +
                 </Button>
@@ -124,9 +165,9 @@ export default function CartPage() {
 
         {/* Total and Actions */}
         <div className="flex justify-between items-center mt-6">
-          <h2 className="text-xl font-bold text-gray-800">
-            Total: ${totalPrice.toFixed(2)}
-          </h2>
+          {/* <h2 className="text-xl font-bold text-gray-800">
+            Total: Rs {item.quantity}
+          </h2> */}
           <div className="flex gap-4">
             <Button
               className="bg-[#b83214] text-white hover:bg-[#e75433]"
