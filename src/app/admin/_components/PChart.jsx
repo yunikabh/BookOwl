@@ -28,7 +28,7 @@ const chartData = [
 
 const chartConfig = {
   visitors: {
-    label: "Visitors",
+    label: "Purchases",
   },
   chrome: {
     label: "Chrome",
@@ -60,8 +60,8 @@ export default function PChart() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="text-amber-900">Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle className="text-amber-900">Pie Chart </CardTitle>
+        <CardDescription>lorem</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -102,7 +102,7 @@ export default function PChart() {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                         lorem
                         </tspan>
                       </text>
                     )
@@ -115,10 +115,10 @@ export default function PChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none text-amber-900">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Trending up by lorem this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          lorem
         </div>
       </CardFooter>
     </Card>
