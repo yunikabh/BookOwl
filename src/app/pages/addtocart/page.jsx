@@ -9,6 +9,7 @@ import $axios from "@/lib/axios.instance";
 export default function CartPage() {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true); // Loading state to track data fetching
+  const [quantity, setQuantity] = useState(1); // Set initial quantity from API or default to 1
 
   useEffect(() => {
     getData();
@@ -30,14 +31,45 @@ export default function CartPage() {
     }
   };
 
-  // const handleDeleteItem = (id) => {
-  //   setCartItems(cartItems.filter((item) => item.id !== id));
-  // };
+  // const handleDeleteItem = async (id) => {
+  //   const bookId = id;
+  //   const confirmDelete = confirm("Are you sure you want to remove?");
+  //   if (!confirmDelete) return;
 
-  // const handleDeleteAll = () => {
-  //   setCartItems([]);
+  //   try {
+  //     const response = await $axios.put(`/cart/removeFromCart/${bookId}`);
+  //     console.log("Delete response:", response);
+  //     if (response.status === 200) {
+  //       alert("Book removed from cart");
+  //       window.location.reload();
+  //     } else {
+  //       alert("failed to remove");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert("failed to remove");
+  //   }
   // };
+  const handleDeleteAll = async () => {
+    const id = localStorage.getItem("id");
+    // const bookId = id;
+    const confirmDelete = confirm("Are you sure you want to remove?");
+    if (!confirmDelete) return;
 
+    try {
+      const response = await $axios.put(`/cart/deleteCart/${id}`);
+      console.log("Delete response:", response);
+      if (response.status === 200) {
+        alert("Book removed from cart");
+        window.location.reload();
+      } else {
+        alert("failed to remove");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("failed to remove");
+    }
+  };
   // const handleIncreaseQuantity = (id) => {
   //   setCartItems(
   //     cartItems.map((item) =>
@@ -55,6 +87,15 @@ export default function CartPage() {
   //     )
   //   );
   // };
+  const handleIncreaseQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1); // Increase the quantity
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1); // Decrease only if quantity > 1
+    }
+  };
 
   // const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   if (loading) {
@@ -81,12 +122,12 @@ export default function CartPage() {
               className="relative flex flex-col items-center justify-between p-4 border rounded-lg shadow-sm bg-white"
             >
               {/* Delete Icon */}
-              {/* <button
+              <button
                 className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
-                onClick={() => handleDeleteItem(item._id)}
+                // onClick={() => handleDeleteItem(item._id)}
               >
                 <X size={20} />
-              </button> */}
+              </button>
               <img
                 src={item.bookId.coverImage}
                 alt={item.bookId.bookName}
@@ -100,32 +141,33 @@ export default function CartPage() {
                 Price: Rs {item.bookId.price.toFixed(2)}
               </p>
               <div className="flex items-center gap-2 mt-4">
-                {/* <Button
-                  variant="outline"
-                  className="px-3 py-1"
-                  onClick={() => handleDecreaseQuantity(item._id)}
-                  disabled={item.quantity === 1}
-                >
-                  -
-                </Button>
-                <span>{item.quantity}</span>
                 <Button
                   variant="outline"
                   className="px-3 py-1"
-                  onClick={() => handleIncreaseQuantity(item.id)}
+                  onClick={() => handleDecreaseQuantity()}
+                  // disabled={item.quantity === 1}
+                >
+                  -
+                </Button>
+                {/* <span>{item.quantity}</span> */}
+                <span>{quantity}</span>
+                <Button
+                  variant="outline"
+                  className="px-3 py-1"
+                  onClick={() => handleIncreaseQuantity()}
                 >
                   +
-                </Button> */}
+                </Button>
               </div>
             </div>
           ))}
         </div>
 
         {/* Total and Actions */}
-        {/* <div className="flex justify-between items-center mt-6">
-          <h2 className="text-xl font-bold text-gray-800">
-            Total: ${totalPrice.toFixed(2)}
-          </h2>
+        <div className="flex justify-between items-center mt-6">
+          {/* <h2 className="text-xl font-bold text-gray-800">
+            Total: Rs {item.quantity}
+          </h2> */}
           <div className="flex gap-4">
             <Button
               className="bg-[#b83214] text-white hover:bg-[#e75433]"
@@ -137,7 +179,7 @@ export default function CartPage() {
               Proceed to Checkout
             </Button>
           </div>
-        </div> */}
+        </div>
       </Card>
     </div>
   );
