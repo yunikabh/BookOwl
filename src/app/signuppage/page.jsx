@@ -17,7 +17,6 @@ import { Mail, Eye, EyeOff, User, Lock, Phone } from "lucide-react";
 import $axios from "@/lib/axios.instance";
 import { useRouter } from "next/navigation";
 
-// Define form schema with Zod
 const formSchema = z.object({
   name: z.string().min(5, { message: "Name must be at least 5 characters." }),
   password: z
@@ -36,6 +35,7 @@ export default function SignUpPage() {
   const [error, setError] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const [isEmailExists, setIsEmailExists] = useState(false); // Manage email existence error
   const router = useRouter();
 
   const form = useForm({
@@ -57,13 +57,34 @@ export default function SignUpPage() {
       }
       router.push("/login");
     } catch (error) {
-      setError(error.message);
+      if (error.response && error.response.status === 409) {
+        // Email already exists
+        setIsEmailExists(true);
+      } else {
+        setError(error.message);
+      }
     }
   }
 
   return (
     <div className="flex justify-center items-center w-full min-h-screen bg-[rgb(246,220,201)] overflow-hidden p-4">
-      {/* Card with Flex Layout */}
+      {/* Popup Modal */}
+      {isEmailExists && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-6 w-11/12 max-w-md text-center">
+            <h2 className="text-lg font-bold text-red-500">Email Already Exists</h2>
+            <p className="text-gray-700">Please try signing in or use a different email.</p>
+            <Button
+              className="mt-4 bg-[#AF886B] text-white w-full"
+              onClick={() => setIsEmailExists(false)}
+            >
+              Okay
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Form */}
       <Card className="w-full max-w-4xl bg-[#e1ceac] shadow-lg rounded-lg border border-gray-100 relative">
         <div className="flex flex-col md:flex-row w-full">
           {/* Owl Image Section */}
