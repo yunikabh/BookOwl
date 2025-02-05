@@ -15,9 +15,10 @@ import mongoose from "mongoose";
 
 const router = express.Router();
 
+
 //Add to cart
 const addToCart = asyncHandler(async (req, res) => {
-  const { bookId } = req.body;
+  const { bookId} = req.body;
   const userId = req.user?._id;
 
   //validate product
@@ -30,18 +31,20 @@ const addToCart = asyncHandler(async (req, res) => {
   let cart = await cartModel.findOne({ userId });
 
   if (!cart) {
-    cart = new cartModel({ userId, items: [], totalPrice: 0 });
-    console.log("Cart retrieved or created successfully");
+    cart = new cartModel({ userId, items: [],totalPrice:0});
+    console.log("Cart created successfully",cart);
   }
 
-  //check if the product is already in the cart
-  const itemIndex = cart.items.findIndex(
-    (item) => item.bookId.toString() === bookId
-  );
-
-  if (itemIndex >= 0) {
-    throw new ApiError(404, "Already in the cart.");
+    const existingItemIndex = cart.items.findIndex((items) => items.bookId.toString() === bookId);
+    console.log("This is ",existingItemIndex)
+  if(!existingItemIndex){
+    return res.status(200).json(new ApiResponse(200,null, "Book already in cart")); 
   }
+//add book 
+ cart.items.push({bookId,quantity:1,price:book.price});
+
+ cart.totalPrice = cart.items.reduce((total,item) => total+ item.quantity *item.price,0);
+
 
   // .findIndex() goes through each item in the items array
   //  returns the index of the product in the array if it exists; otherwise, it returns -1.
@@ -50,36 +53,10 @@ const addToCart = asyncHandler(async (req, res) => {
   //   throw new ApiError(400, "Quantity must be greater than 0");
   // }
 
-  cart.items.push({ bookId });
-  
-  //Recalculating the total price
-  let totalPrice = 0;
-
-  // Iterate over each item in the cart
-  for (const item of cart.items) {
-    // Fetch the book details by its ID
-    const book = await Book.findById(item.bookId);
-    if (!book) {
-      throw new ApiError(404, "Book not found");
-    }
-
-    // Add the price of the book * quantity to the total price
-    totalPrice += item.quantity * book.price;
-  }
-
-  // Set the total price in the cart
-  cart.totalPrice = totalPrice;
-
-  // Save the cart to the database
-
   const savedCart = await cart.save();
-  const populatedCart = await cartModel
-    .findById(savedCart._id)
-    .populate("items.bookId");
-  console.log("Item is added to the cart");
   return res
     .status(200)
-    .json(new ApiResponse(200, populatedCart, "Item added to cart successfully"));
+    .json(new ApiResponse(200, savedCart, "Item added to cart successfully"));
 });
 
 //get Cartdetails
@@ -89,28 +66,30 @@ const getCartDetails = asyncHandler(async (req, res) => {
 
   //Find cart of the user
   const cart = await cartModel
-    .findOne({ userId }).populate("items.bookId");
+    .findOne({ userId }).populate("items.bookId")
 
 
   if (!cart) {
     throw new ApiError(404, "Cart not found");
     
   }
-
   // Respond with the cart details
   res
     .status(200)
     .json(new ApiResponse(200, cart, "Cart retrieved successfully"));
 });
 
+
+
 //Update the cart items ( Remove items from cart)
 
 const updateCart = asyncHandler(async (req, res) => {
-  const { bookIdToUpdate, quantityChange } = req.body; // `quantityChange` indicates the increment (+1) or decrement (-1)
+  const { bookId, quantity } = req.body; // `quantity` indicates the increment (+1) or decrement (-1)
   const userId = req.user?._id;
+  console.log("This is",quantity)
 
   // Find the user's cart
-  const cart = await cartModel.findOne({ userId }).populate("items.bookId");
+  const cart = await cartModel.findOne({ userId }).populate("items.bookId")
   if (!cart) {
     throw new ApiError(404, "Cart not found");
   }
@@ -121,46 +100,50 @@ const updateCart = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, null, "Cart is empty"));
   }
+  if (!quantity || quantity === 0) {
+      throw new ApiError(400, "Quantity must be greater than 0");
+    }
+  
 
-  // Find the index of the item to update
-  const bookIdObj = mongoose.Types.ObjectId(bookIdToUpdate);
+  // // Find the index of the item to update
+  // const bookIdObj = mongoose.Types.ObjectId(bookIdToUpdate);
 
   // Find the index of the item to update
   const itemIndex = cart.items.findIndex(
-    (item) => item.bookId.toString() === bookIdObj.toString()  // Compare as string
+    (items) => items.bookId._id.toString() === bookId // Compare as string
   );
 
+  // Check if the book exists in the cart
+  if (itemIndex === -1) {
+    throw new ApiError(404, "Book not found in cart");
+  }
+console.log("This is qty",cart.items[itemIndex])
   // Update the item's quantity
   const currentQuantity = cart.items[itemIndex].quantity || 1;
-  const newQuantity = currentQuantity + quantityChange;
-
+  let  newQuantity = currentQuantity + quantity;
+  console.log("THis is ",newQuantity);
   if (newQuantity <= 0) {
-    // If the new quantity is 0 or less, remove the item from the cart
+    // If new quantity is 0 or less, remove the item from the cart
     cart.items.splice(itemIndex, 1);
   } else {
     // Otherwise, update the quantity
     cart.items[itemIndex].quantity = newQuantity;
   }
 
+
   // Recalculate the total price
-  let totalPrice = 0;
-  for (const item of cart.items) {
-    totalPrice += item.quantity * item.bookId.price;
-  }
-
-  cart.totalPrice = totalPrice;
-
+  cart.totalPrice = cart.items.reduce((total,item) => total +  item.quantity *item.price,0)
   // Save the updated cart
   const updatedCart = await cart.save();
 
   // Return the updated cart with populated book details
-  const populatedCart = await cartModel
-    .findById(updatedCart._id)
-    .populate("items.bookId");
+  // const populatedCart = await cartModel
+  //   .findById(updatedCart._id)
+  //   .populate("items.bookId");
 
   res
     .status(200)
-    .json(new ApiResponse(200, populatedCart, "Cart updated successfully"));
+    .json(new ApiResponse(200, updatedCart, "Cart updated successfully"));
 });
 
 
@@ -173,14 +156,14 @@ const removeFromCart = asyncHandler(async (req, res) => {
   const userId = req.user?._id; // The ID of the user making the request
 
   // Find the user's cart
-  const cart = await cartModel.findOne({ userId });
+  const cart = await cartModel.findOne({ userId }).populate("items.bookId");
   if (!cart) {
     throw new ApiError(404, "Cart not found");
   }
 
   // Find the index of the item to remove
   const itemIndex = cart.items.findIndex(
-    (item) => item.bookId.toString() === bookId
+    (item) => item.bookId._id.toString() === bookId
   );
 
   if (itemIndex === -1) {
@@ -193,27 +176,18 @@ const removeFromCart = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Book not found");
   }
 
-  const removedItem = cart.items[itemIndex];
-  const quantity = removedItem.quantity || 1;
-  const itemTotalPrice = quantity * book.price;
+  cart.items = cart.items.filter((item) => item.bookId._id.toString() !== bookId);
 
-  // Remove the item from the cart
-  cart.items.splice(itemIndex, 1);
+  cart.totalPrice = cart.items.reduce((total, item) => total + item.quantity * item.price, 0);
 
-  // Decrease the total price
-  cart.totalPrice -= itemTotalPrice;
 
   // Save the updated cart
   const updatedCart = await cart.save();
 
-  // Populate book details for the response
-  const populatedCart = await cartModel
-    .findById(updatedCart._id)
-    .populate("items.bookId");
-
+  
   return res
     .status(200)
-    .json(new ApiResponse(200, populatedCart, "Item removed from cart successfully"));
+    .json(new ApiResponse(200, updatedCart, "Item removed from cart successfully"));
 });
 
 
