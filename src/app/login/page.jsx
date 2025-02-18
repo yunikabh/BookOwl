@@ -70,7 +70,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex justify-center items-center w-full min-h-screen bg-[rgb(246,220,201)] overflow-hidden">
-      
       <Card className="w-full max-w-4xl bg-[#e1ceac] shadow-lg rounded-lg border border-gray-100 relative flex flex-col md:flex-row">
         {/* Owl Image Section - Hidden on smaller screens */}
         <div className="hidden md:block w-1/2 p-0">
@@ -80,7 +79,6 @@ export default function LoginPage() {
             className="w-full h-full object-cover rounded-l-lg"
           />
         </div>
-        
 
         {/* Form Section */}
         <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
@@ -89,11 +87,7 @@ export default function LoginPage() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-6 w-full flex flex-col items-center"
             >
-              {error && (
-        <div className="text-red-500 bg-red-100 p-3 rounded-md mb-4">
-          {error}
-        </div>
-      )}
+              {error && <div className="text-red-500 p-3 text-2xl  mb-4">{error}</div>}
               <h1 className="text-xl md:text-2xl font-bold italic text-[#6d433d]">
                 Welcome To Book Owl
               </h1>

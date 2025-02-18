@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   Table,
@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Pencil, Trash } from "lucide-react";
+// import { Pencil, Trash } from "lucide-react";
 // import UpdateCategory from "./UpdateCategory";
 // import { useState } from "react";
 // import $axios from "@/lib/axios.instance";
@@ -67,8 +67,8 @@ export default function ListAuthor({ data }) {
               <TableHead>Author Image</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Bio</TableHead>
-              <TableHead>More Books</TableHead>
-              <TableHead>Action</TableHead>
+              {/* <TableHead>More Books</TableHead>
+              <TableHead>Action</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -98,7 +98,7 @@ export default function ListAuthor({ data }) {
 
                 <TableCell>
                   <div className="flex flex-row gap-3">
-                    <Button
+                    {/* <Button
                       variant="outlined"
                       //   onClick={() => handleEditClick(items)}
                     >
@@ -109,7 +109,7 @@ export default function ListAuthor({ data }) {
                       //   onClick={() => handleDeleteClick(items)}
                     >
                       <Trash className="w-5 h-5" />
-                    </Button>
+                    </Button> */}
                   </div>{" "}
                 </TableCell>
               </TableRow>

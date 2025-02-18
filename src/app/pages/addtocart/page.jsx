@@ -23,6 +23,7 @@ export default function CartPage() {
       if (!response) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+      console.log(response?.data.data.totalPrice);
       setData(response?.data.data.items);
     } catch (error) {
       console.error("Error fetching cart details:", error);
@@ -34,7 +35,6 @@ export default function CartPage() {
   // Handle backend interaction for increasing quantity (Increase by 1)
   const handleIncreaseQuantity = async (bookId) => {
     const userId = localStorage.getItem("id");
-
     try {
       const response = await $axios.put(`/cart/updateCart/${userId}`, {
         bookId,
@@ -172,7 +172,7 @@ export default function CartPage() {
                 <Button
                   variant="outline"
                   className="px-3 py-1"
-                  onClick={() => handleDecreaseQuantity(item._id)}
+                  onClick={() => handleDecreaseQuantity(item.bookId._id)}
                 >
                   -
                 </Button>
@@ -180,7 +180,7 @@ export default function CartPage() {
                 <Button
                   variant="outline"
                   className="px-3 py-1"
-                  onClick={() => handleIncreaseQuantity(item._id)}
+                  onClick={() => handleIncreaseQuantity(item.bookId._id)}
                 >
                   +
                 </Button>

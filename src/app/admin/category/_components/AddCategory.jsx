@@ -41,6 +41,12 @@ export default function AddCategory() {
   );
 }
 const formSchema = z.object({
+  categoryIcon: z
+    .any() // Start with `any()` for flexibility.
+    .refine(
+      (fileList) => fileList instanceof FileList && fileList.length > 0,
+      "Category image is required"
+    ),
   name: z.string(),
   description: z.string(),
 });
@@ -50,13 +56,30 @@ function AddForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      categoryIcon: null,
       name: "",
       description: "",
     },
   });
 
   const onSubmit = async (values) => {
-    const response = await $axios.post("/category/addCategory", values);
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+
+    if (
+      values.categoryIcon instanceof FileList &&
+      values.categoryIcon.length > 0
+    ) {
+      formData.append("categoryIcon", values.categoryIcon[0]);
+    } else {
+      console.error("Category image is not selected");
+      return;
+    }
+
+    console.log("FormData being sent:", [...formData.entries()]);
+
+    const response = await $axios.post("/category/addCategory", formData);
 
     if (!response) {
       throw new Error(`HTTP erroe!:Status: ${response.status}`);
@@ -136,7 +159,25 @@ function AddForm() {
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name="categoryIcon"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        field.onChange(e.target.files); // Ensure the file is properly stored
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <DialogFooter>
               <Button type="submit">Save changes</Button>
             </DialogFooter>
