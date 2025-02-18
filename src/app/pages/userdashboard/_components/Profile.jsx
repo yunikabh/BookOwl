@@ -32,7 +32,7 @@ export default function ProfilePage() {
   // };
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen p-8 pt-[80px] bg-[#E6D4B9] ">
       <div className="container max-w-5xl bg-white shadow-lg rounded-xl p-12">
       {profile ? (
 

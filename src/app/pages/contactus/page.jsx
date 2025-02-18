@@ -68,7 +68,7 @@ export default function ContactUs() {
   };
 
   return (
-    <section className="py-16 bg-[#e6d4b9]">
+    <section className="py-16 bg-[#e6d4b9] pt-[80px]">
       <div className="container max-w-7xl mx-auto px-4">
         <div className="mb-14 text-center">
           <h1 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">

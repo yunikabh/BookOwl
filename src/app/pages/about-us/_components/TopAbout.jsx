@@ -2,7 +2,7 @@
 
 export default function TopAbout() {
   return (
-    <div className="bg-[#e3ceaf] rounded-lg w-full mb-10 shadow-lg">
+    <div className="bg-[#e3ceaf] pt-[70px] rounded-lg w-full mb-10 shadow-lg">
       <div className="ml-8  p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           {/* Text Section */}

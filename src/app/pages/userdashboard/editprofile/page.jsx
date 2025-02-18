@@ -115,10 +115,10 @@ export default function ProfilePage() {
   return (
     <div className="h-screen flex flex-col">
       {/* Main Content */}
-      <div className="flex flex-grow overflow-hidden">
+      <div className="flex flex-grow overflow-hidden ">
         {/* Profile Section */}
-        <div className="flex-grow overflow-y-auto bg-[#E6D4B9] p-8">
-          <div className="max-w-4xl mx-auto bg-white shadow rounded-lg p-8">
+        <div className="flex-grow overflow-y-auto bg-[#E6D4B9] p-8 pt-[75px]">
+          <div className="max-w-4xl mx-auto bg-white shadow rounded-lg p-10">
             <h1 className="text-4xl font-bold font-serif text-[#8B3623] mb-6">
               Edit My Profile
             </h1>

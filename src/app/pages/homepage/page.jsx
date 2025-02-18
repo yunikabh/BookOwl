@@ -34,7 +34,7 @@ export default function Homepage(){
     // }
   };
     return(
-        <div>
+        <div >
             <Firstdesign/>
             <CollectionCarousel/>
             {/* <Sidebar/> */}

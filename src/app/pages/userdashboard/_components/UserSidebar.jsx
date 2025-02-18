@@ -13,11 +13,11 @@ const UserSidebar = () => {
     { label: "My Favorites", icon: <Heart size={18} />, href: "/favorites" },
     { label: "My Reviews", icon: <MessageSquare size={18} />, href: "/my-reviews" },
     { label: "Login And Security", icon: <MessageSquare size={18} />, href: "/pages/userdashboard/editaccount" },
-    { label: "Stats", icon: <MessageSquare size={18} />, href: "/pages/userdashboard/stats" }
+ 
   ];
 
   return (
-    <div className=" w-64 bg-[#bd9d86] ">
+    <div className=" w-64 bg-[#bd9d86] pt-[80px] ">
       {/* Welcome Section */}
       <div className="p-4 text-center border-b border-gray-700">
         <h1 className="text-2xl font-serif font-bold text-[#8B3623]">Welcome to Your Dashboard</h1>

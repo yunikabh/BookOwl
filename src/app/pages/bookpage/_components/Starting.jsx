@@ -27,7 +27,7 @@ export default function Starting({ data }) {
     }
   };
   return (
-    <div className="p-6 max-w-5xl mx-auto bg-white shadow  flex flex-col lg:flex-row gap-8 ">
+    <div className="p-6 max-w-5xl mx-auto bg-white shadow  flex flex-col lg:flex-row gap-8 mt-20 ">
       {/* Left Column: Book Cover */}
       <div
         className="flex flex-col items-center w-full lg:w-1/2"
@@ -74,24 +74,29 @@ export default function Starting({ data }) {
           Price: Rs {data.price}
         </p>
         <p className="text-gray-600 mb-3">{data.bookSummary}</p>
-        <p className="text-gray-500 font-bold">
-          {" "}
-          Category:{" "}
+        <p className="text-gray-500 ">
+         <span className="font-bold"> Category:</span> {" "}
+         {" "}
           {data.category.length > 0
             ? data.category.map((cat) => cat.categoryName).join(", ")
             : "N/A"}
         </p>
-        <p className="text-gray-500 font-bold">Pages: {data.pages}</p>
-        <p className="text-gray-500 font-bold">
-          Published Date: {data.publishedDate}
+        <p className="text-gray-500">
+        <span className="font-bold">Pages:</span> {data.pages}
         </p>
-        <p className="text-gray-500 font-bold">Language: {data.language}</p>
-        <p className="text-gray-500 font-bold">ISBN: {data.ISBN}</p>
-        <p className="text-gray-500 font-bold">
-          Published By: {data.publisher}
+
+        <p className="text-gray-500 ">
+         <span className="font-bold">Published Date:</span>  {data.publishedDate}
         </p>
-        <p className="text-gray-500 font-bold">
-          Mood: {data.mood.length > 0 ? data.mood.join(", ") : "N/A"}
+        <p className="text-gray-500">
+         <span className="font-bold" >Language:</span> {data.language}</p>
+        <p className="text-gray-500 ">
+         <span className="font-bold">ISBN:</span>  {data.ISBN}</p>
+        <p className="text-gray-500 ">
+         <span className="font-bold"> Published By:</span> {data.publisher}
+        </p>
+        <p className="text-gray-500">
+         <span className="font-bold"> Mood:</span> {data.mood.length > 0 ? data.mood.join(", ") : "N/A"}
         </p>
         <div className="flex gap-4 mt-6">
           <Button className="rounded-full bg-[#265073]">Buy Now</Button>
