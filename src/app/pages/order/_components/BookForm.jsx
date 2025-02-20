@@ -1,5 +1,5 @@
 "use client";
-// import React, {useEffect} from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,16 +13,17 @@ import $axios from "@/lib/axios.instance";
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
-  email: z.string().email("Email must be a valid address"),
   shippingAddress: z.object({
     street: z.string().min(1, "Street is required"),
     city: z.string().min(1, "City is required"),
     state: z.string().min(1, "State is required"),
   }),
-  paymentMethod: z.string().min(1, "Please select a payment method"),
+  paymentMethod: z.enum(["Khalti", "Cash On Delivery"], {
+    message: "Please select a valid payment method",
+  }),
 });
 
-export default function OrderForm() {
+export default function BookForm() {
   const {
     register,
     handleSubmit,
@@ -31,6 +32,12 @@ export default function OrderForm() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      phone: "",
+      shippingAddress: { street: "", city: "", state: "" },
+      paymentMethod: "",
+    },
   });
   // const form = useForm({
   //   resolver: zodResolver(formSchema),
@@ -47,20 +54,28 @@ export default function OrderForm() {
   // const userId = localStorage.getItem("id");
 
   const paymentMethod = watch("paymentMethod");
-
+  // useEffect(() => {
+  //   console.log("Validation Errors:", errors);
+  // }, [errors]);
   // Handle form submission
   const onSubmit = async (data) => {
+    alert("Submit");
+    console.log("Form submitted with data:", data); // Debugging line
     try {
       const email = localStorage.getItem("email");
+      console.log("Retrieved email from localStorage:", email); // Debugging line
       const userId = localStorage.getItem("id");
+      console.log("Retrieved userId from localStorage:", userId); // Debugging line
+
       const order = { ...data, email };
+      console.log("Order data before sending:", order); // Debugging line
+
       const response = await $axios.post(`/order/createOrder/${userId}`, order);
       console.log("Response Data:", response.data);
-      console.log("Order Submitted", data);
       alert("Order placed successfully!");
     } catch (error) {
-      console.error(error);
-      alert("failed");
+      console.error("Error occurred:", error);
+      alert("Failed to place order");
     }
   };
 
@@ -178,11 +193,11 @@ export default function OrderForm() {
                 {/* Cash on delivery */}
                 <div
                   className={`cursor-pointer border p-2 rounded-lg ${
-                    paymentMethod === "Cash on Delivery"
+                    paymentMethod === "Cash On Delivery"
                       ? "border-[#AF886B]"
                       : "border-gray-300"
                   }`}
-                  onClick={() => setValue("paymentMethod", "Cash on Delivery")}
+                  onClick={() => setValue("paymentMethod", "Cash On Delivery")}
                 >
                   <Image
                     src="/photos/cod.png"
@@ -216,7 +231,6 @@ export default function OrderForm() {
                 Place Order
               </Button>
               <Button
-                type="button"
                 variant="outline"
                 className="text-red-600 border-red-600 hover:bg-red-100"
               >

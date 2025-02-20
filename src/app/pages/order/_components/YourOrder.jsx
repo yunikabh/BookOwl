@@ -4,14 +4,14 @@ import { Separator } from "@/components/ui/separator";
 const Products = [
   {
     id: 1,
-    image: "/grande.jpg",
+    // image: "/grande.jpg",
     name: "Eucerin Sun Transparent",
     category: "Hand Care",
     price: "Rs 2000",
   },
   {
     id: 2,
-    image: "/grande.jpg",
+    // image: "/grande.jpg",
     name: "Eucerin Sun Transparent",
     category: "Hand Care",
     price: "Rs 2000",
@@ -33,11 +33,11 @@ export default function YourOrder() {
           {Products.map((items)=>(
           <div className="flex flex-col " key={items.id}>
             <div className="flex justify-between items-center">
-           <div className="flex items-center w-[70%]">
+           {/* <div className="flex items-center w-[70%]">
             <img src={items.image} 
             width={100}
             height={100} /> <h1 className="font-semibold pl-3 text-base text-black">{items.name} <span className="text-themePrimary font-normal"> x 1</span></h1>
-           </div>
+           </div> */}
             <p className="pl-10 text-right text-themePrimary text-lg font-semibold">
              {items.price}
             </p>

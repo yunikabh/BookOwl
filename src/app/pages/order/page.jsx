@@ -1,11 +1,11 @@
+import BookForm from "./_components/BookForm"
 
-import BookForm from "./_components/Bookform"
 import YourOrder from "./_components/YourOrder"
 
 
 export default function Order(){
   return(
-    <div className="min-h-screen px-[5%] grid grid-cols-3 bg-[#E6D4B9] pt-[120px]">
+    <div className="min-h-screen px-[5%] grid grid-cols-3 gap-5 bg-[#E6D4B9] pt-[120px]">
   
       
       {/* Left: Order Form */}
