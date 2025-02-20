@@ -8,7 +8,7 @@ const UserSidebar = () => {
   const router = useRouter();
 
   const menuItems = [
-    { label: "Home", icon: <Home size={18} />, href: "/pages/userdashboard" },
+    {label: "Home", icon: <Home size={18} />, href: "/pages/userdashboard" },
     { label: "Purchase History", icon: <History size={18} />, href: "/purchase-history" },
     { label: "My Favorites", icon: <Heart size={18} />, href: "/favorites" },
     { label: "My Reviews", icon: <MessageSquare size={18} />, href: "/my-reviews" },
