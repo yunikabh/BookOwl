@@ -22,8 +22,9 @@ export default function CartPage() {
       if (!response) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+      const book_cart = response?.data.data.items
       setData(response?.data.data.items);
+      localStorage.setItem("Book_cart", JSON.stringify(book_cart));
       setTotalPrice(response?.data.data.totalPrice); // Store total price from backend
     } catch (error) {
       console.error("Error fetching cart details:", error);
@@ -174,20 +175,19 @@ export default function CartPage() {
         </div>
 
         {/* Buttons for actions */}
-      <div className="flex justify-end items-center mt-6">
-      <div className="flex gap-4">
-      <Button
-      className="bg-[#b83214] text-white hover:bg-[#e75433]"
-      onClick={handleDeleteAll}
-    >
-      Delete All Items
-    </Button>
-    <Button className="bg-[#b83214] text-white hover:bg-[#e75433]">
-      Proceed to Checkout
-     </Button>
-      </div>
-     </div>
-
+        <div className="flex justify-end items-center mt-6">
+          <div className="flex gap-4">
+            <Button
+              className="bg-[#b83214] text-white hover:bg-[#e75433]"
+              onClick={handleDeleteAll}
+            >
+              Delete All Items
+            </Button>
+            <Button className="bg-[#b83214] text-white hover:bg-[#e75433]">
+              Proceed to Checkout
+            </Button>
+          </div>
+        </div>
       </Card>
     </div>
   );

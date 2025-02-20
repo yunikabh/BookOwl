@@ -50,6 +50,8 @@ export default function Navbar1() {
       localStorage.removeItem("name");
       localStorage.removeItem("id");
       localStorage.removeItem("role");
+      localStorage.removeItem("Book_cart");
+      localStorage.removeItem("email");
       await $axios.post("/auth/logout");
       router.push("/login");
     } catch (error) {

@@ -43,6 +43,7 @@ export default function LoginPage() {
         localStorage.setItem("id", user.data.user._id);
         localStorage.setItem("name", user.data.user.name);
         localStorage.setItem("role", user.data.user.role);
+        localStorage.setItem("email", user.data.user.email)
         router.push(user.data.user.role === "admin" ? "/admin" : "/pages/homepage");
       }
     } catch (error) {
