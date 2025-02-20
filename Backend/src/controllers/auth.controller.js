@@ -210,33 +210,6 @@ const login = asyncHandler(async (req, res) => {
  });
 
 
-//  const forgotPassword = asyncHandler(async(req,res)=>{
-//         try{
-//           const{email} = req.body;
-//             // Check if the user exists
-//             const user = await User.findOne({ email });
-//             if (!user) {
-//               return res.status(404).json(new ApiResponse(404,null,"User not found"));
-//             }
-
-//             // Generate a reset token
-//               const resetToken = crypto.randomBytes(20).toString('hex');
-//               user.resetToken = resetToken;
-//               user.resetTokenExpiration = Date.now() + 3600000; // Token expires in 1 hour
-//               await user.save();
-//           res.status(200).json(new ApiResponse(200,user.resetToken,"Password reset token sent"));
-//             } catch (error) {
-//               console.error('Error generating reset token:', error);
-//              throw new ApiError(500,"An error occurred while generating the reset token")
-//             }
-// });
-
-// // const resetPassword = asyncHandler(async(req,res)=>{
-// //   try{
-// //     // const{resetToken,newPassword}
-// //   }
-// // })
-
 
 
 export { register, login,logout };
