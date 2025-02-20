@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Home, History, Heart, MessageSquare } from "lucide-react";
+import { Home, History, Heart, MessageSquare, UserCircle } from "lucide-react";
 
 const UserSidebar = () => {
   const router = useRouter();
@@ -13,11 +13,15 @@ const UserSidebar = () => {
     { label: "My Favorites", icon: <Heart size={18} />, href: "/favorites" },
     { label: "My Reviews", icon: <MessageSquare size={18} />, href: "/my-reviews" },
     { label: "Login And Security", icon: <MessageSquare size={18} />, href: "/pages/userdashboard/editaccount" },
- 
   ];
 
   return (
-    <div className=" w-64 bg-[#bd9d86] pt-[80px] ">
+    <div className="w-64 bg-[#bd9d86] pt-[80px] ">
+      {/* Profile Icon */}
+      <div className="flex justify-center mb-1">
+        <UserCircle size={50} className="text-[#8B3623]" />
+      </div>
+
       {/* Welcome Section */}
       <div className="p-4 text-center border-b border-gray-700">
         <h1 className="text-2xl font-serif font-bold text-[#8B3623]">Welcome to Your Dashboard</h1>

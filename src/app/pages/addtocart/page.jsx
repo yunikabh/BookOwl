@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { X } from "lucide-react";
-import { ShoppingCart } from "lucide-react"; // Import the ShoppingCart icon from Lucide
+import { X, ShoppingCart } from "lucide-react";
 import $axios from "@/lib/axios.instance";
 
 export default function CartPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalPrice, setTotalPrice] = useState(0); // New state for total price
 
   useEffect(() => {
     getData();
@@ -19,12 +19,12 @@ export default function CartPage() {
     const userId = localStorage.getItem("id");
     try {
       const response = await $axios.get(`/cart/getCartDetails/${userId}`);
-      console.log("Cart", response);
       if (!response) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      console.log(response?.data.data.totalPrice);
+
       setData(response?.data.data.items);
+      setTotalPrice(response?.data.data.totalPrice); // Store total price from backend
     } catch (error) {
       console.error("Error fetching cart details:", error);
     } finally {
@@ -32,76 +32,54 @@ export default function CartPage() {
     }
   };
 
-  // Handle backend interaction for increasing quantity (Increase by 1)
+  // Increase Quantity
   const handleIncreaseQuantity = async (bookId) => {
     const userId = localStorage.getItem("id");
     try {
-      const response = await $axios.put(`/cart/updateCart/${userId}`, {
+      await $axios.put(`/cart/updateCart/${userId}`, {
         bookId,
-        quantity: 1, // Increase by 1
+        quantity: 1,
       });
-
-      if (!response) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      console.log("Quantity Increased:", response);
-      getData(); // Refresh cart data
+      getData(); // Refresh cart
     } catch (error) {
       console.error("Error increasing quantity:", error);
     }
   };
 
-  // Handle backend interaction for decreasing quantity (Decrease by 1)
+  // Decrease Quantity
   const handleDecreaseQuantity = async (bookId) => {
     const userId = localStorage.getItem("id");
-
     try {
-      const response = await $axios.put(`/cart/updateCart/${userId}`, {
+      await $axios.put(`/cart/updateCart/${userId}`, {
         bookId,
-        quantity: -1, // Decrease by 1
+        quantity: -1,
       });
-
-      if (!response) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      console.log("Quantity Decreased:", response);
-      getData(); // Refresh cart data
+      getData();
     } catch (error) {
       console.error("Error decreasing quantity:", error);
     }
   };
 
-  // Handle backend interaction for removing a particular item from the cart
+  // Remove Single Item
   const handleDeleteItem = async (bookId) => {
     const userId = localStorage.getItem("id");
-
     try {
-      const response = await $axios.put(`/cart/removeFromCart/${userId}`, {
-        bookId,
-      });
-
-      if (!response) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      console.log("Book Removed from Cart:", response);
-      getData(); // Refresh cart data
+      await $axios.put(`/cart/removeFromCart/${userId}`, { bookId });
+      getData();
     } catch (error) {
       console.error("Error removing book from cart:", error);
     }
   };
 
-  // Handle backend interaction for deleting all items from the cart
+  // Remove All Items
   const handleDeleteAll = async () => {
     const userId = localStorage.getItem("id");
-    const confirmDelete = confirm("Are you sure you want to remove all items?");
-    if (!confirmDelete) return;
+    if (!confirm("Are you sure you want to remove all items?")) return;
 
     try {
       await $axios.put(`/cart/deleteCart/${userId}`);
-      setData([]); // Clear data locally as well
+      setData([]);
+      setTotalPrice(0); // Reset total price
     } catch (error) {
       console.error("Error deleting all items:", error);
     }
@@ -120,7 +98,6 @@ export default function CartPage() {
     );
   }
 
-  // Add conditional rendering for empty cart
   if (data.length === 0) {
     return (
       <div className="min-h-screen bg-[#E6D4B9] flex flex-col items-center justify-center py-10 px-4 mt-16">
@@ -153,7 +130,7 @@ export default function CartPage() {
             >
               <button
                 className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
-                onClick={() => handleDeleteItem(item._id)}
+                onClick={() => handleDeleteItem(item.bookId._id)}
               >
                 <X size={20} />
               </button>
@@ -189,19 +166,28 @@ export default function CartPage() {
           ))}
         </div>
 
-        <div className="flex justify-between items-center mt-6">
-          <div className="flex gap-4">
-            <Button
-              className="bg-[#b83214] text-white hover:bg-[#e75433]"
-              onClick={handleDeleteAll}
-            >
-              Delete All Items
-            </Button>
-            <Button className="bg-[#b83214] text-white hover:bg-[#e75433]">
-              Proceed to Checkout
-            </Button>
-          </div>
+        {/* Display Total Price */}
+        <div className="mt-6 flex justify-between items-center">
+          <h2 className="text-xl font-serif font-semibold text-gray-700">
+            Total Price: Rs {totalPrice.toFixed(2)}
+          </h2>
         </div>
+
+        {/* Buttons for actions */}
+      <div className="flex justify-end items-center mt-6">
+      <div className="flex gap-4">
+      <Button
+      className="bg-[#b83214] text-white hover:bg-[#e75433]"
+      onClick={handleDeleteAll}
+    >
+      Delete All Items
+    </Button>
+    <Button className="bg-[#b83214] text-white hover:bg-[#e75433]">
+      Proceed to Checkout
+     </Button>
+      </div>
+     </div>
+
       </Card>
     </div>
   );

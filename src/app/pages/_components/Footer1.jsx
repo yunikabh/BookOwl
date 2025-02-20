@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer1() {
   return (
-    <div>
+    <div className="hidden lg:block"> {/* Footer is hidden on small & medium screens */}
       {/* Main Footer Section */}
       <div className="w-full px-4 sm:px-[5%] grid sm:grid-cols-3 grid-cols-1 m-auto gap-8 bg-[#E6D4B9] z-40 border-2 border-[#265073] py-5">
         {/* Logo and Description */}
@@ -17,7 +17,7 @@ export default function Footer1() {
         {/* Quick Links, Contact Us, and Location in Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-60">
           {/* Quick Links Section */}
-          <div className="text-gray-600 w-60  ">
+          <div className="text-gray-600 w-60">
             <p className="font-bold pb-4 text-lg sm:text-xl text-[#B83214]">Quick Links</p>
             <Link href="/pages/about-us">
               <h1 className="cursor-pointer hover:underline text-sm sm:text-base">About us</h1>
@@ -34,7 +34,7 @@ export default function Footer1() {
           </div>
 
           {/* Contact Us Section */}
-          <div className="text-gray-600 w-60 ">
+          <div className="text-gray-600 w-60">
             <p className="font-bold pb-4 text-lg sm:text-xl text-[#B83214]">Contact us</p>
             <h1 className="text-sm sm:text-base flex items-center gap-2">
               <Phone /> +977 9843987416
@@ -45,7 +45,7 @@ export default function Footer1() {
           </div>
 
           {/* Location Section */}
-          <div className="text-gray-600 w-72 ">
+          <div className="text-gray-600 w-72">
             <p className="font-bold pb-4 text-lg sm:text-xl text-[#B83214]">Our Location</p>
             <p className="text-sm sm:text-base">Visit us at:</p>
             <p className="text-sm sm:text-base">

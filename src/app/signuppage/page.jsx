@@ -68,6 +68,7 @@ export default function SignUpPage() {
 
   return (
     <div className="flex justify-center items-center w-full min-h-screen bg-[rgb(246,220,201)] overflow-hidden p-4">
+      
       {/* Popup Modal */}
       {isEmailExists && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
