@@ -18,14 +18,14 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
       // Check if the order payment method is Khalti
       if (order.paymentMethod === "Khalti") {
       
-  
+        const amountInPaisa = order.totalPrice * 100;
       // Initialize Khalti Payment
       const paymentInitiate = await initializeKhaltiPayment({
-        amount: order.totalPrice,  // Multiply here only once
+        amount: amountInPaisa,  // Multiply here only once
         purchased_order_id: order._id,
         purchased_order_name: "Book Purchase",
-        return_url: `http://localhost:5000/payment/khalti/verify/${order._id}`,
-        website_url: "http://yourfrontend.com",
+        return_url: "http://localhost:3000/payment/verifyKhaltiPaymentController",
+        website_url: "http://localhost:3000",
       });
   
       // Save Payment Record in Database
@@ -33,7 +33,7 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
         transactionId: null,
         pidx: paymentInitiate.pidx,
         orderId: order._id,
-        amount: order.totalPrice,
+        amount: amountInPaisa,
         paymentGateway: "Khalti",
         status: "Pending",
       });
@@ -90,12 +90,12 @@ catch (error) {
     
       try {
         const paymentInfo = await verifyKhaltiPayment(pidx);
-    
+        const amountInNPR = Number(paymentInfo.total_amount) / 100;
         // Check if payment is completed and details match
         if (
           paymentInfo?.status !== "Completed" ||
           paymentInfo.transaction_id !== transaction_id ||
-          Number(paymentInfo.total_amount) !== Number(amount)
+          amountInNPR !== Number(amount) / 100  // Convert `amount` to NPR for comparison
         ) {
           res.status(400).json(new ApiResponse(400,paymentInfo,"Incomplete information"))
         }
@@ -103,7 +103,7 @@ catch (error) {
         // Check if payment done in valid item
         const purchasedItemData = await Order.find({
           _id: purchase_order_id,
-          totalPrice: amount,
+          totalPrice:amountInNPR ,
         });
     
         if (!purchasedItemData) {
@@ -128,7 +128,7 @@ catch (error) {
           pidx,
           transactionId: transaction_id,
           productId: purchase_order_id,
-          amount,
+          amount:amountInNPR,
           dataFromVerificationReq: paymentInfo,
           apiQueryFromUser: req.query,
           paymentGateway: "khalti",

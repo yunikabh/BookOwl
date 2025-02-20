@@ -44,13 +44,16 @@ const createOrder = asyncHandler(async (req, res) => {
     totalPrice: totalPrice,
     paymentMethod,
     paymentStatus: paymentMethod === "Cash on Delivery" ?"Pending" :"Pending",
-    deliveryStatus:"Processing",
+    deliveryStatus:"Pending",
     customerDetails :{name,phone,email,shippingAddress},
   })
-
+  await User.findByIdAndUpdate(userId, {
+    $push: { orders: order._id },  // Pushing the new order's _id to the user's orders array
+  });
+  
   await cartModel.findOneAndDelete({userId});
 
-  res.status(200).json(new ApiResponse(200,order,"Order created successfully. Proceed to payment if applicable."))
+  res.status(200).json(new ApiResponse(200,order,`Order created successfully. Proceed to payment if applicable ${order._id}`))
 }catch(error){
   console.error("Order creation error:", error);
 throw new ApiError(500,"Internal server error")
@@ -79,6 +82,8 @@ const getOrderDetails = asyncHandler(async(req,res)=>{
       throw new ApiError(500,"Internal Server Error ")
   }
 })
+
+
 
 export {createOrder,getOrderDetails};
 

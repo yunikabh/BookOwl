@@ -5,7 +5,8 @@ import { ApiError } from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 import { verifyUser } from "../middlewares/auth.middleware.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-const router =express.Router();
+import Order from "../models/order.model.js"
+
 
 //getallUser
   const getUser = asyncHandler(async(req,res) =>{
@@ -27,7 +28,19 @@ const getUserById = asyncHandler(async (req, res) => {
  
    try {
      const userId  = req.params.id;
-     const user = await User.findById(userId);
+     const user = await User.findById(userId).populate({
+      path: 'orders',  // Populate the orders array
+      model: 'Order',  // Populate the Order model
+      populate: {
+        path: 'items.bookId', // Populate the books inside the order
+        model: 'Book', // Model for books
+        select: 'bookName ', // Select which fields to include from Book
+      },
+    })// any fields you need from the Book model
+      console.log("User orders:", user.orders);
+
+    console.log("User after populate:", user);
+
      if (!user) {
        throw new ApiError(404, "User not found");
      }
@@ -114,5 +127,35 @@ const deleteUser = asyncHandler(async(req, res) => {
      throw new ApiError(500, error.message || "Error deleting product");
    }
  });
+
+ const getUserByOrder = asyncHandler(async (req, res) => {
+  try {
+    const { userId} = req.params;
+
+    // Find the user and populate only matching order
+    const user = await User.findById(userId).populate({
+      path: "orders",// Filter orders by orderId
+      populate: {
+        path: "books.bookId", // Populate book details inside order
+        model: "Book",
+        select: "title price",
+      },
+    });
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    if (!user.orders.length) {
+      throw new ApiError(404, "Order not found for this user");
+    }
+
+    res.status(200).json(new ApiResponse(200, user.orders[0], "Order fetched successfully"));
+  } catch (error) {
+    console.log("Error during fetching order: ", error.message);
+    throw new ApiError(500,"Error fetching order",error.message);
+  }
+});
+
  
- export { getUser,getUserById, updateUser, deleteUser,updateUserProfile };
+ export { getUser,getUserById, updateUser, deleteUser,updateUserProfile};

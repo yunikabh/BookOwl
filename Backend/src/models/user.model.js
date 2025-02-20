@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema({
     maxlength: 250, // User's short description
     default: "",
   },
+  orders:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Order"
+  }],
   address: {
     street: { type: String, default: "" },
     city: { type: String, default: "" },

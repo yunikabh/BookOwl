@@ -9,7 +9,7 @@ router.route("/getUsers").get(getUser);
 router.route("/getUserById/:id").get(getUserById);
 router.route("/updateUser/:id").put(verifyUser,updateUser);
 router.route("/deleteUser/:id").delete(deleteUser);
-
+// router.route("/getUserByOrderId/:userId/:orderId").get( getUserByOrderId)
 router.route("/updateUserProfile/:id").put(verifyUser,upload.single("userImage"),updateUserProfile);
 
 export default router;
