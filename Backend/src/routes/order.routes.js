@@ -4,7 +4,7 @@ import { createOrder, getOrderDetails } from "../controllers/order.controller.js
 const router = Router();
 
 router.route('/createOrder/:userId').post(verifyUser,createOrder);
-router.route('/getOrderDetails/:orderId').get(verifyUser,getOrderDetails)
+router.route('/getOrderDetails').get(verifyUser,getOrderDetails)
 
 
 

@@ -50,7 +50,7 @@ const createOrder = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(userId, {
     $push: { orders: order._id },  // Pushing the new order's _id to the user's orders array
   });
-  
+
   await cartModel.findOneAndDelete({userId});
 
   res.status(200).json(new ApiResponse(200,order,`Order created successfully. Proceed to payment if applicable ${order._id}`))
@@ -64,9 +64,8 @@ throw new ApiError(500,"Internal server error")
 
 const getOrderDetails = asyncHandler(async(req,res)=>{
    try{
-  const {orderId}= req.params;
 
-    const order = await Order.findById(orderId)
+    const order = await Order.find()
     .populate("userId","name,email,phone")
     .populate("items.bookId","bookName author price coverImage language averageRating")
     .exec();
