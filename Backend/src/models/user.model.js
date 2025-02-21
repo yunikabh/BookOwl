@@ -26,10 +26,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 10,
   },
-  isEmailVerified: {
-    type: Boolean,
-    default: false,
-  },
   refreshToken: {
     type: String, // Store refresh token for authentication
   },
@@ -57,6 +53,9 @@ const userSchema = new mongoose.Schema({
     city: { type: String, default: "" },
     state: { type: String, default: "" },
   },
+  isVerified: { type: Boolean, default: false }, // Track email verification
+  otp: String,
+  otpExpires: Date, // OTP expiration time
 });
 
 userSchema.methods.generateAccessToken = function () {

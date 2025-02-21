@@ -1,5 +1,7 @@
 import axios from "axios"
 import { ApiError } from "./apiError.js";
+import 'dotenv/config';
+
 
 // Function to verify Khalti Payment
 export async function verifyKhaltiPayment(pidx) {

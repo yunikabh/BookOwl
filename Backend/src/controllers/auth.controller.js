@@ -4,10 +4,13 @@ import User from "../models/user.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
-// const bcrypt= require('bcrypt');?
 import bcrypt from "bcrypt";
+import { sendOtpEmail } from "../utils/sendOtp.js";
 //routes are called controller
 const router = express.Router();
+
+// Helper function to generate OTP
+const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
 
 export const generateAccessAndRefreshTokens = async(userId) =>{
   try{
@@ -48,18 +51,28 @@ const register = asyncHandler(async (req, res,next) => {
   const plainPassword = password;
   const saltRound = 10; // 1 to 32
   const hashedPassword = await bcrypt.hash(plainPassword, saltRound);
+  // Generate OTP (6-digit)
+  const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
+  const otp = generateOtp();
+  const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
+  
   try {
     const savedUser = await User.create({
       name: name,
       email: email,
       password: hashedPassword,
       phoneNumber: phoneNumber,
+      otp,
+      otpExpires,
   });
+   // Send OTP email
+   await sendOtpEmail(email, otp);
 
   savedUser.password = undefined;
-    return res.json(new ApiResponse(200, savedUser, "Registered successfully "))
+    return res.json(new ApiResponse(200, {savedUser,userId: savedUser._id, email }, "Registered successfully "))
   } catch (error) {
     console.log(error.message);
+    await User.deleteOne({ email });
     // return next(new ApiError(409, "Unsuccessful Registration"));
 
     throw new ApiError(409, "Unsuccessful Registration");
@@ -209,7 +222,56 @@ const login = asyncHandler(async (req, res) => {
   }
  });
 
+ const verifyOtp = asyncHandler(async(req,res) =>{
+    const{email,otp} = req.body;
+    const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
 
+  if (user.isVerified) {
+    return res.json(new ApiResponse(200, null, "Email already verified."));
+  }
 
+  // Check OTP & expiration
+  if (!user.otp || user.otp !== otp || new Date() > user.otpExpires) {
+    throw new ApiError(400, "Invalid or expired OTP.");
+  }
 
-export { register, login,logout };
+  // Mark user as verified
+  user.isVerified = true;
+  user.otp = null;
+  user.otpExpires = null;
+  await user.save();
+
+  return res.json(new ApiResponse(200, null, "Email verified successfully."));
+
+ })
+
+ const resendOtp = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  if (user.isVerified) {
+    return res.json(new ApiResponse(200, null, "Email already verified. No need to resend OTP."));
+  }
+
+  // Generate new OTP
+  const newOtp = generateOtp();
+  const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // New OTP expires in 10 minutes
+
+  user.otp = newOtp;
+  user.otpExpires = otpExpires;
+  await user.save();
+
+  // Send new OTP to email
+  await sendOtpEmail(email, newOtp);
+
+  return res.json(new ApiResponse(200, newOtp, "New OTP sent to your email."));
+});
+
+export { register, login,logout,verifyOtp,resendOtp};
