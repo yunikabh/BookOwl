@@ -66,7 +66,7 @@ const getOrderDetails = asyncHandler(async(req,res)=>{
    try{
 
     const order = await Order.find()
-    .populate("userId","name,email,phone")
+    .populate("userId","name email phone")
     .populate("items.bookId","bookName author price coverImage language averageRating")
     .exec();
 
@@ -82,7 +82,29 @@ const getOrderDetails = asyncHandler(async(req,res)=>{
   }
 })
 
+const getOrderDetailsById = asyncHandler(async(req,res)=>{
+        const {orderId} = req.params
+        console.log(orderId)
+  try{
+
+   const order = await Order.findById(orderId)
+   .populate("userId","name email phone")
+   .populate("items.bookId","bookName author price coverImage language averageRating")
+   .exec();
+
+   if(!order){
+       throw new ApiError(404,"Order not found");
+
+   }
+   res.status(200).json(new ApiResponse(200,order,"Order details is retrived successfully ."))
+ }
+ catch(error){
+   console.error("Error fetching order details:", error);
+     throw new ApiError(500,"Internal Server Error ")
+ }
+})
 
 
-export {createOrder,getOrderDetails};
+
+export {createOrder,getOrderDetails, getOrderDetailsById };
 
