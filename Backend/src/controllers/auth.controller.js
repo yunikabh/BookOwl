@@ -285,8 +285,12 @@ const login = asyncHandler(async (req, res) => {
 
 const forgotPassword = asyncHandler(async(req,res)=>{
         const { email } = req.body;
+
         const user = await User.findOne({ email });
-        if (!user) throw new ApiError(404, "User not found");
+        if (!user) {
+          throw new ApiError(404, "User not found");
+        }
+
         const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
         const otp = generateOtp();
         const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
