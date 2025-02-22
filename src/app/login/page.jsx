@@ -134,10 +134,15 @@ export default function LoginPage() {
               />
 
               {/* Submit Button */}
+              
               <Button className="bg-[#5d768a] rounded-full w-full md:w-[150px]" type="submit">
                 Login
               </Button>
-              <Button className="text-sm mt-2 bg-slate-100 text-[#a45254]">Login with Google</Button>
+                <a href="/" className="text-sm text-[#8d767c] hover:underline ml-5">
+                  Forget Password ?
+                </a>
+              
+              {/* <Button className="text-sm mt-2 bg-slate-100 text-[#a45254]">Login with Google</Button> */}
               <div className="flex">
                 <p className="text-[#a75257] text-sm">New User?</p>
                 <a href="/signuppage" className="text-sm text-[#8d767c] hover:underline ml-1">
