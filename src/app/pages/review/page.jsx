@@ -47,7 +47,7 @@ router.push(`/pages/bookpage/${bookId}`)
 }
 
   return (
-    <div className="p-6 mt-20 flex justify-center">
+    <div className="p-6 mt-20 flex justify-center bg-[#f8f1e4]">
       <Card className="w-full max-w-3xl p-6 shadow-lg rounded-xl">
         <h2 className="text-2xl  text-[#8B3623]  font-serif font-bold mb-4">My Reviews</h2>
         {reviews.length === 0 ? (
