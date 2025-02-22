@@ -53,7 +53,7 @@ const createOrder = asyncHandler(async (req, res) => {
 
   await cartModel.findOneAndDelete({userId});
 
-  res.status(200).json(new ApiResponse(200,order,`Order created successfully. Proceed to payment if applicable ${order._id}`))
+  res.status(200).json(new ApiResponse(200,order,`${order._id}`))
 }catch(error){
   console.error("Order creation error:", error);
 throw new ApiError(500,"Internal server error")
