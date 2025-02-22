@@ -7,7 +7,6 @@ import { ApiError } from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 import Order from "../models/order.model.js";
 import Payment from "../models/payment.model.js";
-import { initializeKhaltiPayment } from "../utils/khalti.js";
 
 //Create a new order
 const createOrder = asyncHandler(async (req, res) => {

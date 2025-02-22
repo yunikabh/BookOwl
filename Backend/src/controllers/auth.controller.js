@@ -223,28 +223,29 @@ const login = asyncHandler(async (req, res) => {
  });
 
  const verifyOtp = asyncHandler(async(req,res) =>{
-    const{email,otp} = req.body;
+    const{email,otp,purpose} = req.body;
     const user = await User.findOne({ email });
   if (!user) {
     throw new ApiError(404, "User not found");
   }
 
-  if (user.isVerified) {
-    return res.json(new ApiResponse(200, null, "Email already verified."));
-  }
 
   // Check OTP & expiration
   if (!user.otp || user.otp !== otp || new Date() > user.otpExpires) {
     throw new ApiError(400, "Invalid or expired OTP.");
   }
-
-  // Mark user as verified
-  user.isVerified = true;
-  user.otp = null;
-  user.otpExpires = null;
+// If OTP is verified, handle different cases based on the purpose
+if (purpose === "emailVerification") {
+  user.isVerified = true; // Mark email as verified
+  user.otp = null; // Clear OTP after verification
+  user.otpExpires = null; // Clear OTP expiration
   await user.save();
 
-  return res.json(new ApiResponse(200, null, "Email verified successfully."));
+  return res.json(new ApiResponse(200, { email }, "Email verified successfully."));
+} 
+else if (purpose === "resetPassword") {
+  return res.json(new ApiResponse(200, { email }, "OTP verified. You can reset your password."));
+}
 
  })
 
@@ -274,4 +275,42 @@ const login = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, newOtp, "New OTP sent to your email."));
 });
 
-export { register, login,logout,verifyOtp,resendOtp};
+
+
+
+const forgotPassword = asyncHandler(async(req,res)=>{
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) throw new ApiError(404, "User not found");
+        const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
+        const otp = generateOtp();
+        const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
+        
+      
+        user.otp = otp;
+        user.otpExpires = otpExpires;
+        await user.save();
+      
+        await sendOtpEmail(email,otp);
+        
+        return res.json(new ApiResponse(200, { email, otp}, "OTP sent to your email."));
+      })
+
+
+
+      const resetPassword = asyncHandler(async(req,res)=>{
+        const { email, newPassword } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) throw new ApiError(404, "User not found");
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
+  user.otp = null; // Clear OTP after use
+  user.otpExpires = null;
+  await user.save();
+
+  return res.json(new ApiResponse(200, {}, "Password reset successfully. You can now log in."));
+      })
+
+export { register, login,logout,verifyOtp,resendOtp,forgotPassword,resetPassword};
