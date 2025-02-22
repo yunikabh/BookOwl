@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { X, ShoppingCart } from "lucide-react";
 import $axios from "@/lib/axios.instance";
-
+import Link from "next/link";
 export default function CartPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -183,9 +183,11 @@ export default function CartPage() {
             >
               Delete All Items
             </Button>
+            <Link href="/pages/order">
             <Button className="bg-[#b83214] text-white hover:bg-[#e75433]">
               Proceed to Checkout
             </Button>
+            </Link>
           </div>
         </div>
       </Card>

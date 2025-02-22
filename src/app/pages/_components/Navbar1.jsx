@@ -132,10 +132,26 @@ export default function Navbar1() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <a
-                    href="/settings"
+                    href="/pages/purchasehistory"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    Settings
+                    Purchase History
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <a
+                    href="/pages/myorder"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    My Orders
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <a
+                    href="/pages/review"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    My Reviews
                   </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

@@ -1,73 +1,69 @@
-"use client";
-import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+// "use client";
 
-const Payment = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    cardNumber: "",
-    expiry: "",
-    cvv: "",
-    address: "",
-    city: "",
-    zip: "",
-  });
+// import React from 'react';
+// import { CreditCard, FileText } from 'lucide-react';
+// import { useState } from 'react';
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+// const PaymentDetails = () => {
+//   const [orderDetails] = useState({
+//     items: [
+//       { name: 'Book 1', price: 15.0, quantity: 2 },
+//       { name: 'Book 2', price: 20.0, quantity: 1 },
+//     ],
+//     totalAmount: 50.0,
+//   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Processing Payment", formData);
-    // Integrate with a payment gateway like Stripe or Razorpay
-  };
+//   const [userDetails] = useState({
+//     name: 'John Doe',
+//     email: 'john.doe@example.com',
+//     address: '123, Kathmandu, Nepal',
+//   });
 
-  return (
-    <Card className="max-w-md mx-auto mt-10 p-6 shadow-lg">
-      <CardContent>
-        <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label>Name on Card</Label>
-            <Input type="text" name="name" value={formData.name} onChange={handleChange} required />
-          </div>
-          <div>
-            <Label>Card Number</Label>
-            <Input type="text" name="cardNumber" value={formData.cardNumber} onChange={handleChange} required maxLength="16" />
-          </div>
-          <div className="flex space-x-2">
-            <div>
-              <Label>Expiry Date</Label>
-              <Input type="text" name="expiry" value={formData.expiry} onChange={handleChange} required placeholder="MM/YY" />
-            </div>
-            <div>
-              <Label>CVV</Label>
-              <Input type="password" name="cvv" value={formData.cvv} onChange={handleChange} required maxLength="3" />
-            </div>
-          </div>
-          <div>
-            <Label>Billing Address</Label>
-            <Input type="text" name="address" value={formData.address} onChange={handleChange} required />
-          </div>
-          <div className="flex space-x-2">
-            <div>
-              <Label>City</Label>
-              <Input type="text" name="city" value={formData.city} onChange={handleChange} required />
-            </div>
-            <div>
-              <Label>ZIP Code</Label>
-              <Input type="text" name="zip" value={formData.zip} onChange={handleChange} required maxLength="6" />
-            </div>
-          </div>
-          <Button type="submit" className="w-full">Pay Now</Button>
-        </form>
-      </CardContent>
-    </Card>
-  );
-};
+//   const [paymentDetails] = useState({
+//     method: 'Khalti',
+//   });
 
-export default Payment;
+//   return (
+//     <div className="min-h-screen bg-[#e6d4b9] flex items-center justify-center p-6 mt-10">
+//       <div className="max-w-lg w-full bg-white shadow-lg rounded-lg p-6">
+//         <h2 className="text-xl font-bold font-serif text-[#8F3623] mb-4 flex items-center">
+//           <FileText className="mr-2" size={20} /> Invoice
+//         </h2>
+
+//         <div className="space-y-2 text-gray-700">
+//           <p><strong>Invoice ID:</strong> {Date.now()}</p>
+//           <p><strong>Date:</strong> {new Date().toLocaleDateString()}</p>
+//           <p><strong>Due Date:</strong> {new Date().toLocaleDateString()}</p>
+//         </div>
+
+//         <h3 className="text-lg font-semibold text-[#8F3623] font-serif mt-4">Customer Details</h3>
+//         <p>{userDetails.name}</p>
+//         <p>{userDetails.email}</p>
+//         <p>{userDetails.address}</p>
+
+//         <h3 className="text-lg font-semibold text-[#8F3623] font-serif mt-4">Ordered Items</h3>
+//         <div className="mt-2 space-y-3">
+//           {orderDetails.items.map((item, index) => (
+//             <div key={index} className="flex justify-between border rounded p-2 bg-gray-50">
+//               <div>
+//                 <p className="text-sm font-medium">{item.name}</p>
+//                 <p className="text-xs text-gray-500">Quantity: {item.quantity}</p>
+//               </div>
+//               <p className="text-sm font-semibold text-blue-600">Rs {(item.price * item.quantity).toFixed(2)}</p>
+//             </div>
+//           ))}
+//         </div>
+
+//         <div className="flex justify-between text-lg font-semibold mt-6">
+//           <p>Total</p>
+//           <p>Rs {orderDetails.totalAmount.toFixed(2)}</p>
+//         </div>
+
+//         <h3 className="text-lg font-semibold text-[#8F3623] font-serif mt-4">Payment Method</h3>
+//         <p>{paymentDetails.method} <CreditCard className="inline-block ml-2" size={16} /></p>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default PaymentDetails;

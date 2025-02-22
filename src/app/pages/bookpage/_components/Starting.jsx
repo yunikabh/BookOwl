@@ -90,7 +90,7 @@ export default function Starting({ data }) {
         <p className="text-gray-500"><span className="font-bold">Mood:</span> {data.mood.length > 0 ? data.mood.join(", ") : "N/A"}</p>
 
         <div className="flex gap-4 mt-6">
-          <Button className="rounded-full bg-[#265073]">Buy Now</Button>
+          {/* <Button className="rounded-full bg-[#265073]">Buy Now</Button> */}
           <Button className="rounded-full bg-[#265073]" onClick={handleAddCart}>
             Add To Cart
           </Button>

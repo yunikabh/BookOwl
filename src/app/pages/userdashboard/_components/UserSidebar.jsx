@@ -2,17 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Home, History, Heart, MessageSquare, UserCircle } from "lucide-react";
+import { Home, History, Heart, MessageSquare, UserCircle, Settings } from "lucide-react";
 
 const UserSidebar = () => {
   const router = useRouter();
 
   const menuItems = [
-    {label: "Home", icon: <Home size={18} />, href: "/pages/userdashboard" },
-    { label: "Purchase History", icon: <History size={18} />, href: "/purchase-history" },
-    { label: "My Favorites", icon: <Heart size={18} />, href: "/favorites" },
-    { label: "My Reviews", icon: <MessageSquare size={18} />, href: "/my-reviews" },
+    {label: "My profile", icon: <Home size={18} />, href: "/pages/userdashboard" },
+    {label: "Settings", icon: <Settings size={18} /> , href: "/pages/userdashboard"},
     { label: "Login And Security", icon: <MessageSquare size={18} />, href: "/pages/userdashboard/editaccount" },
+    // {label:"My orders",icon:<MessageSquare size={18}/>, href:"/pages/userdashboard/myorder"},
   ];
 
   return (

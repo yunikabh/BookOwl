@@ -242,9 +242,9 @@ export default function SignUpPage() {
                 >
                   Create an account
                 </Button>
-                <Button className="text-sm mt-2 bg-slate-100 text-[#a45254]">
+                {/* <Button className="text-sm mt-2 bg-slate-100 text-[#a45254]">
                   Sign Up with Google
-                </Button>
+                </Button> */}
                 <div className="flex">
                   <p className="text-[#a75257] text-sm">Already have an account?</p>
                   <a
