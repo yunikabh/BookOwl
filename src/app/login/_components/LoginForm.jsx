@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Mail, Eye, EyeOff, Lock } from "lucide-react";
 import $axios from "@/lib/axios.instance";
 import { useRouter } from "next/navigation";
+import Forget from "./Forget"; // Import your Forget component
 
 const formSchema = z.object({
   email: z.string().email("Email must be a valid address"),
@@ -24,6 +25,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [isForgetVisible, setIsForgetVisible] = useState(false); // State to manage modal visibility
   const router = useRouter();
 
   const form = useForm({
@@ -69,6 +71,15 @@ export default function LoginPage() {
             </Button>
           </div>
         </div>
+      )}
+
+      {/* Forgot Password Modal */}
+      {isForgetVisible && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          {/* <div className="bg-white p-6 w-11/12 max-w-md rounded-lg"> */}
+            <Forget />
+          </div>
+        // </div>
       )}
 
       <Card className="w-full max-w-4xl bg-[#e1ceac] shadow-lg rounded-lg border border-gray-100 relative flex flex-col md:flex-row">
@@ -134,15 +145,22 @@ export default function LoginPage() {
               />
 
               {/* Submit Button */}
-              
               <Button className="bg-[#5d768a] rounded-full w-full md:w-[150px]" type="submit">
                 Login
               </Button>
-                <a href="/" className="text-sm text-[#8d767c] hover:underline ml-5">
-                  Forget Password ?
-                </a>
-              
-              {/* <Button className="text-sm mt-2 bg-slate-100 text-[#a45254]">Login with Google</Button> */}
+
+              {/* Forget Password Link */}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default anchor behavior
+                  setIsForgetVisible(true); // Show the Forget Password modal
+                }}
+                className="text-sm text-[#8d767c] hover:underline ml-5"
+              >
+                Forget Password?
+              </a>
+
               <div className="flex">
                 <p className="text-[#a75257] text-sm">New User?</p>
                 <a href="/signuppage" className="text-sm text-[#8d767c] hover:underline ml-1">
