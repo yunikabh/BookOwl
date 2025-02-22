@@ -22,11 +22,9 @@ import {
 } from "@/components/ui/input-otp";
 import { useState, useEffect } from "react";
 
-// ✅ Zod Validation Schema (Ensures OTP is required)
 const FormSchema = z.object({
   pin: z
     .string()
-   
     .length(6, { message: "Enter the OTP first" })
     .regex(/^\d+$/, { message: "OTP must contain only numbers" }),
 });
@@ -41,8 +39,9 @@ export default function OTP() {
 
   const router = useRouter();
   const [otpSent, setOtpSent] = useState(true);
-  const [timer, setTimer] = useState(120);
+  const [timer, setTimer] = useState(300);
   const [intervalId, setIntervalId] = useState(null);
+  const [showModal, setShowModal] = useState(true); // State to control modal visibility
 
   useEffect(() => {
     if (otpSent && timer > 0) {
@@ -64,16 +63,17 @@ export default function OTP() {
       toast.error(" Please enter the OTP before submitting.");
       return;
     }
-    toast.success("✅ OTP verified successfully! Redirecting to login...");
+    toast.success("OTP verified successfully! Redirecting to login...");
     setTimeout(() => {
       router.push("/login");
+      setShowModal(false); // Close the modal on successful OTP
     }, 1500);
   };
 
   const handleResendOTP = () => {
     setOtpSent(true);
     setTimer(120);
-    toast.info("🔄 A new OTP has been sent to your phone!");
+    toast.info(" A new OTP has been sent to your phone!");
   };
 
   const formatTime = (seconds) => {
@@ -82,12 +82,31 @@ export default function OTP() {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
+  // Close modal function
+  const handleCloseModal = () => {
+    setShowModal(false);
+    if (timer > 0) {
+      clearInterval(intervalId); // Stop the timer when the modal is closed
+    }
+  };
+
+  if (!showModal) return null; // If the modal is closed, return null
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-2/3 max-w-md space-y-6 bg-white p-8 rounded-lg shadow-lg"
+        className="w-2/3 max-w-md space-y-6 bg-white p-8 rounded-lg shadow-lg relative"
       >
+        {/* Close Button */}
+        <Button
+          type="button"
+          onClick={handleCloseModal}
+          className="absolute top-2 right-2 bg-red-500 text-white hover:bg-red-600"
+        >
+          X
+        </Button>
+
         <FormField
           control={form.control}
           name="pin"
@@ -111,7 +130,7 @@ export default function OTP() {
               <FormDescription className="text-sm text-[#265073] font-serif">
                 Please enter the 6-digit code sent to your phone.
               </FormDescription>
-              <FormMessage /> {/* ✅ Shows validation errors */}
+              <FormMessage />
             </FormItem>
           )}
         />
