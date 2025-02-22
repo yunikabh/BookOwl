@@ -152,6 +152,33 @@ const getReviewsAndRating = asyncHandler(async (req, res) => {
 });
 
 //getreviewbyuserId
+const getReviewByUserId = asyncHandler(async(req,res)=>{
+  
+  try {
+    const userId = req.user?.id;
+    console.log(userId);
+
+    // Fetch the reviews for the user
+    const reviews = await Review.find({user: userId })
+    .populate('book', 'bookName author')  // Optional: Populate the book data (title, author) in the review
+      .exec();// Assuming your `Review` model has a reference to `userId`
+
+      // If no reviews are found, return a message
+    if (!reviews.length) {
+      return res.json(new ApiResponse(404, null, "No reviews found for this user."));
+    }
+
+    // Return the reviews if found
+    return res.json(new ApiResponse(200, reviews, "Reviews fetched successfully."));
+    
+
+    
+  } catch (error) {
+    
+     // Handle errors (like database connection issues)
+     return res.status(500).json(new ApiResponse(500, null, "Something went wrong."));
+  }
+})
 
 
 
@@ -162,4 +189,5 @@ export {
   updateReviewAndRating,
   deleteReviewAndRating,
   getReviewsAndRating,
+  getReviewByUserId
 };
