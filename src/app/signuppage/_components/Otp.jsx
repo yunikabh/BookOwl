@@ -21,6 +21,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useState, useEffect } from "react";
+import $axios from "@/lib/axios.instance";
 
 const FormSchema = z.object({
   pin: z
@@ -58,7 +59,20 @@ export default function OTP() {
     }
   }, [otpSent, timer]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const email = localStorage.getItem("email");
+    const purpose = "emailVerification";
+    try {
+      const response = await $axios.post("/auth/verifyOtp", {
+        email,
+        otp: data.pin,
+        purpose,
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+
     if (!data.pin) {
       toast.error(" Please enter the OTP before submitting.");
       return;
@@ -73,7 +87,7 @@ export default function OTP() {
   const handleResendOTP = () => {
     setOtpSent(true);
     setTimer(120);
-    toast.info(" A new OTP has been sent to your phone!");
+    toast.info(" A new OTP has been sent to your mail!");
   };
 
   const formatTime = (seconds) => {

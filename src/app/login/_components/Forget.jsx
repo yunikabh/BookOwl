@@ -85,7 +85,7 @@ export default function ForgotPassword() {
   const handleResendOTP = () => {
     setOtpSent(true);
     setTimer(120);
-    toast.info("A new OTP has been sent to your phone!");
+    toast.info("A new OTP has been sent to your mail!");
   };
 
   const formatTime = (seconds) => {
@@ -122,7 +122,7 @@ export default function ForgotPassword() {
           Forgot Your Password?
         </h2>
         <FormDescription className="text-sm text-[#265073] font-serif">
-          Please enter the 6-digit OTP sent to your phone to reset your password.
+          Please enter the 6-digit OTP sent to your mail to reset your password.
         </FormDescription>
 
         {/* OTP Field */}

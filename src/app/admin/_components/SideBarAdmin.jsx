@@ -17,7 +17,6 @@ import {
   Home,
   Layout,
   LayoutDashboardIcon,
-  LayoutGrid,
   User,
   UserCircle,
   Users,
@@ -59,30 +58,24 @@ const SideItems = [
   },
   {
     id: 6,
-    name: "Reviews",
-    link: "/admin",
-    icon: <LayoutGrid />,
-  },
-  {
-    id: 7,
     name: "Payments",
     link: "/admin/payments",
     icon: <HandCoins />,
   },
   {
-    id: 8,
+    id: 7,
     name: "Contact",
     link: "/admin/contact",
     icon: <Users />,
   },
   {
-    id: 9,
+    id: 8,
     name: "Users",
     link: "/admin/users",
     icon: <UserCircle />,
   },
   {
-    id: 10,
+    id: 9,
     name: "Logout",
     link: "/admin",
     icon: <ExternalLinkIcon />,
@@ -120,7 +113,7 @@ catch (error){
                     className=" hover:text-amber-900 hover:bg-[#fcf3ec] text-lg "
                     asChild
                   >
-                    {item.id===10 ? (
+                    {item.id===9 ? (
                       <button onClick={logout}>
                         <span className="">{item.icon}</span>
                         <span>{item.name}</span>
