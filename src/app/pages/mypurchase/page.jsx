@@ -7,10 +7,10 @@ import { Input } from "@/components/ui/input";
 export default function MyPurchase() {
   // Hardcoded purchase data (Replace with API later)
   const purchases = [
-    { id: 1, title: "The Silent Patient", author: "Alex Michaelides", date: "2024-02-10", price: "$15.99", status: "Purchased" },
-    { id: 2, title: "Atomic Habits", author: "James Clear", date: "2024-02-05", price: "$12.99", status: "Purchased" },
-    { id: 3, title: "Deep Work", author: "Cal Newport", date: "2024-01-28", price: "$14.99", status: "Pending" },
-    { id: 4, title: "The Alchemist", author: "Paulo Coelho", date: "2024-01-15", price: "$10.99", status: "Canceled" },
+    { id: 1, title: "The Silent Patient", author: "Alex Michaelides", date: "2024-02-10", price: "Rs 350", status: "Purchased" },
+    { id: 2, title: "Atomic Habits", author: "James Clear", date: "2024-02-05", price: "Rs 400", status: "Purchased" },
+    { id: 3, title: "Deep Work", author: "Cal Newport", date: "2024-01-28", price: "Rs 450", status: "Pending" },
+    { id: 4, title: "The Alchemist", author: "Paulo Coelho", date: "2024-01-15", price: "Rs 550", status: "Canceled" },
   ];
 
   const [searchTerm, setSearchTerm] = useState("");
