@@ -6,6 +6,7 @@ import { ApiError } from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 import bcrypt from "bcrypt";
 import { sendOtpEmail } from "../utils/sendOtp.js";
+import PendingUser from "../models/pendingUser.model.js";
 //routes are called controller
 const router = express.Router();
 
@@ -57,7 +58,7 @@ const register = asyncHandler(async (req, res,next) => {
   const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
   
   try {
-    const savedUser = await User.create({
+    const savedUser = await PendingUser.create({
       name: name,
       email: email,
       password: hashedPassword,
@@ -224,50 +225,54 @@ const login = asyncHandler(async (req, res) => {
 
  const verifyOtp = asyncHandler(async(req,res) =>{
     const{email,otp,purpose} = req.body;
-    const user = await User.findOne({ email });
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
+    // Find the user in PendingUser collection
+    const pendingUser = await PendingUser.findOne({ email });
+    console.log("The email is",pendingUser)
+    if (!pendingUser) {
+        throw new ApiError(404, "No pending registration found for this email.");
+    }
 
+    // Check OTP validity
+    if (!pendingUser.otp || pendingUser.otp !== otp || new Date() > pendingUser.otpExpires) {
+        throw new ApiError(400, "Invalid or expired OTP.");
+    }
 
-  // Check OTP & expiration
-  if (!user.otp || user.otp !== otp || new Date() > user.otpExpires) {
-    throw new ApiError(400, "Invalid or expired OTP.");
-  }
-// If OTP is verified, handle different cases based on the purpose
-if (purpose === "emailVerification") {
-  user.isVerified = true; // Mark email as verified
-  user.otp = null; // Clear OTP after verification
-  user.otpExpires = null; // Clear OTP expiration
-  await user.save();
+    if (purpose === "emailVerification") {
+        // Move the user to the main User collection
+        const newUser = new User({
+            name: pendingUser.name,
+            email: pendingUser.email,
+            password: pendingUser.password,
+            phoneNumber:pendingUser.phoneNumber, // Already hashed
+            isVerified: true,
+        });
+        await newUser.save();
+        await PendingUser.deleteOne({ email }); // Remove from PendingUser
 
-  return res.json(new ApiResponse(200, { email }, "Email verified successfully."));
-} 
-else if (purpose === "resetPassword") {
-  return res.json(new ApiResponse(200, { email }, "OTP verified. You can reset your password."));
-}
+        return res.json(new ApiResponse(200, { email }, "Email verified successfully. You can now log in."));
+    } 
+    else if (purpose === "resetPassword") {
+        return res.json(new ApiResponse(200, { email }, "OTP verified. You can reset your password."));
+    }
 
  })
 
  const resendOtp = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) {
-    throw new ApiError(404, "User not found");
+  const pendingUser = await PendingUser.findOne({ email });
+  if (!pendingUser) {
+      throw new ApiError(404, "No pending registration found.");
   }
 
-  if (user.isVerified) {
-    return res.json(new ApiResponse(200, null, "Email already verified. No need to resend OTP."));
-  }
 
   // Generate new OTP
   const newOtp = generateOtp();
   const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // New OTP expires in 10 minutes
 
-  user.otp = newOtp;
-  user.otpExpires = otpExpires;
-  await user.save();
+  pendingUser.otp = newOtp;
+  pendingUser.otpExpires = otpExpires;
+  await pendingUser.save();
 
   // Send new OTP to email
   await sendOtpEmail(email, newOtp);
