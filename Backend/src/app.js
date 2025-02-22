@@ -13,6 +13,7 @@ import errorHandler from './middlewares/errorHandler.middleware.js';
 import upload from './middlewares/multer.middleware.js';
 import orderRoutes from "./routes/order.routes.js"
 import paymentRoutes from "./routes/payment.routes.js"
+import recommendRoutes from "./routes/recommend.routes.js"
 
 const app = express();
 app.use(cors({
@@ -36,6 +37,7 @@ app.use('/author',authorRoutes)
 app.use('/contact',contactUsRoutes)
 app.use('/order',orderRoutes)
 app.use('/payment',paymentRoutes)
+app.use('/recommend',recommendRoutes)
 
 // app.use((err, req, res, next) => {
 //   console.error(err.stack);  // Optional: Log the error stack for debugging
