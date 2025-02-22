@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,17 +22,23 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useState, useEffect } from "react";
+import $axios from "@/lib/axios.instance";
 
-const FormSchema = z.object({
-  pin: z.string().length(6, { message: "Enter the OTP first" }).regex(/^\d+$/, { message: "OTP must contain only numbers" }),
-  newPassword: z.string(),
-  confirmPassword: z.string(),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const FormSchema = z
+  .object({
+    pin: z
+      .string()
+      .length(6, { message: "Enter the OTP first" })
+      .regex(/^\d+$/, { message: "OTP must contain only numbers" }),
+    newPassword: z.string(),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-export default function ForgotPassword() {
+export default function ForgotPassword({ email }) {
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -64,24 +70,56 @@ export default function ForgotPassword() {
     }
   }, [otpSent, timer]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (!data.pin) {
       toast.error("Please enter the OTP before submitting.");
       return;
     }
-    toast.success("OTP verified successfully! You can now reset your password.");
+    try {
+      const response = await $axios.post("/auth/forgotPassword", {
+        email,
+        otp: data.pin,
+      });
+      if (!response) {
+        throw new Error("Error");
+      }
+      console.log("Entered email:", email);
+    } catch (error) {
+      console.error();
+    }
+    toast.success(
+      "OTP verified successfully! You can now reset your password."
+    );
     setShowResetForm(true); // Show Reset Password Form
+  };
+  const handlePasswordReset = async (data) => {
+    if (!data.newPassword || !data.confirmPassword) {
+      toast.error("Please fill in both password fields.");
+      return;
+    }
+  
+    try {
+      const response = await $axios.post("/auth/resetPassword", {
+        email,
+        newPassword: data.newPassword,
+      });
+  
+      if (!response || response.status !== 200) {
+        throw new Error(response?.data?.message || "Failed to reset password.");
+      }
+  
+      toast.success("Password reset successfully! Redirecting to login...");
+      router.push("/login"); // Redirect user to login page
+    } catch (error) {
+      console.error("Error:", error.response?.data?.message || error.message || "An error occurred.");
+      toast.error(error.response?.data?.message || "Failed to reset password.");
+    }
   };
 
   const handleResendOTP = () => {
     setOtpSent(true);
-<<<<<<< HEAD:src/app/login/_components/Forget.jsx
     setTimer(120);
     toast.info("A new OTP has been sent to your mail!");
-=======
-    setTimer(300);
-    toast.info("A new OTP has been sent to your phone!");
->>>>>>> af14bb58d8da4769b5069b463274a094f17684b0:src/app/login/emailpage/_components/Forget.jsx
   };
 
   const formatTime = (seconds) => {
@@ -101,26 +139,31 @@ export default function ForgotPassword() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 max-w-md space-y-6 bg-white p-8 rounded-lg shadow-lg relative">
-        <Button type="button" onClick={handleCloseModal} className="absolute top-2 right-2 bg-red-500 text-white hover:bg-red-600">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-2/3 max-w-md space-y-6 bg-white p-8 rounded-lg shadow-lg relative"
+      >
+        <Button
+          type="button"
+          onClick={handleCloseModal}
+          className="absolute top-2 right-2 bg-red-500 text-white hover:bg-red-600"
+        >
           X
         </Button>
 
         <h2 className="text-lg font-semibold text-[#8B3623]">
           Forgot Your Password?
         </h2>
-<<<<<<< HEAD:src/app/login/_components/Forget.jsx
         <FormDescription className="text-sm text-[#265073] font-serif">
           Please enter the 6-digit OTP sent to your mail to reset your password.
         </FormDescription>
-=======
->>>>>>> af14bb58d8da4769b5069b463274a094f17684b0:src/app/login/emailpage/_components/Forget.jsx
 
         {/* OTP Verification Section (Hidden when reset form is shown) */}
         {!showResetForm && (
           <>
             <FormDescription className="text-sm text-[#265073] font-serif">
-              Please enter the 6-digit OTP sent to your phone to reset your password.
+              Please enter the 6-digit OTP sent to your phone to reset your
+              password.
             </FormDescription>
 
             <FormField
@@ -160,7 +203,11 @@ export default function ForgotPassword() {
               <Button type="submit" className="bg-[#A98D78] hover:bg-[#b89b86]">
                 Submit OTP
               </Button>
-              <Button type="button" onClick={handleResendOTP} className="bg-[#A98D78] hover:bg-[#b89b86] ml-4">
+              <Button
+                type="button"
+                onClick={handleResendOTP}
+                className="bg-[#A98D78] hover:bg-[#b89b86] ml-4"
+              >
                 Resend OTP
               </Button>
             </div>
@@ -180,9 +227,16 @@ export default function ForgotPassword() {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[#8B3623] font-serif ">New Password</FormLabel>
+                  <FormLabel className="text-[#8B3623] font-serif ">
+                    New Password
+                  </FormLabel>
                   <FormControl>
-                    <input type="password" {...field} className="border border-gray-300 p-2 rounded-lg" placeholder="Enter new password" />
+                    <input
+                      type="password"
+                      {...field}
+                      className="border border-gray-300 p-2 rounded-lg"
+                      placeholder="Enter new password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -193,21 +247,36 @@ export default function ForgotPassword() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[#8B3623] font-serif ">Confirm Password</FormLabel>
+                  <FormLabel className="text-[#8B3623] font-serif ">
+                    Confirm Password
+                  </FormLabel>
                   <FormControl>
-                    <input type="password" {...field} className="border border-gray-300 p-2 rounded-lg" placeholder="Re-type your password" />
+                    <input
+                      type="password"
+                      {...field}
+                      className="border border-gray-300 p-2 rounded-lg"
+                      placeholder="Re-type your password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex justify-between mt-4">
-              <Button onClick={() => setShowResetForm(false)} className="bg-[#A98D78] hover:bg-[#b89b86]">
+              <Button
+                onClick={() => setShowResetForm(false)}
+                className="bg-[#A98D78] hover:bg-[#b89b86]"
+              >
                 Cancel
               </Button>
-              <Link href="/login">
-                <Button className="bg-[#A98D78] hover:bg-[#b89b86]">Confirm Reset</Button>
-              </Link>
+                <Button
+                  type="button"
+                  onClick={form.handleSubmit(handlePasswordReset)}
+                  className="bg-[#A98D78] hover:bg-[#b89b86]"
+                >
+                  Confirm Reset
+                </Button>
+              
             </div>
           </div>
         </div>

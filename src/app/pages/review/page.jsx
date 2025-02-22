@@ -7,26 +7,6 @@ import { useEffect, useState } from "react";
 export default function Review(){ 
   const [reviews,setReviews] = useState([]);
   const router  = useRouter();
-  //  const reviews = [
-  //   {
-  //     id: 1,
-  //     bookTitle: "The Great Gatsby",
-  //     rating: 5,
-  //     comment: "A beautifully written classic. Loved the storytelling!",
-  //   },
-  //   {
-  //     id: 2,
-  //     bookTitle: "1984",
-  //     rating: 4,
-  //     comment: "A thought-provoking novel with deep political themes.",
-  //   },
-  //   {
-  //     id: 3,
-  //     bookTitle: "Harry Potter and the Sorcerer’s Stone",
-  //     rating: 5,
-  //     comment: "A magical journey! Perfect for all ages.",
-  //   },
-  // ];
 useEffect(()=>{
   getReviews();
 },[])
