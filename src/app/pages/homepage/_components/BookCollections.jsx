@@ -8,156 +8,6 @@ export default function Secondmain() {
   const [newArrivalData, setNewArrivalData] = useState([]);
 
   // Static data for other tabs
-  const bestSellerData = [
-    {
-      _id: 9,
-      title: "Desil A Magazine",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "B. Simmons",
-      price: "$12.00 USD",
-      category: "Best Seller",
-    },
-    {
-      _id: 10,
-      title: "Better Reading",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Floyd Mila",
-      price: "$12.00 USD",
-      category: "Best Seller",
-    },
-    {
-      _id: 11,
-      title: "Breaking Barriers",
-
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Emma Roberts",
-      price: "$18.00 USD",
-      category: "Best Seller",
-    },
-    {
-      _id: 12,
-      title: "Legends of the Sky",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Andrew Miles",
-      price: "$19.50 USD",
-      category: "Best Seller",
-    },
-    {
-      _id: 13,
-      coverImage: "/photos/cursed.jpeg",
-
-      title: "Voices of the Sea",
-      author: "Clara Johnson",
-      price: "$20.00 USD",
-      category: "Best Seller",
-    },
-    {
-      _id: 14,
-      title: "Rays of Hope",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Michael Grey",
-      price: "$21.00 USD",
-      category: "Best Seller",
-    },
-    {
-      _id: 15,
-      title: "Journey to the Stars",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Evelyn Harper",
-      price: "$22.00 USD",
-      category: "Best Seller",
-    },
-    {
-      _id: 16,
-      title: "Winds of Change",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Daniel Craig",
-      price: "$18.50 USD",
-      category: "Best Seller",
-    },
-  ];
-
-  const featuredData = [
-    // Featured
-    {
-      _id: 17,
-      title: "The Art of Design",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "John Doe",
-      price: "$16.00 USD",
-      category: "Featured",
-    },
-    {
-      _id: 18,
-      title: "Nature Wonders",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Jane Smith",
-      price: "$18.00 USD",
-      category: "Featured",
-    },
-    {
-      _id: 19,
-      title: "Timeless Treasures",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Rachel King",
-      price: "$25.00 USD",
-      category: "Featured",
-    },
-    {
-      _id: 20,
-      title: "Secrets of the Universe",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Dav_id Stone",
-      price: "$24.00 USD",
-      category: "Featured",
-    },
-    {
-      _id: 21,
-      title: "Beyond the Horizon",
-      coverImage: "/photos/cursed.jpeg",
-      author: "Amy Porter",
-      price: "$23.00 USD",
-      category: "Featured",
-    },
-    {
-      _id: 22,
-      title: "Reflections of the Past",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "William Clarke",
-      price: "$22.50 USD",
-      category: "Featured",
-    },
-    {
-      _id: 23,
-      title: "Threads of Fate",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Isabella Brooks",
-      price: "$21.50 USD",
-      category: "Featured",
-    },
-    {
-      _id: 24,
-      title: "Enchanted Realms",
-      coverImage: "/photos/cursed.jpeg",
-
-      author: "Sophia Morgan",
-      price: "$26.00 USD",
-      category: "Featured",
-    },
-  ];
 
   useEffect(() => {
     if (activeTab === "New Arrival") {
@@ -179,10 +29,7 @@ export default function Secondmain() {
     switch (activeTab) {
       case "New Arrival":
         return newArrivalData;
-      case "Best Seller":
-        return bestSellerData;
-      case "Featured":
-        return featuredData;
+    
       default:
         return [];
     }
@@ -209,7 +56,7 @@ export default function Secondmain() {
 
       {/* Tabs */}
       <div className="flex items-center gap-4 mt-6">
-        {["New Arrival", "Best Seller", "Featured"].map((tab) => (
+        {["New Arrival"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}

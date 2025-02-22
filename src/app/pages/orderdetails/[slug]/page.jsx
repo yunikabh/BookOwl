@@ -89,7 +89,7 @@ export default function Orderdetails() {
           ))}
         </div>
 
-        <div className="flex justify-start gap-8 mt-6">
+        <div className="flex justify-start gap-8 mt-20">
           <Link href="/pages/payment" legacyBehavior>
             <a className="inline-block bg-[#265073] text-white text-sm px-4 py-2 rounded-md shadow-md hover:bg-[#346B98] transition">
               Proceed to Payment

@@ -8,6 +8,7 @@ import CollectionCarousel from "./_components/CollectionCarousel";
 import DealsCarousel from "./_components/DealsCarousel";
 // import Secondmain from "./_components/SecondMain";
 import BookCollections from  "./_components/BookCollections"
+import End from "./_components/End"
 // import BestSeller from "./_components/BestSeller";
 
 // import NewArrivals from "./_components/NewArrivals"
@@ -46,7 +47,7 @@ export default function Homepage(){
             <BookCollections />
             {/* <NewArrivals/> */}
             {/* <BestSeller /> */}
-            {/* <End/> */}
+            <End/>
 
             
         
