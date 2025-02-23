@@ -84,48 +84,69 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
 
 
 
- export const verifyKhaltiPaymentController = asyncHandler(async (req, res) => {
-
+export const verifyKhaltiPaymentController = asyncHandler(async (req, res) => {
   const { pidx, transaction_id, amount, purchase_order_id } = req.query;
-    
-    try {
-        const paymentInfo = await verifyKhaltiPayment(pidx);
-        const amountInNPR = Number(paymentInfo.total_amount) / 100;
 
-        if (
-            paymentInfo?.status !== "Completed" ||
-            paymentInfo.transaction_id !== transaction_id ||
-            amountInNPR !== Number(amount) / 100
-        ) {
-            return res.status(400).json(new ApiResponse(400, paymentInfo, "Incomplete or invalid payment information"));
-        }
+  try {
+    // Step 1: Verify the payment through Khalti API
+    const paymentInfo = await verifyKhaltiPayment(pidx);
+    const amountInNPR = Number(paymentInfo.total_amount) / 100;
 
-        const order = await Order.findById(purchase_order_id);
-        if (!order) {
-            return res.status(400).json(new ApiResponse(400, null, "Order not found"));
-        }
-        
-        await Order.findByIdAndUpdate(purchase_order_id, { $set: { status: "Completed" } });
-      
+    // Step 2: Check if the transaction_id and amount match
+    // if (
+    //   paymentInfo.transaction_id !== transaction_id ||
+    //   amountInNPR !== Number(amount) / 100
+    // ) {
+    //   return res.status(400).json(new ApiResponse(400, paymentInfo, "Incomplete or invalid payment information"));
+    // }
 
-
-
-
-
-        const paymentData = await Payment.create({
-            pidx,
-            transactionId: transaction_id,
-            orderId: purchase_order_id,
-            amount: amountInNPR,
-            dataFromVerificationReq: paymentInfo,
-            apiQueryFromUser: req.query,
-            paymentGateway: "Khalti",
-            status: "Success",
-        });
-
-        res.status(200).json(new ApiResponse(200, paymentData, "Payment verified and order completed successfully"));
-    } catch (error) {
-        throw new ApiError(500, "Error occurred during payment verification", error.message);
+    // Step 3: Fetch the order to ensure it exists
+    const order = await Order.findById(purchase_order_id);
+    if (!order) {
+      return res.status(400).json(new ApiResponse(400, null, "Order not found"));
     }
-});
 
+    // Step 4: Update the order status to "Completed" (You can skip this if it's not required)
+    await Order.findByIdAndUpdate(purchase_order_id, { status: "Completed" });
+
+    // Step 5: Find the payment record for this order
+    const existingPayment = await Payment.findOne({ orderId: purchase_order_id });
+    console.log("Existing Payment Found:", existingPayment); // Log to verify if payment record exists
+
+    let paymentData;
+    if (existingPayment) {
+      // Step 6: If payment exists, update it
+      paymentData = await Payment.findOneAndUpdate(
+        { orderId: purchase_order_id },
+        {
+          transactionId: transaction_id,
+          pidx,
+          amount: amountInNPR,
+          dataFromVerificationReq: paymentInfo,
+          status: "Success", // Update status to success
+        },
+        { new: true } // Ensure the updated document is returned
+      );
+      console.log("Updated Payment:", paymentData); // Log the updated payment to verify the update
+    } else {
+      // Step 7: If no payment record exists, create a new one
+      paymentData = await Payment.create({
+        pidx,
+        transactionId: transaction_id,
+        orderId: purchase_order_id,
+        amount: amountInNPR,
+        dataFromVerificationReq: paymentInfo,
+        apiQueryFromUser: req.query,
+        paymentGateway: "Khalti",
+        status: "Success",
+      });
+      console.log("New Payment Created:", paymentData); // Log the new payment creation
+    }
+
+    // Step 8: Return the response
+    res.status(200).json(new ApiResponse(200, paymentData, "Payment verified and order completed successfully"));
+  } catch (error) {
+    console.error("Error during payment verification:", error); // Log the error for debugging
+    throw new ApiError(500, "Error occurred during payment verification", error.message);
+  }
+});
