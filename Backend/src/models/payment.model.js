@@ -3,10 +3,8 @@ import mongoose from "mongoose";
 
 const paymentSchema = new mongoose.Schema(
   {
-    transactionId: {
-      type: String,
-      unique: true,
-    },
+    transactionId: { type: String, unique: true, sparse: true },
+
     pidx: {
          type: String,
           unique: true 
@@ -19,7 +17,7 @@ const paymentSchema = new mongoose.Schema(
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true, // Track which user made the payment
+        required: false, // Track which user made the payment
       },
     amount: { 
         type: Number, 

@@ -10,24 +10,23 @@ import { initializeKhaltiPayment,verifyKhaltiPayment } from "../utils/khalti.js"
 
 export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
     try {
+      console.log("Request Headers:", req.headers);
+
       console.log("Authorization Header:", req.header("Authorization"));
 
       const authHeader = req.header("Authorization")?.replace("Bearer ","");
-        if (!authHeader || !authHeader.startsWith("Bearer")) {
-            return res.status(401).json(new ApiResponse(401, null, "Unauthorized. No token provided."));
-        }
+      console.log("this is auth",authHeader)
+       
+
+         
         
-        const token = authHeader.split(" ")[1];
-        let decoded;
-        try {
-            decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        } catch (err) {
-            return res.status(401).json(new ApiResponse(401, null, "Invalid or expired token."));
-        }
         
         const { orderId } = req.params;
         const order = await Order.findById(orderId);
-        if (!order) throw new ApiError(404, "Order not found.");
+        if (!order) {
+          throw new ApiError(404, "Order not found.")
+
+        }
 
         if (order.paymentMethod === "Khalti") {
             const amountInPaisa = order.totalPrice * 100;
@@ -36,12 +35,12 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
                 amount: amountInPaisa,
                 purchased_order_id: order._id,
                 purchased_order_name: "Book Purchase",
-                return_url: `${process.env.BACKEND_URI}/khalti/complete`,
+                return_url: `${process.env.BACKEND_URI}`,
                 website_url: `${process.env.BACKEND_URI}`,
             });
             
             const payment = await Payment.create({
-                transactionId: null,
+                transactionId: paymentInitiate.pidx || new mongoose.Types.ObjectId().toString(),
                 pidx: paymentInitiate.pidx,
                 orderId: order._id,
                 amount: amountInPaisa,
@@ -56,7 +55,7 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
             }, "Khalti payment initiated successfully."));
         } else if (order.paymentMethod === "Cash on Delivery") {
             await Payment.create({
-                transactionId: null,
+                transactionId: new mongoose.Types.ObjectId().toString(),
                 pidx: null,
                 orderId: order._id,
                 amount: order.totalPrice,
@@ -89,13 +88,7 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
             return res.status(401).json(new ApiResponse(401, null, "Unauthorized. No token provided."));
         }
         
-        const token = authHeader.split(" ")[1];
-        let decoded;
-        try {
-            decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        } catch (err) {
-            return res.status(401).json(new ApiResponse(401, null, "Invalid or expired token."));
-        }
+       
         
         const paymentInfo = await verifyKhaltiPayment(pidx);
         const amountInNPR = Number(paymentInfo.total_amount) / 100;

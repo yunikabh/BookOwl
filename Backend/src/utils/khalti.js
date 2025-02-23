@@ -5,13 +5,13 @@ import 'dotenv/config';
 
 // Function to verify Khalti Payment
 export async function verifyKhaltiPayment(pidx) {
+ 
   const headersList = {
     "Authorization": `Key ${process.env.KHALTI_SECRET_KEY}`,
     "Content-Type": "application/json",
   };
-  if (accessToken) {
-    headersList["Authorization"] = `Bearer ${accessToken}`;
-  }
+
+ 
 
   const bodyContent = JSON.stringify({ pidx });
 
@@ -42,13 +42,8 @@ const headersList = {
   "Authorization": `Key ${process.env.KHALTI_SECRET_KEY}`,
   "Content-Type": "application/json",
 };
-if (accessToken) {
-  headersList["Authorization"] = `Bearer ${accessToken}`;
-}
-
 
 const bodyContent = JSON.stringify({
-  public_key: process.env.KHALTI_PUBLIC_KEY,
   amount: details.amount, // Must be in paisa
   purchase_order_id: details.purchased_order_id.toString(), // Ensure it's a string
   purchase_order_name: details.purchased_order_name.toString(), // Ensure it's a string
