@@ -15,6 +15,7 @@ import { ChevronDown, ShoppingCart, Menu } from "lucide-react";
 import $axios from "@/lib/axios.instance";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 
 const navItems = [
   { id: 1, name: "Home", href: "/pages/homepage" },
@@ -35,7 +36,7 @@ export default function Navbar1() {
     }
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50); // Change style after scrolling 50px
+      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -43,15 +44,8 @@ export default function Navbar1() {
   }, []);
 
   const logout = async () => {
-    const confirmLogout = confirm("Are you sure you want to logout?");
-    if (!confirmLogout) return;
     try {
-      localStorage.removeItem("token");
-      localStorage.removeItem("name");
-      localStorage.removeItem("id");
-      localStorage.removeItem("role");
-      localStorage.removeItem("Book_cart");
-      localStorage.removeItem("email");
+      localStorage.clear();
       await $axios.post("/auth/logout");
       router.push("/login");
     } catch (error) {
@@ -66,49 +60,28 @@ export default function Navbar1() {
       }`}
     >
       <div className="flex justify-between items-center py-2 px-[5%]">
-        {/* Logo */}
         <Link href="/pages/homepage">
-          <img
-            src="/photos/logo.png"
-            alt="Logo"
-            className="h-16 sm:h-12 object-contain"
-          />
+          <img src="/photos/logo.png" alt="Logo" className="h-16 sm:h-12 object-contain" />
         </Link>
-
-        {/* Hamburger Menu for Mobile */}
-        <button
-          className="block lg:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
+        <button className="block lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
           <Menu className="w-6 h-6" />
         </button>
-
-        {/* Navigation Menu */}
         <NavigationMenu
-          className={`${
-            isMenuOpen ? "flex" : "hidden"
-          } lg:flex flex-col lg:flex-row lg:items-center lg:gap-10 gap-4 absolute lg:static top-full left-0 w-full lg:w-auto bg-white lg:bg-transparent p-4 lg:p-0 shadow-lg lg:shadow-none`}
+          className={`${isMenuOpen ? "flex" : "hidden"} lg:flex flex-col lg:flex-row lg:items-center lg:gap-10 gap-4 absolute lg:static top-full left-0 w-full lg:w-auto bg-white lg:bg-transparent p-4 lg:p-0 shadow-lg lg:shadow-none`}
         >
           <NavigationMenuList className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
             {navItems.map((item) => (
               <NavigationMenuItem key={item.id}>
-                <a
-                  href={item.href}
-                  className="hover:text-gray-900 block text-lg lg:text-base"
-                >
+                <a href={item.href} className="hover:text-gray-900 block text-lg lg:text-base">
                   {item.name}
                 </a>
               </NavigationMenuItem>
             ))}
-
-            {/* Add to Cart */}
             <div>
               <Link href="/pages/addtocart">
                 <ShoppingCart className="w-6 h-6 hover:text-gray-900" />
               </Link>
             </div>
-
-            {/* Profile Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center font-medium">
@@ -118,49 +91,35 @@ export default function Navbar1() {
                   <ChevronDown className="w-5 h-5 ml-1" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="bg-white border border-gray-200 rounded-md shadow-lg mt-2 w-40"
-                align="end"
-              >
+              <DropdownMenuContent className="bg-white border border-gray-200 rounded-md shadow-lg mt-2 w-40" align="end">
                 <DropdownMenuItem asChild>
-                  <a
-                    href="/pages/userdashboard"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    My Account
-                  </a>
+                  <a href="/pages/userdashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Account</a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <a
-                    href="/pages/mypurchase"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Purchase History
-                  </a>
+                  <a href="/pages/mypurchase" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Purchase History</a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <a
-                    href="/pages/myorder"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    My Orders
-                  </a>
+                  <a href="/pages/myorder" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <a
-                    href="/pages/review"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    My Reviews
-                  </a>
+                  <a href="/pages/review" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Reviews</a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <button
-                    onClick={logout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent >
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="text-[#8F3623] font-serif text-xl">Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-[#265073] font-serif text text-lg">Do you really want to logout?</AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="text-[#8F3623]">Cancel</AlertDialogCancel>
+                        <AlertDialogAction className="bg-[#265073]" onClick={logout}>OK</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
