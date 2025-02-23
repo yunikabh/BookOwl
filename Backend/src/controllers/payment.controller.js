@@ -39,7 +39,7 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
                 purchased_order_id: order._id,
                 purchased_order_name: "Book Purchase",
                 return_url: `${process.env.BACKEND_URI}`,
-                website_url: `${process.env.BACKEND_URI}`,
+                website_url: `${process.env.INITIATION_URL}`,
             });
             
             const payment = await Payment.create({
