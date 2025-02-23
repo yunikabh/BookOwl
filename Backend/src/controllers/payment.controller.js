@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import Order from "../models/order.model.js"
 import { ApiError } from "../utils/apiError.js"
 import ApiResponse from "../utils/apiResponse.js"
+import User from "../models/user.model.js";
 import { initializeKhaltiPayment,verifyKhaltiPayment } from "../utils/khalti.js"
 
 
@@ -27,11 +28,13 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
           throw new ApiError(404, "Order not found.")
 
         }
+        console.log("This is order",order);
 
         if (order.paymentMethod === "Khalti") {
             const amountInPaisa = order.totalPrice * 100;
             
             const paymentInitiate = await initializeKhaltiPayment({
+              userId:order.userId,
                 amount: amountInPaisa,
                 purchased_order_id: order._id,
                 purchased_order_name: "Book Purchase",
@@ -43,6 +46,7 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
                 transactionId: paymentInitiate.pidx || new mongoose.Types.ObjectId().toString(),
                 pidx: paymentInitiate.pidx,
                 orderId: order._id,
+                userId: order.userId,
                 amount: amountInPaisa,
                 paymentGateway: "Khalti",
                 status: "Pending",
@@ -52,6 +56,8 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
                 payment_url: paymentInitiate.payment_url,
                 pidx: paymentInitiate.pidx,
                 orderId: order._id,
+                userId:order.userId,
+                payment
             }, "Khalti payment initiated successfully."));
         } else if (order.paymentMethod === "Cash on Delivery") {
             await Payment.create({
@@ -83,13 +89,6 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
   const { pidx, transaction_id, amount, purchase_order_id } = req.query;
     
     try {
-        const authHeader = req.header("Authorization");
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json(new ApiResponse(401, null, "Unauthorized. No token provided."));
-        }
-        
-       
-        
         const paymentInfo = await verifyKhaltiPayment(pidx);
         const amountInNPR = Number(paymentInfo.total_amount) / 100;
 
@@ -107,6 +106,11 @@ export const initiateKhaltiPayment = asyncHandler(async (req, res) => {
         }
         
         await Order.findByIdAndUpdate(purchase_order_id, { $set: { status: "Completed" } });
+      
+
+
+
+
 
         const paymentData = await Payment.create({
             pidx,
