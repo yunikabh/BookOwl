@@ -17,6 +17,7 @@ import recommendRoutes from "./routes/recommend.routes.js"
 
 const app = express();
 const allowedOrigins = [
+  "http://localhost:3000",
   "https://book-owll.vercel.app",
   "https://bookowlai.onrender.com",
 ];
