@@ -69,6 +69,9 @@ export default function OTP() {
         purpose,
       });
       console.log(response);
+      if (response.status===400){
+        toast.error("Wrong otp")
+      }
     } catch (error) {
       console.error(error);
     }
@@ -85,9 +88,18 @@ export default function OTP() {
   };
 
   const handleResendOTP = () => {
-    setOtpSent(true);
-    setTimer(120);
-    toast.info(" A new OTP has been sent to your mail!");
+    const email = localStorage.getItem("email");
+
+    try {
+      const response = $axios.post("/auth/resendOtp", { email });
+      console.log(response)
+      console.log(email);
+      setOtpSent(true);
+      setTimer(120);
+      toast.info("A new OTP has been sent to your mail!");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const formatTime = (seconds) => {

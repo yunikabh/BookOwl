@@ -6,27 +6,48 @@ import { Button } from "@/components/ui/button";
 import Forget from "./Forget";
 import { useState } from "react";
 import $axios from "@/lib/axios.instance";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function EmailPage() {
   const [isForgetVisible, setIsForgetVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState(""); // To store the email input value
   const [error, setError] = useState(""); // To store the error message
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!email) {
       setError("Enter your email first.");
+      return; // Stop execution if email is empty
     }
+
+    setLoading(true);
+
     try {
-      const response = await $axios.post("/auth/forgotPassword", {email});
-      if (!response) {
-        throw new Error("Error");
+      const response = await $axios.post("/auth/forgotPassword", { email });
+
+      if (response.status === 200) {
+        toast.success(response?.data.message || "Otp sent successfully");
       }
-      console.log("Entered email:", email);
-      setError(""); // Clear the error message
-      setIsForgetVisible(true); // Show the Forget Password modal
+
+      if (response.status === 404) {
+        toast.error(response?.data?.message || "User not found");
+      }
+
+      setError("");
+      setIsForgetVisible(true);
     } catch (error) {
-      console.error();
+      // Check if the error response has a message property
+      if (error?.response?.data?.message) {
+        toast.error(error.response.data.message || "An error occurred");
+      } else {
+        // Fallback to a generic error message if no specific message is provided
+        toast.error("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false); // Reset loading to false after request ends
     }
   };
 
@@ -61,8 +82,9 @@ export default function EmailPage() {
             <Button
               onClick={handleSubmit} // Handle submit with validation
               className="bg-[#A98D78] hover:bg-[#b69a85]"
+              disabled={loading}
             >
-              Search
+              {loading ? "Loading..." : "Search"} {/* Show loading text */}
             </Button>
           </div>
         </CardContent>

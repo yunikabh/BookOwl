@@ -1,7 +1,7 @@
 "use client";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// import { useState } from "react";
-// import { useFormState } from "react-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 // import { addContact } from "./actions/contact";
 import { z } from "zod";
+import { useState } from "react";
 const formSchema = z.object({
   userName: z
     .string()
@@ -35,6 +36,7 @@ const formSchema = z.object({
 });
 export default function ContactUs() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   //   const [state, formAction] = useFormState(addContact, null);
   //   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm({
@@ -47,26 +49,26 @@ export default function ContactUs() {
     },
   });
   const onSubmit = async (values) => {
-    // setIsSubmitting(true);
-    // await formAction(formData);
-    // setIsSubmitting(false);
-    console.log(values);
-
-    const response = await $axios.post("/contact/contactUs", values);
-    console.log(response);
-    if (!response) {
-      throw new Error(`HTTP erroe!:Status: ${response.status}`);
-    }
-    if (response.status === 201) {
-      alert("Message received! Thank you for contacting us.");
+    try {
+      const response = await $axios.post("/contact/contactUs", values);
       console.log(response);
-      console.log("Submitted values", values);
-      router.push("/pages/homepage");
+
+      if (response?.status === 201) {
+        toast.success("Message received! Thank you for contacting us.");
+        router.push("/pages/homepage");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        toast.error(error?.response?.data?.errors || "Invalid input.");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false); // Set loading back to false when request ends
     }
-
-    // console.log(values);
   };
-
   return (
     <section className="py-16 bg-[#e6d4b9] pt-[80px]">
       <div className="container max-w-7xl mx-auto px-4">
@@ -178,9 +180,12 @@ export default function ContactUs() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-[#af886b]">
-                  Submit
-                  {/* {isSubmitting ? "Sending..." : "Send Message"} */}
+                <Button
+                  type="submit"
+                  className="w-full bg-[#af886b]"
+                  disabled={loading} 
+                >
+                  {loading ? "Loading..." : "Submit"} 
                 </Button>
               </form>
             </Form>

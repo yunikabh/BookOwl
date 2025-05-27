@@ -16,7 +16,9 @@ import {
 import { Card } from "@/components/ui/card";
 import { Mail, Eye, EyeOff, User, Lock, Phone } from "lucide-react";
 import $axios from "@/lib/axios.instance";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const formSchema = z.object({
   name: z.string().min(5, { message: "Name must be at least 5 characters." }),
@@ -41,7 +43,7 @@ export default function SignUpPage() {
   const [isOTPVisible, setIsOTPVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -61,6 +63,7 @@ export default function SignUpPage() {
       console.log(response);
       if (response?.status === 200) {
         setIsOTPVisible(true);
+        toast.success("otp send to ur mail")
       }
     } catch (error) {
       if (error.response && error.response.status === 409) {

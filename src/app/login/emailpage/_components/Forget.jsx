@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
   Form,
   FormControl,
@@ -80,12 +80,13 @@ export default function ForgotPassword({ email }) {
         email,
         otp: data.pin,
       });
+      console.log(response);
       if (!response) {
         throw new Error("Error");
       }
       console.log("Entered email:", email);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     toast.success(
       "OTP verified successfully! You can now reset your password."
@@ -97,29 +98,38 @@ export default function ForgotPassword({ email }) {
       toast.error("Please fill in both password fields.");
       return;
     }
-  
+
     try {
       const response = await $axios.post("/auth/resetPassword", {
         email,
         newPassword: data.newPassword,
       });
-  
+
       if (!response || response.status !== 200) {
         throw new Error(response?.data?.message || "Failed to reset password.");
       }
-  
+
       toast.success("Password reset successfully! Redirecting to login...");
       router.push("/login"); // Redirect user to login page
     } catch (error) {
-      console.error("Error:", error.response?.data?.message || error.message || "An error occurred.");
+      console.error(
+        "Error:",
+        error.response?.data?.message || error.message || "An error occurred."
+      );
       toast.error(error.response?.data?.message || "Failed to reset password.");
     }
   };
 
-  const handleResendOTP = () => {
-    setOtpSent(true);
-    setTimer(120);
-    toast.info("A new OTP has been sent to your mail!");
+  const handleResendOTP = async () => {
+    try {
+      // const response = $axios.post("/auth/resendOtp", { email });
+      // console.log(email)
+      setOtpSent(true);
+      setTimer(120);
+      toast.info("A new OTP has been sent to your mail!");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const formatTime = (seconds) => {
@@ -269,14 +279,13 @@ export default function ForgotPassword({ email }) {
               >
                 Cancel
               </Button>
-                <Button
-                  type="button"
-                  onClick={form.handleSubmit(handlePasswordReset)}
-                  className="bg-[#A98D78] hover:bg-[#b89b86]"
-                >
-                  Confirm Reset
-                </Button>
-              
+              <Button
+                type="button"
+                onClick={form.handleSubmit(handlePasswordReset)}
+                className="bg-[#A98D78] hover:bg-[#b89b86]"
+              >
+                Confirm Reset
+              </Button>
             </div>
           </div>
         </div>
