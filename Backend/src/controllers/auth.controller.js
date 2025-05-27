@@ -44,8 +44,7 @@ const register = asyncHandler(async (req, res,next) => {
 
   //check uniqueness of email
   const user = await User.findOne({ email });
-  const pendingUser = await PendingUser.findOne({ email });
-  if (user|| pendingUser) {
+  if (user) {
     throw new ApiError(409, "Email already exists");
   }
 
