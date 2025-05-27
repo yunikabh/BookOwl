@@ -16,10 +16,29 @@ import paymentRoutes from "./routes/payment.routes.js"
 import recommendRoutes from "./routes/recommend.routes.js"
 
 const app = express();
+const allowedOrigins = [
+  "https://book-owll.vercel.app",
+  "https://bookowlai.onrender.com",
+];
 app.use(cors({
-    origin: "https://book-owll.vercel.app", // Replace with your frontend URL
-    credentials: true, // Allow cookies to be sent
-  }));
+  origin: function(origin, callback) {
+    // Allow requests with no origin like Postman or curl
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+}));
+// app.use(cors({
+//     origin: "https://book-owll.vercel.app",
+//     "https://bookowlai.onrender.com",
+//      // Replace with your frontend URL
+//     credentials: true, // Allow cookies to be sent
+//   }));
   
 app.use(express.json());
 app.use(cookieParser());
