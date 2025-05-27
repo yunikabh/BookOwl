@@ -17,7 +17,7 @@ import recommendRoutes from "./routes/recommend.routes.js"
 
 const app = express();
 app.use(cors({
-    origin: "http://localhost:3000", // Replace with your frontend URL
+    origin: "https://book-owll.vercel.app", // Replace with your frontend URL
     credentials: true, // Allow cookies to be sent
   }));
   
