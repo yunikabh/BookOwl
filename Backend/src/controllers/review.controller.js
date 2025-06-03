@@ -160,7 +160,7 @@ const getReviewByUserId = asyncHandler(async(req,res)=>{
 
     // Fetch the reviews for the user
     const reviews = await Review.find({user: userId })
-    .populate('book', 'bookName author')  // Optional: Populate the book data (title, author) in the review
+    .populate('book', 'bookName author coverImage')  // Optional: Populate the book data (title, author) in the review
       .exec();// Assuming your `Review` model has a reference to `userId`
 
       // If no reviews are found, return a message
