@@ -16,6 +16,7 @@ const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString()
 export const generateAccessAndRefreshTokens = async(userId) =>{
   try{
     const user = await User.findById(userId)
+    console.log("This is the userId",userId);
 
     const accessToken = user.generateAccessToken();
     console.log("this is access",accessToken);
@@ -120,6 +121,7 @@ const login = asyncHandler(async (req, res) => {
     const options = {
       httpOnly: true,//Makes the cookie inaccessible to client-side JavaScript
       secure: true,// Ensures the cookie is only sent over secure HTTPS connections
+      sameSite: "none"
     };
     //Authentication successful
     res
