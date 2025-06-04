@@ -1,8 +1,6 @@
 # BookOwl
-BookOwl is an innovative online platform designed to make the world of books more accessi-
-ble, engaging, and enjoyable for readers providing a user-friendly space where you can browse,
-review, and purchase books all in one platform.The platform allows users to explore a vast cat-
-alog of books, read detailed descriptions, and check out reviews left by others. In addition,
+BookOwl is an innovative online platform designed to make the world of books more accessible, engaging, and enjoyable for readers providing a user-friendly space where you can browse,
+review, and purchase books all in one platform.The platform allows users to explore a vast catalog of books, read detailed descriptions, and check out reviews left by others. In addition,
 BookOwl offers personalized book recommendations to help you find your next great read
 based on your past ratings.
 
