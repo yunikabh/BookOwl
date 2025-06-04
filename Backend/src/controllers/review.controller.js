@@ -137,7 +137,7 @@ const getReviewsAndRating = asyncHandler(async (req, res) => {
 
     // Create the query object
     const reviewsQuery = await Review.find({ book: bookId }).select("-book")
-    .populate("user","name")
+    .populate("user","name profilePicture")
     .sort({ createdAt: -1 }) // Sort by createdAt in descending order
         .skip((page - 1) * limit)
         .limit(limit);
